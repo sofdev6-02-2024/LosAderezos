@@ -1,0 +1,17 @@
+services:
+  influxdb:
+    image: influxdb:2
+    ports:
+      - 8086:8086
+    environment:
+      DOCKER_INFLUXDB_INIT_MODE: setup
+      DOCKER_INFLUXDB_INIT_USERNAME: admin
+      DOCKER_INFLUXDB_INIT_PASSWORD: admin123
+      DOCKER_INFLUXDB_INIT_ORG: org
+      DOCKER_INFLUXDB_INIT_ADMIN_TOKEN: RPUooTW-xW2ZtmnFQmQhD7wmbQ4_74ilksg8TFcOwXx2h8sRGz-C0c46vR8u0LdyDIVOwlay-NqoOxzdVh_i7Q==
+      DOCKER_INFLUXDB_INIT_BUCKET: BUCKET_EXAMPLE
+    
+  golang:
+    build: ./example_go
+    stdin_open: true
+    tty: true
