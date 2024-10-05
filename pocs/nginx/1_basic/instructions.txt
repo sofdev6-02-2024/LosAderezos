@@ -1,0 +1,10 @@
+open terminal in directory and run:
+
+docker compose up
+
+then go to "localhost:8080" in browser
+
+nginx welcome page should appear.
+
+"default.conf" file it's the auto-generated file with default nginx configurations, 
+file is stored in docker container as /etc/nginx/nginx.conf file.
