@@ -1,0 +1,12 @@
+open terminal in directory and run:
+
+docker compose up
+
+then open browser and go to "http://localhost:8080/main.html" url, 
+should view ./data/www/main.html file
+
+go to "http://localhost:8080/images/main.png" url,
+should view ./data/images/main.png file
+
+go to "http://localhost:8080/json/main.json" url,
+should view ./data/json/main.json file
