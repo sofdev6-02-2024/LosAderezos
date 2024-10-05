@@ -1,0 +1,17 @@
+services:
+  golang:
+    build: ./go-service
+    ports:
+      - "3000:80"
+    
+  csharp:
+    build: ./csharp-service
+    environment:
+      ASPNETCORE_HTTP_PORTS: 80
+    ports:
+      - "2000:80"
+  
+  nginx:
+    build: ./nginx-balancer
+    ports:
+      - "8080:8080"

@@ -1,0 +1,19 @@
+open terminal in directory and run:
+
+docker compose up
+
+to check all services are running:
+
+open "http://localhost:2000/"
+
+asp.net welcome page should be displayed
+
+open "http://localhost:3000/"
+
+"Hello from Go" message should be displayed
+
+
+to check load balancer is correctly working:
+
+open "http://localhost:8080/go/"
+open "http://localhost:8080/csharp/"
