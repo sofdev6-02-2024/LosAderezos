@@ -1,0 +1,6 @@
+open terminal and execute 
+
+docker compose up
+
+open browser and go to "http://localhost:2000/"
+welcome page of aspnet will be displayed.

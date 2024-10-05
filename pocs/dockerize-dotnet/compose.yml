@@ -1,0 +1,7 @@
+services:
+  webapp:
+    build: .
+    environment:
+      ASPNETCORE_HTTP_PORTS: 2000
+    ports:
+      - "2000:2000"
