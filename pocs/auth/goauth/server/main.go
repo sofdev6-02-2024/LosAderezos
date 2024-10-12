@@ -15,7 +15,7 @@ import (
 	"github.com/markbates/goth/gothic"
 
 	"github.com/markbates/goth/providers/google"
-	"github.com/markbates/goth/providers/facebook"
+	"github.com/markbates/goth/providers/discord"
 	"github.com/markbates/goth/providers/microsoftonline"
 )
 
@@ -36,14 +36,14 @@ func main() {
 
 	goth.UseProviders(
 		google.New(os.Getenv("GOOGLE_KEY"), os.Getenv("GOOGLE_SECRET"), "http://localhost:8000/auth/google/callback"),
-		facebook.New(os.Getenv("FACEBOOK_KEY"), os.Getenv("FACEBOOK_SECRET"), "http://localhost:8000/auth/facebook/callback"),
+		discord.New(os.Getenv("DISCORD_KEY"), os.Getenv("DISCORD_SECRET"), "http://localhost:8000/auth/discord/callback", discord.ScopeIdentify, discord.ScopeEmail),
 		microsoftonline.New(os.Getenv("MICROSOFTONLINE_KEY"), os.Getenv("MICROSOFTONLINE_SECRET"), "http://localhost:8000/auth/microsoftonline/callback"),
 	)
 
 
 	m := map[string]string{
 		"google":          "Google",
-		"facebook":        "Facebook",
+		"discord":         "Discord",
 		"microsoftonline": "Microsoft Online",
 		}
 

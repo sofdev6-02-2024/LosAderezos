@@ -10,8 +10,8 @@ function App() {
     window.location.href = "http://localhost:8000/auth/google";
   };
 
-  const handleFacebookLogin = () => {
-    window.location.href = "http://localhost:8000/auth/facebook";
+  const handleDiscordLogin = () => {
+    window.location.href = "http://localhost:8000/auth/discord";
   };
 
   const handleMicrosoftLogin = () => {
@@ -41,7 +41,7 @@ function App() {
         <button onClick={handleGoogleLogin}>Login With Google</button>
       </div>
       <div>
-        <button onClick={handleFacebookLogin}>Login With Facebook</button>
+        <button onClick={handleDiscordLogin}>Login With Discord</button>
       </div>
       <div>
         <button onClick={handleMicrosoftLogin}>Login With Microsoft</button>
