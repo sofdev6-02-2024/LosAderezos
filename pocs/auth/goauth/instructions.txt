@@ -1,0 +1,11 @@
+open terminal in directory and run:
+
+docker compose up
+
+open web browser and go to "localhost://5173"
+
+to all sign in methods, do the following:
+    - click on method link
+    - follow sign in process according to platform
+    - once sign in is completed, app will redirects to a screen with all user's info.
+    - click on "logout" link at the top of the page to check process with the next platform
