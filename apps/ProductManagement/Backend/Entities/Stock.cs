@@ -1,4 +1,4 @@
-namespace ProductManagement.Entities;
+namespace Backend.Entities;
 
 public class Stock
 {
