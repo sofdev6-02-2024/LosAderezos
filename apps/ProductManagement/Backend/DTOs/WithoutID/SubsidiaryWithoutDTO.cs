@@ -8,3 +8,4 @@ public class SubsidiaryWithoutDTO
     public string Type { get; set; }
     public Guid CompanyId { get; set; }
 }
+
