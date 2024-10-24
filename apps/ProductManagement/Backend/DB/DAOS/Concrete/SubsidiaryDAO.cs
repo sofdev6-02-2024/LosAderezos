@@ -56,7 +56,7 @@ public sealed class SubsidiaryDAO : SingleDAO<Subsidiary>
         string subsidiaryCompanyIdC = subsidiary.CompanyId.ToString();
 
         _sb = new StringBuilder();
-        _sb.Append("INSERT INTO ").Append(_tableName).Append(" (Id, Latitude, Longitude, Name, CompanyId, Type)")
+        _sb.Append("INSERT INTO ").Append(_tableName).Append(" (Id, Latitude, Longitude, Name, Type, CompanyId)")
             .Append("VALUES ('").Append(subsidiaryIdC).Append("',")
                                 .Append(subsidiaryLatitudeC).Append(",")
                                 .Append(subsidiaryLongitudeC).Append(",'")
@@ -80,8 +80,8 @@ public sealed class SubsidiaryDAO : SingleDAO<Subsidiary>
             .Append(" Set Latitude = ").Append(subsidiaryLatitudeC).Append(", ")
             .Append(" Longitude = ").Append(subsidiaryLongitudeC).Append(", ")
             .Append(" Name = '").Append(subsidiaryNameC).Append("',")
-            .Append(" CompanyId = '").Append(subsidiaryCompanyIdC).Append("','")
-            .Append(" Type = '").Append(subsidiaryTypeC).Append("' ")
+            .Append(" Type = '").Append(subsidiaryTypeC).Append("', ")
+            .Append(" CompanyId = '").Append(subsidiaryCompanyIdC).Append("' ")
             .Append(" WHERE Id = '").Append(subsidiaryIdC).Append("';");
         
         return _sb;
