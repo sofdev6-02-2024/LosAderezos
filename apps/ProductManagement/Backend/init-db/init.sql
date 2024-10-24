@@ -115,7 +115,7 @@ DELIMITER ;
 CREATE TABLE IF NOT EXISTS ProductCategories(
     ProductId   VARCHAR(36) NOT NULL,
     CategoryId  VARCHAR(36) NOT NULL,
-    FOREIGN KEY (ProductId) REFERENCES Product(Id)
+    FOREIGN KEY (ProductId) REFERENCES Product(Id),
     FOREIGN KEY (CategoryId) REFERENCES Category(Id)
 );
 
