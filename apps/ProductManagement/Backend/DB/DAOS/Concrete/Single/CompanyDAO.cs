@@ -23,7 +23,7 @@ public sealed class CompanyDAO : SingleDAO<Company>
         return _entity;
     }
 
-    private protected override List<Company> MapReaderToEntitiesMap()
+    private protected override List<Company> MapReaderToEntitiesList()
     {
         _entitiesList = new List<Company>();
         while (_mySqlReader!.Read())

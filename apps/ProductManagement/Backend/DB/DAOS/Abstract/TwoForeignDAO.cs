@@ -4,9 +4,13 @@ using MySql.Data.MySqlClient;
 
 namespace DB;
 
-public abstract class SingleDAO<T> : ISingleDAO<T>
+public abstract class TwoForeignDAO<T> : ITwoForeignDAO<T>
 {
     private protected string _tableName = string.Empty;
+
+    private protected string _firstForeignKey = string.Empty;
+
+    private protected string _secondForeignKey = string.Empty;
 
     private protected StringBuilder? _sb;
 
@@ -28,14 +32,14 @@ public abstract class SingleDAO<T> : ISingleDAO<T>
         return  ExecuteReadAllOperation();
     }
 
-    public T? Read(Guid id)
+    public T? Read(Guid id1, Guid id2)
     {
-        return ExecuteReadOperation(id);
+        return ExecuteReadOperation(id1, id2);
     }
 
-    public bool Delete(Guid id)
+    public bool Delete(Guid id1, Guid id2)
     {
-        return ExecuteDeleteOperation(id);
+        return ExecuteDeleteOperation(id1, id2);
     }
 
     public int Update(T entity)
@@ -67,10 +71,12 @@ public abstract class SingleDAO<T> : ISingleDAO<T>
         return MapReaderToEntitiesList();
     }
 
-    private protected T? ExecuteReadOperation(Guid id)
+    private protected T? ExecuteReadOperation(Guid id1, Guid id2)
     {
         _sb = new StringBuilder();
-        _sb.Append("SELECT * FROM ").Append(_tableName).Append(" WHERE Id = '").Append(id.ToString()).Append("';");
+        _sb.Append("SELECT * FROM ").Append(_tableName)
+            .Append(" WHERE ").Append(_firstForeignKey).Append(" = '").Append(id1.ToString()).Append("' ")
+            .Append(" AND ").Append(_secondForeignKey).Append(" = '").Append(id2.ToString()).Append("';");
         MySqlCommand com = GetCommandByText(_sb);
         _mySqlReader = com.ExecuteReader();
         if (!_mySqlReader.HasRows)
@@ -83,10 +89,12 @@ public abstract class SingleDAO<T> : ISingleDAO<T>
         return MapReaderToEntity();
     }
 
-    private protected bool ExecuteDeleteOperation(Guid id)
+    private protected bool ExecuteDeleteOperation(Guid id1, Guid id2)
     {
         _sb = new StringBuilder();
-        _sb.Append("DELETE FROM ").Append(_tableName).Append(" WHERE Id = '").Append(id.ToString()).Append("';");
+        _sb.Append("DELETE FROM ").Append(_tableName)
+            .Append(" WHERE ").Append(_firstForeignKey).Append(" = '").Append(id1.ToString()).Append("' ")
+            .Append(" AND ").Append(_secondForeignKey).Append(" = '").Append(id2.ToString()).Append("';");
         MySqlCommand com = GetCommandByText(_sb);
         _mySqlReader = com.ExecuteReader();
         int recordsAffected = _mySqlReader.RecordsAffected;
@@ -101,6 +109,13 @@ public abstract class SingleDAO<T> : ISingleDAO<T>
         _dbCommand.Connection = DBConnector.GetConnection();
         _dbCommand.CommandText = _tableName;
         _dbCommand.CommandType = CommandType.TableDirect;
+        return _dbCommand;
+    }
+
+    private protected MySqlCommand GetCommandStoredProcedure(string procedureName)
+    {
+        _dbCommand = new MySqlCommand(procedureName,DBConnector.GetConnection());
+        _dbCommand.CommandType = CommandType.StoredProcedure;
         return _dbCommand;
     }
 

@@ -26,7 +26,7 @@ public sealed class SubsidiaryDAO : SingleDAO<Subsidiary>
         return _entity;
     }
 
-    private protected override List<Subsidiary> MapReaderToEntitiesMap()
+    private protected override List<Subsidiary> MapReaderToEntitiesList()
     {
         _entitiesList = new List<Subsidiary>();
         while (_mySqlReader!.Read())

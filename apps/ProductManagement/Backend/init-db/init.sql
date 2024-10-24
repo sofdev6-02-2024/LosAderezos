@@ -112,6 +112,18 @@ BEGIN
 END //
 DELIMITER ;
 
+DELIMITER //
+CREATE PROCEDURE GetSubsidiaryUsersByUserId(IN userId CHAR(36))
+BEGIN
+  SELECT
+    su.SubsidiaryId
+  FROM
+    SubsidiaryUsers su
+  WHERE
+    su.UserId = userId;
+END //
+DELIMITER ;
+
 -- PRODUCT CATEGORIES
 CREATE TABLE IF NOT EXISTS ProductCategories(
     ProductId   VARCHAR(36) NOT NULL,

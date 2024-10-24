@@ -26,7 +26,7 @@ public sealed class ProductDAO : SingleDAO<Product>
         return _entity;
     }
 
-    private protected override List<Product> MapReaderToEntitiesMap()
+    private protected override List<Product> MapReaderToEntitiesList()
     {
         _entitiesList = new List<Product>();
         while (_mySqlReader!.Read())

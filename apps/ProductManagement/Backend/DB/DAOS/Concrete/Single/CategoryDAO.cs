@@ -22,7 +22,7 @@ public sealed class CategoryDAO : SingleDAO<Category>
         return _entity;
     }
 
-    private protected override List<Category> MapReaderToEntitiesMap()
+    private protected override List<Category> MapReaderToEntitiesList()
     {
         _entitiesList = new List<Category>();
         while (_mySqlReader!.Read())

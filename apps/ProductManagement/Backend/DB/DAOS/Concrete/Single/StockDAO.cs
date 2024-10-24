@@ -25,7 +25,7 @@ public sealed class StockDAO : SingleDAO<Stock>
         return _entity;
     }
 
-    private protected override List<Stock> MapReaderToEntitiesMap()
+    private protected override List<Stock> MapReaderToEntitiesList()
     {
         _entitiesList = new List<Stock>();
         while (_mySqlReader!.Read())
