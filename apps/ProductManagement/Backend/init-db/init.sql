@@ -17,10 +17,11 @@ CREATE TABLE IF NOT EXISTS Company(
 -- SUBSIDIARY
 CREATE TABLE IF NOT EXISTS Subsidiary(
     Id          VARCHAR(36) PRIMARY KEY NOT NULL,
-    Coordinate  POINT,
+    Latitude    DECIMAL(8,6),
+    Longitude   DECIMAL(9,6),
     Name        VARCHAR(80),
-    CompanyId   VARCHAR(36),
     Type        VARCHAR(80),
+    CompanyId   VARCHAR(36),
     FOREIGN KEY (CompanyId) REFERENCES Company(Id)
 );
 
@@ -71,8 +72,8 @@ CREATE TABLE IF NOT EXISTS Stock(
     Id              VARCHAR(36) PRIMARY KEY NOT NULL,
     Code            INT,
     Quantity        INT,
-    SubsidiaryId    VARCHAR(36),
     ProductId       VARCHAR(36),
+    SubsidiaryId    VARCHAR(36),
     FOREIGN KEY (SubsidiaryId) REFERENCES Subsidiary(Id),
     FOREIGN KEY (ProductId) REFERENCES Product(Id)
 );
