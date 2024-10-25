@@ -1,0 +1,23 @@
+services:
+  product-management-database:
+    container_name: ProductManagementDB
+    image: mysql:9
+    environment:
+      - MYSQL_ROOT_PASSWORD=${product_management_DB_password}
+      - MYSQL_DATABASE=${product_management_DB_schema}
+    volumes:
+      - ${context}/apps/ProductManagement/Backend/init-db:/docker-entrypoint-initdb.d
+
+  product-management-service:
+    container_name: ProductManagementService
+    build: 
+      context: ${context}
+      dockerfile: ./infrastructure/environments/product-management/Dockerfile
+    environment:
+      ASPNETCORE_HTTP_PORTS: 80
+    ports:
+      - "5009:80"
+    
+
+
+

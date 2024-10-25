@@ -1,0 +1,5 @@
+# Compose configuration
+.env
+
+# Product Management DB configuration
+dbsettings.json
