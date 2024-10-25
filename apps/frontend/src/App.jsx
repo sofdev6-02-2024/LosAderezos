@@ -1,6 +1,7 @@
 import { Routes, Route } from 'react-router-dom';
 import StoreMenu from "./pages/StoreMenu"
 import NotFound from './pages/NotFound';
+import ProductsPage from './pages/ProductsPage';
 
 function App() {
   return (
@@ -8,6 +9,7 @@ function App() {
       <Routes>
       <Route path='*' element={<NotFound />} />
         <Route path='/' element={<StoreMenu />} />
+        <Route path='/products' element={<ProductsPage />} />
       </Routes>
     </div>
   )
