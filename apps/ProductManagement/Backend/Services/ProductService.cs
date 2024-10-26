@@ -8,15 +8,13 @@ namespace Backend.Services;
 
 public class ProductService: IProductService
 {
-    private readonly IDAO<Product> _productDao;
-    private readonly ISingleDAO<Product> _singleProductDao;
+    private readonly IProductDAO _productDao;
     private readonly IMapper _mapper;
 
-    public ProductService(IDAO<Product> productDao, IMapper mapper, ISingleDAO<Product> singleProductDao)
+    public ProductService(IProductDAO productDao, IMapper mapper)
     {
         _productDao = productDao;
         _mapper = mapper;
-        _singleProductDao = singleProductDao;
     }
 
     public async Task<List<ProductDTO>> GetProducts()
@@ -26,16 +24,19 @@ public class ProductService: IProductService
 
     public async Task<ProductDTO> GetProductById(Guid id)
     {
-        return _mapper.Map<ProductDTO>(_singleProductDao.Read(id));
+        return _mapper.Map<ProductDTO>(_productDao.Read(id));
     }
 
     public async Task<ProductDTO> CreateProduct(ProductWithoutIDDTO product)
     {
-        return _mapper.Map<ProductDTO>(_singleProductDao.Create(_mapper.Map<Product>(product)));
+        Guid guid = Guid.NewGuid();
+        _productDao.Create(_mapper.Map<Product>((product, guid)));
+        return _mapper.Map<ProductDTO>(_productDao.Read(guid));
     }
 
     public async Task<ProductDTO> UpdateProduct(ProductDTO product)
     {
-        return _mapper.Map<ProductDTO>(_singleProductDao.Update(_mapper.Map<Product>(product)));
+        _productDao.Update(_mapper.Map<Product>(product));
+        return _mapper.Map<ProductDTO>(_productDao.Read(product.ProductId));
     }
 }

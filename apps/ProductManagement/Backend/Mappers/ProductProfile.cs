@@ -11,8 +11,7 @@ public class ProductProfile : Profile
         CreateMap<Product, ProductDTO>();
         CreateMap<ProductDTO, Product>();
         CreateMap<Product, ProductWithoutIDDTO>();
-        CreateMap<ProductWithoutIDDTO, Product>()
-            .ForMember(dest => dest.ProductId,
-                opt => opt.MapFrom(src => Guid.NewGuid()));
+        CreateMap< (ProductWithoutIDDTO, Guid), Product>()
+            .ForMember(dest => dest.ProductId, expression => expression.MapFrom(src => src.Item2));
     }
 }

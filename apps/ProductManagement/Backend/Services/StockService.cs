@@ -9,15 +9,13 @@ namespace Backend.Services;
 
 public class StockService : IStockService
 {
-    private readonly IDAO<Stock> _stockDao;
-    private readonly ISingleDAO<Stock> _singleStockDao;
+    private readonly IStockDAO _stockDao;
     private readonly IMapper _mapper;
 
-    public StockService(IDAO<Stock> stockDao, IMapper mapper, ISingleDAO<Stock> singleStockDao)
+    public StockService(IStockDAO stockDao, IMapper mapper)
     {
         _stockDao = stockDao;
         _mapper = mapper;
-        _singleStockDao = singleStockDao;
     }
 
     public async Task<List<StockDTO>> GetStocks()
@@ -27,7 +25,7 @@ public class StockService : IStockService
 
     public async Task<StockDTO?> GetStockById(Guid stockId)
     {
-        return _mapper.Map<Stock, StockDTO>(_singleStockDao.Read(stockId));
+        return _mapper.Map<Stock, StockDTO>(_stockDao.Read(stockId));
     }
 
     public async Task<List<StockDTO>> GetStocksBySubsidiaryId(Guid subsidiaryId)
@@ -37,11 +35,14 @@ public class StockService : IStockService
 
     public async Task<StockDTO> CreateStock(StockWithoutIDDTO stock)
     {
-        return _mapper.Map<StockDTO>(_singleStockDao.Create(_mapper.Map<Stock>(stock)));
+        Guid guid = Guid.NewGuid();
+        _stockDao.Create(_mapper.Map<Stock>((stock, guid)));
+        return _mapper.Map<StockDTO>(_stockDao.Read(guid));
     }
 
     public async Task<StockDTO> UpdateStock(StockDTO stock)
     {
-        return _mapper.Map<StockDTO>(_singleStockDao.Create(_mapper.Map<Stock>(stock)));
+        _stockDao.Update(_mapper.Map<Stock>(stock));
+        return _mapper.Map<StockDTO>(_stockDao.Read(stock.StockId));
     }
 }

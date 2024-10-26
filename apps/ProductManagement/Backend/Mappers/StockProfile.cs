@@ -12,8 +12,8 @@ public class StockProfile : Profile
         CreateMap<Stock, StockDTO>();
         CreateMap<StockDTO, Stock>();
         CreateMap<Stock, StockWithoutIDDTO>();
-        CreateMap<StockWithoutIDDTO, Stock>()
-            .ForMember(dest => dest.StockId,
-                opt => opt.MapFrom(src => Guid.NewGuid()));
+        CreateMap<(StockWithoutIDDTO, Guid), Stock>()
+            .ForMember(dest => dest.StockId, expression => expression.MapFrom(src => src.Item2));
+
     }
 }
