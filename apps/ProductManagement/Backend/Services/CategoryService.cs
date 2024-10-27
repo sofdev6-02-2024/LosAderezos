@@ -2,9 +2,10 @@ using AutoMapper;
 using Backend.DTOs.WithID;
 using Backend.DTOs.WithoutID;
 using Backend.Entities;
+using Backend.Services.ServiceInterfaces;
 using DB;
 
-namespace Backend.Services.ServiceInterfaces;
+namespace Backend.Services;
 
 public class CategoryService : ICategoryService
 {

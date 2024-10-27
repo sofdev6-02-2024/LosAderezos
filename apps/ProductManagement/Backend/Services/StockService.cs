@@ -20,12 +20,12 @@ public class StockService : IStockService
 
     public async Task<List<StockDTO>> GetStocks()
     {
-        return _stockDao.ReadAll().Select(_mapper.Map<Stock, StockDTO>).ToList();
+        return _stockDao.ReadAll().Select(_mapper.Map<StockDTO>).ToList();
     }
 
     public async Task<StockDTO?> GetStockById(Guid stockId)
     {
-        return _mapper.Map<Stock, StockDTO>(_stockDao.Read(stockId));
+        return _mapper.Map<StockDTO>(_stockDao.Read(stockId));
     }
 
     public async Task<List<StockDTO>> GetStocksBySubsidiaryId(Guid subsidiaryId)

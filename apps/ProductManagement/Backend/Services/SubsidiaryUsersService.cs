@@ -1,16 +1,17 @@
 using AutoMapper;
 using Backend.DTOs.WithID;
 using Backend.Entities;
+using Backend.Services.ServiceInterfaces;
 using DB;
 
-namespace Backend.Services.ServiceInterfaces;
+namespace Backend.Services;
 
 public class SubsidiaryUsersService : ISubsidiaryUsersService
 {
-    private readonly SubsidiaryUsersDAO _subsidiaryUsersDao;
+    private readonly ISubsidiaryUsersDAO _subsidiaryUsersDao;
     private readonly IMapper _mapper;
 
-    public SubsidiaryUsersService(SubsidiaryUsersDAO subsidiaryUsersDao, IMapper mapper)
+    public SubsidiaryUsersService(ISubsidiaryUsersDAO subsidiaryUsersDao, IMapper mapper)
     {
         _subsidiaryUsersDao = subsidiaryUsersDao;
         _mapper = mapper;
