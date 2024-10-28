@@ -4,7 +4,7 @@ using Backend.Entities;
 
 namespace DB;
 
-public sealed class SubsidiaryDAO : SingleDAO<Subsidiary>
+public sealed class SubsidiaryDAO : SingleDAO<Subsidiary>, ISubsidiaryDAO
 {
     public SubsidiaryDAO()
     {

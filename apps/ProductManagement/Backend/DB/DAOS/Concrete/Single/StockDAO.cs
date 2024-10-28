@@ -4,7 +4,7 @@ using Backend.Entities;
 
 namespace DB;
 
-public sealed class StockDAO : SingleDAO<Stock>
+public sealed class StockDAO : SingleDAO<Stock>, IStockDAO
 {
     public StockDAO()
     {

@@ -4,7 +4,7 @@ using Backend.Entities;
 
 namespace DB;
 
-public sealed class CategoryDAO : SingleDAO<Category>
+public sealed class CategoryDAO : SingleDAO<Category>, ICategoryDAO
 {
     public CategoryDAO()
     {

@@ -4,7 +4,7 @@ using Backend.Entities;
 
 namespace DB;
 
-public sealed class UserDAO : SingleDAO<User>
+public sealed class UserDAO : SingleDAO<User>, IUserDAO
 {
     public UserDAO()
     {
