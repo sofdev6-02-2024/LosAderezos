@@ -1,0 +1,23 @@
+CREATE DATABASE IF NOT EXISTS dbaderezosdev;
+       
+USE dbaderezosdev;
+-- USER
+CREATE TABLE IF NOT EXISTS User(
+    Id      VARCHAR(36) PRIMARY KEY NOT NULL,
+    Name    VARCHAR(80),
+    Rol     VARCHAR(80),
+    Email   VARCHAR(80),
+    PhoneNumber   VARCHAR(80),
+    BirthDate     DATE    
+);
+
+-- TRUNCATE ALL TABLES
+DELIMITER //
+CREATE PROCEDURE TruncateAllTables()
+BEGIN
+    SET FOREIGN_KEY_CHECKS = 0;
+TRUNCATE TABLE User;
+SET FOREIGN_KEY_CHECKS = 1;
+END //
+DELIMITER ;
+
