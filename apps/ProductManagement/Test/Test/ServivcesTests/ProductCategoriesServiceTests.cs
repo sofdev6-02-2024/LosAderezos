@@ -40,9 +40,9 @@ public class ProductCategoriesServiceTests
             var result = await _service.GetProductCategoriesByProductId(productId);
 
             // Assert
-            Assert.AreEqual(expectedDtos.Count, result.Count);
-            Assert.AreEqual(expectedDtos[0].ProductId, result[0].ProductId);
-            Assert.AreEqual(expectedDtos[0].CategoryId, result[0].CategoryId);
+            Assert.That(result.Count, Is.EqualTo(expectedDtos.Count));
+            Assert.That(result[0].ProductId, Is.EqualTo(expectedDtos[0].ProductId));
+            Assert.That(result[0].CategoryId, Is.EqualTo(expectedDtos[0].CategoryId));
         }
 
         [Test]
@@ -63,9 +63,9 @@ public class ProductCategoriesServiceTests
             var result = await _service.GetProductCategoriesByCategoryId(categoryId);
 
             // Assert
-            Assert.AreEqual(expectedDtos.Count, result.Count);
-            Assert.AreEqual(expectedDtos[0].ProductId, result[0].ProductId);
-            Assert.AreEqual(expectedDtos[0].CategoryId, result[0].CategoryId);
+            Assert.That(result.Count, Is.EqualTo(expectedDtos.Count));
+            Assert.That(result[0].ProductId, Is.EqualTo(expectedDtos[0].ProductId));
+            Assert.That(result[0].CategoryId, Is.EqualTo(expectedDtos[0].CategoryId));
         }
 
         [Test]
@@ -83,8 +83,8 @@ public class ProductCategoriesServiceTests
 
             // Assert
             Assert.IsNotNull(result);
-            Assert.AreEqual(productCategoryDto.ProductId, result.ProductId);
-            Assert.AreEqual(productCategoryDto.CategoryId, result.CategoryId);
+            Assert.That(result.ProductId, Is.EqualTo(productCategoryDto.ProductId));
+            Assert.That(result.CategoryId, Is.EqualTo(productCategoryDto.CategoryId));
         }
 
         [Test]
@@ -104,8 +104,8 @@ public class ProductCategoriesServiceTests
 
             // Assert
             Assert.IsNotNull(result);
-            Assert.AreEqual(productCategoryDto.ProductId, result.ProductId);
-            Assert.AreEqual(productCategoryDto.CategoryId, result.CategoryId);
+            Assert.That(result.ProductId, Is.EqualTo(productCategoryDto.ProductId));
+            Assert.That(result.CategoryId, Is.EqualTo(productCategoryDto.CategoryId));
         }
 
         [Test]

@@ -39,9 +39,9 @@ public class StockServiceTests
         var result = await _service.GetStocks();
 
         // Assert
-        Assert.AreEqual(expectedDtos.Count, result.Count);
-        Assert.AreEqual(expectedDtos[0].StockId, result[0].StockId);
-        Assert.AreEqual(expectedDtos[0].Quantity, result[0].Quantity);
+        Assert.That(result.Count, Is.EqualTo(expectedDtos.Count));
+        Assert.That(result[0].StockId, Is.EqualTo(expectedDtos[0].StockId));
+        Assert.That(result[0].Quantity, Is.EqualTo(expectedDtos[0].Quantity));
     }
 
     [Test]
@@ -87,7 +87,7 @@ public class StockServiceTests
         var result = await _service.GetStocksBySubsidiaryId(subsidiaryId);
 
         // Assert
-        Assert.AreEqual(expectedDtos.Count, result.Count);
+        Assert.That(result.Count, Is.EqualTo(expectedDtos.Count));
         Assert.IsTrue(result.All(dto => dto.StockId == expectedDtos.First().StockId && dto.Quantity == expectedDtos.First().Quantity));
     }
 
@@ -110,8 +110,8 @@ public class StockServiceTests
 
         // Assert
         Assert.IsNotNull(result);
-        Assert.AreEqual(expectedDto.StockId, result.StockId);
-        Assert.AreEqual(expectedDto.Quantity, result.Quantity);
+        Assert.That(result.StockId, Is.EqualTo(expectedDto.StockId));
+        Assert.That(result.Quantity, Is.EqualTo(expectedDto.Quantity));
     }
 
     [Test]
@@ -131,7 +131,7 @@ public class StockServiceTests
 
         // Assert
         Assert.IsNotNull(result);
-        Assert.AreEqual(stockDto.StockId, result.StockId);
-        Assert.AreEqual(stockDto.Quantity, result.Quantity);
+        Assert.That(result.StockId, Is.EqualTo(stockDto.StockId));
+        Assert.That(result.Quantity, Is.EqualTo(stockDto.Quantity));
     }    
 }

@@ -11,7 +11,9 @@ public class CategoryProfile: Profile
     {
         CreateMap<Category, CategoryDTO>();
         CreateMap<CategoryDTO, Category>();
-        CreateMap<(CategoryWithoutIDDTO, Guid), Category>();
+        CreateMap<(CategoryWithoutIDDTO, Guid), Category>()
+            .ForMember(dest => dest.CategoryId, expression => expression.MapFrom(src => src.Item2));
         CreateMap<Category, CategoryWithoutIDDTO>();
+
     }
 }

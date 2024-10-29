@@ -42,8 +42,8 @@ public class CategoryServiceTests
         var result = await _categoryService.GetCategories();
 
         // Assert
-        Assert.AreEqual(categoryDtos.Count, result.Count);
-        Assert.AreEqual(categoryDtos.First().CategoryId, result.First().CategoryId);
+        Assert.That(result.Count, Is.EqualTo(categoryDtos.Count));
+        Assert.That(result.First().CategoryId, Is.EqualTo(categoryDtos.First().CategoryId));
     }
 
     [Test]
@@ -62,7 +62,7 @@ public class CategoryServiceTests
 
         // Assert
         Assert.IsNotNull(result);
-        Assert.AreEqual(categoryDto.CategoryId, result?.CategoryId);
+        Assert.That(result?.CategoryId, Is.EqualTo(categoryDto.CategoryId));
     }
 
     [Test]
@@ -83,8 +83,8 @@ public class CategoryServiceTests
 
         // Assert
         Assert.IsNotNull(result);
-        Assert.AreEqual(categoryDto.CategoryId, result?.CategoryId);
-        Assert.AreEqual(categoryDto.Name, result?.Name);
+        Assert.That(result?.CategoryId, Is.EqualTo(categoryDto.CategoryId));
+        Assert.That(result?.Name, Is.EqualTo(categoryDto.Name));
     }
 
     [Test]
@@ -105,7 +105,7 @@ public class CategoryServiceTests
 
         // Assert
         Assert.IsNotNull(result);
-        Assert.AreEqual(categoryDto.CategoryId, result?.CategoryId);
-        Assert.AreEqual(categoryDto.Name, result?.Name);
+        Assert.That(result?.CategoryId, Is.EqualTo(categoryDto.CategoryId));
+        Assert.That(result?.Name, Is.EqualTo(categoryDto.Name));
     }
 }

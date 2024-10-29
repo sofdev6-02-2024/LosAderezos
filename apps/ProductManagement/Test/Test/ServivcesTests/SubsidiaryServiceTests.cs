@@ -40,9 +40,9 @@ public class SubsidiaryServiceTests
         var result = await _service.GetSubsidiaries();
 
         // Assert
-        Assert.AreEqual(expectedDtos.Count, result.Count);
-        Assert.AreEqual(expectedDtos[0].SubsidiaryId, result[0].SubsidiaryId);
-        Assert.AreEqual(expectedDtos[0].Name, result[0].Name);
+        Assert.That(result.Count, Is.EqualTo(expectedDtos.Count));
+        Assert.That(result[0].SubsidiaryId, Is.EqualTo(expectedDtos[0].SubsidiaryId));
+        Assert.That(result[0].Name, Is.EqualTo(expectedDtos[0].Name));
     }
 
     [Test]
@@ -61,8 +61,8 @@ public class SubsidiaryServiceTests
 
         // Assert
         Assert.IsNotNull(result);
-        Assert.AreEqual(expectedDto.SubsidiaryId, result.SubsidiaryId);
-        Assert.AreEqual(expectedDto.Name, result.Name);
+        Assert.That(result.SubsidiaryId, Is.EqualTo(expectedDto.SubsidiaryId));
+        Assert.That(result.Name, Is.EqualTo(expectedDto.Name));
     }
 
     [Test]
@@ -84,8 +84,8 @@ public class SubsidiaryServiceTests
 
         // Assert
         Assert.IsNotNull(result);
-        Assert.AreEqual(expectedDto.SubsidiaryId, result.SubsidiaryId);
-        Assert.AreEqual(expectedDto.Name, result.Name);
+        Assert.That(result.SubsidiaryId, Is.EqualTo(expectedDto.SubsidiaryId));
+        Assert.That(result.Name, Is.EqualTo(expectedDto.Name));
     }
 
     [Test]
@@ -105,7 +105,7 @@ public class SubsidiaryServiceTests
 
         // Assert
         Assert.IsNotNull(result);
-        Assert.AreEqual(subsidiaryDto.SubsidiaryId, result.SubsidiaryId);
-        Assert.AreEqual(subsidiaryDto.Name, result.Name);
+        Assert.That(result.SubsidiaryId, Is.EqualTo(subsidiaryDto.SubsidiaryId));
+        Assert.That(result.Name, Is.EqualTo(subsidiaryDto.Name));
     }
 }

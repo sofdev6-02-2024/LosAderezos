@@ -19,8 +19,8 @@ public class SubsidiaryUsersDTOTests
         };
 
         // Assert
-        Assert.AreEqual(userId, dto.UserId);
-        Assert.AreEqual(subsidiaryId, dto.SubsidiaryId);
+        Assert.That(dto.UserId, Is.EqualTo(userId));
+        Assert.That(dto.SubsidiaryId, Is.EqualTo(subsidiaryId));
     }
 
     [Test]
@@ -30,8 +30,8 @@ public class SubsidiaryUsersDTOTests
         var dto = new SubsidiaryUsersDTO();
 
         // Assert
-        Assert.AreEqual(Guid.Empty, dto.UserId);
-        Assert.AreEqual(Guid.Empty, dto.SubsidiaryId);
+        Assert.That(dto.UserId, Is.EqualTo(Guid.Empty));
+        Assert.That(dto.SubsidiaryId, Is.EqualTo(Guid.Empty));
     }
 
     [Test]
@@ -45,7 +45,7 @@ public class SubsidiaryUsersDTOTests
         var dto2 = new SubsidiaryUsersDTO { UserId = userId, SubsidiaryId = subsidiaryId };
 
         // Act & Assert
-        Assert.AreEqual(dto1.UserId, dto2.UserId);
-        Assert.AreEqual(dto1.SubsidiaryId, dto2.SubsidiaryId);
+        Assert.That(dto2.UserId, Is.EqualTo(dto1.UserId));
+        Assert.That(dto2.SubsidiaryId, Is.EqualTo(dto1.SubsidiaryId));
     }
 }
