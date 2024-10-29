@@ -10,4 +10,21 @@
     <PackageReference Include="MySql.Data" Version="9.1.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Remove="init-db\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Remove="init-db\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Remove="init-db\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="init-db\**" />
+  </ItemGroup>
+
 </Project>
+ 

@@ -6,7 +6,7 @@ services:
       - MYSQL_ROOT_PASSWORD=${product_management_DB_password}
       - MYSQL_DATABASE=${product_management_DB_schema}
     volumes:
-      - ${context}/apps/ProductManagement/Backend/init-db:/docker-entrypoint-initdb.d
+      - ${context}/infrastructure/environments/product-management/productDB/init-db:/docker-entrypoint-initdb.d
 
   product-management-service:
     container_name: ProductManagementService
@@ -16,8 +16,24 @@ services:
     environment:
       ASPNETCORE_HTTP_PORTS: 80
     ports:
-      - "5009:80"
+      - "5010:80"
     
-
-
+  user-management-database-MySQL:
+    container_name: UserManagementDBMySQL
+    image: mysql:9
+    environment:
+      - MYSQL_ROOT_PASSWORD=${user_management_DB_MySQL_password}
+      - MYSQL_DATABASE=${user_management_DB_MySQL_schema}
+    volumes:
+      - ${context}/infrastructure/environments/user-management/userDB/init-db:/docker-entrypoint-initdb.d  
+      
+  user-management-service:
+    container_name: UserManagementService
+    build:
+      context: ${context}
+      dockerfile: ./infrastructure/environments/user-management/Dockerfile
+    environment:
+      ASPNETCORE_HTTP_PORTS: 80
+    ports:
+      - "8080:80" 
 
