@@ -36,4 +36,12 @@ services:
       ASPNETCORE_HTTP_PORTS: 80
     ports:
       - "8080:80" 
+      - "5009:80"
 
+  frontend:
+    container_name: frontend
+    build: 
+      context: ${context}
+      dockerfile: ./infrastructure/environments/frontend/Dockerfile
+    ports:
+      - "5173:5173"      
