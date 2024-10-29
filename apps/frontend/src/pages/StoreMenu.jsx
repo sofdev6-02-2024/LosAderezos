@@ -1,10 +1,17 @@
 import { FaBoxOpen } from "react-icons/fa";
+import { CgLoadbarDoc } from "react-icons/cg";
+import { FaPlus } from "react-icons/fa6";
+import { FaMinus } from "react-icons/fa";
+import { FaRegUser } from "react-icons/fa6";
 import CardButton from "../components/CardButton";
+import { useNavigate } from 'react-router-dom';
 
 function StoreMenu() {
   const handleButtonClick = (label) => {
     alert(`${label} clicked!`);
   };
+
+  const navigate = useNavigate();
 
   return (
     <div className="flex items-center justify-center min-h-screen w-full p-40">
@@ -13,10 +20,10 @@ function StoreMenu() {
           <CardButton 
             icon={FaBoxOpen} 
             label="Productos" 
-            onClick={() => handleButtonClick("Productos")}
+            onClick={() => navigate('/products')}
           />
           <CardButton 
-            icon={FaBoxOpen} 
+            icon={CgLoadbarDoc} 
             label="Reportes" 
             onClick={() => handleButtonClick("Reportes")}
           />
@@ -24,17 +31,17 @@ function StoreMenu() {
         
         <div className="flex flex-col sm:flex-row justify-center space-x-0 sm:space-x-48 space-y-8 sm:space-y-0">
           <CardButton 
-            icon={FaBoxOpen} 
+            icon={FaPlus} 
             label="Nueva entrada" 
             onClick={() => handleButtonClick("Nueva entrada")}
           />
           <CardButton 
-            icon={FaBoxOpen} 
+            icon={FaMinus} 
             label="Nueva salida" 
             onClick={() => handleButtonClick("Nueva salida")}
           />
           <CardButton 
-            icon={FaBoxOpen} 
+            icon={FaRegUser} 
             label="Usuarios" 
             onClick={() => handleButtonClick("Usuarios")}
           />
