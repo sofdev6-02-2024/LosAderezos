@@ -47,6 +47,7 @@ else
     );
     
 }
+app.MapGet("/", () => "Hello World!");
 
 app.UseRouting();
 app.UseAuthorization();
