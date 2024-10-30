@@ -1,0 +1,75 @@
+[
+  {
+    "endpoint": "/papi/products",
+    "method": "get",
+    "response": [
+      {
+        "productId": "d6b2a7c7-34ad-4eab-8a1a-83e8c569d579",
+        "name": "Laptop Pro 15",
+        "incomingPrice": 950.00,
+        "code": 12345,
+        "sellPrice": 1200.00,
+        "quantity": 20
+      },
+      {
+        "productId": "ab3f7c67-89e5-4f57-9241-7f9f8bfc1e33",
+        "name": "Wireless Mouse",
+        "incomingPrice": 15.00,
+        "code": 67890,
+        "sellPrice": 25.00,
+        "quantity": 20
+      },
+      {
+        "productId": "f2a1e9bc-c89e-456f-9176-4cde7a1f08fa",
+        "name": "Keyboard Mechanical",
+        "incomingPrice": 60.00,
+        "code": 11223,
+        "sellPrice": 90.00,
+        "quantity": 20
+      }
+    ],
+    "responseStatus": 200
+  },
+  {
+    "endpoint": "/papi/products/:d6b2a7c7-34ad-4eab-8a1a-83e8c569d579",
+    "method": "get",
+    "response": {
+      "productId": "d6b2a7c7-34ad-4eab-8a1a-83e8c569d579",
+      "name": "Laptop Pro 15",
+      "code": 12345,
+      "categories": ["Categoría 1", "Categoría 2"],
+      "lowStockNotification": 10,
+      "incomingPrice": 950.00,
+      "sellPrice": 1200.00
+    },
+    "responseStatus": 200
+  },
+  {
+    "endpoint": "/papi/products/:ab3f7c67-89e5-4f57-9241-7f9f8bfc1e33",
+    "method": "get",
+    "response": {
+      "productId": "ab3f7c67-89e5-4f57-9241-7f9f8bfc1e33",
+      "name": "Wireless Mouse",
+      "code": 67890,
+      "categories": ["Categoría 1", "Categoría 2"],
+      "lowStockNotification": 10,
+      "incomingPrice": 15.00,
+      "sellPrice": 25.00
+    },
+    "responseStatus": 200
+  },
+  {
+    "endpoint": "/papi/products/:f2a1e9bc-c89e-456f-9176-4cde7a1f08fa",
+    "method": "get",
+    "response": {
+      "productId": "f2a1e9bc-c89e-456f-9176-4cde7a1f08fa",
+      "name": "Keyboard Mechanical",
+      "code": 11223,
+      "categories": ["Categoría 1", "Categoría 2"],
+      "lowStockNotification": 10,
+      "incomingPrice": 60.00,
+      "sellPrice": 90.00
+    },
+    "responseStatus": 200
+  }
+]
