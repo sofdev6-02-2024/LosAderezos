@@ -1,12 +1,33 @@
 services:
-  product-management-database:
-    container_name: ProductManagementDB
-    image: mysql:9
-    environment:
-      - MYSQL_ROOT_PASSWORD=${product_management_DB_password}
-      - MYSQL_DATABASE=${product_management_DB_schema}
-    volumes:
-      - ${context}/infrastructure/environments/product-management/productDB/init-db:/docker-entrypoint-initdb.d
+
+# FRONTEND
+  frontend:
+    container_name: frontend
+    build: 
+      context: ${context}
+      dockerfile: ./infrastructure/environments/frontend/Dockerfile
+    ports:
+      - "5173:5173"
+    depends_on:
+        api-gateway:
+          condition: service_started
+
+# API GATEWAY
+
+  api-gateway:
+    container_name: API
+    build:
+      context: ${context}
+      dockerfile: ./infrastructure/environments/api-gateway/Dockerfile
+    ports:
+      - "8080:80"
+    depends_on:
+      product-management-service:
+        condition: service_started
+      user-management-service:
+        condition: service_started
+
+# PRODUCT MANAGEMENT
 
   product-management-service:
     container_name: ProductManagementService
@@ -15,18 +36,25 @@ services:
       dockerfile: ./infrastructure/environments/product-management/Dockerfile
     environment:
       ASPNETCORE_HTTP_PORTS: 80
-    ports:
-      - "5010:80"
-    
-  user-management-database-MySQL:
-    container_name: UserManagementDBMySQL
+    depends_on:
+      product-management-database:
+        condition: service_healthy
+  
+  product-management-database:
+    container_name: ProductManagementDB
     image: mysql:9
     environment:
-      - MYSQL_ROOT_PASSWORD=${user_management_DB_MySQL_password}
-      - MYSQL_DATABASE=${user_management_DB_MySQL_schema}
+      - MYSQL_ROOT_PASSWORD=${product_management_DB_password}
+      - MYSQL_DATABASE=${product_management_DB_schema}
     volumes:
-      - ${context}/infrastructure/environments/user-management/userDB/init-db:/docker-entrypoint-initdb.d  
-      
+      - ${context}/infrastructure/environments/product-management/productDB/init-db:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: ["CMD-SHELL", "mysql -u root -p${product_management_DB_password} --execute 'SELECT @@GLOBAL.version;'"]
+      interval: 3s
+      retries: 10
+
+# USER MANAGEMENT   
+  
   user-management-service:
     container_name: UserManagementService
     build:
@@ -34,14 +62,19 @@ services:
       dockerfile: ./infrastructure/environments/user-management/Dockerfile
     environment:
       ASPNETCORE_HTTP_PORTS: 80
-    ports:
-      - "8080:80" 
-      - "5009:80"
+    depends_on:
+      user-management-database-MySQL:
+        condition: service_healthy
 
-  frontend:
-    container_name: frontend
-    build: 
-      context: ${context}
-      dockerfile: ./infrastructure/environments/frontend/Dockerfile
-    ports:
-      - "5173:5173"      
+  user-management-database-MySQL:
+    container_name: UserManagementDBMySQL
+    image: mysql:9
+    environment:
+      - MYSQL_ROOT_PASSWORD=${user_management_DB_MySQL_password}
+      - MYSQL_DATABASE=${user_management_DB_MySQL_schema}
+    volumes:
+      - ${context}/infrastructure/environments/user-management/userDB/init-db:/docker-entrypoint-initdb.d 
+    healthcheck:
+      test: ["CMD-SHELL", "mysql -u root -p${user_management_DB_MySQL_password} --execute 'SELECT @@GLOBAL.version;'"]
+      interval: 3s
+      retries: 10

@@ -26,15 +26,6 @@ builder.Services.Scan(scan => scan
 builder.Services.AddControllers();
 
 
-builder.Services.AddCors(options =>
-{
-    options.AddPolicy("AllowLocalhost",
-        builder => builder.WithOrigins("http://localhost:5173", "http://localhost:5174")
-            .AllowAnyMethod()
-            .AllowAnyHeader()
-    );
-    
-});
 
 var app = builder.Build();
 
@@ -56,9 +47,9 @@ else
     );
     
 }
+app.MapGet("/", () => "Hello World!");
 
 app.UseRouting();
-app.UseCors("AllowLocalhost");
 app.UseAuthorization();
 app.MapControllers();
 
