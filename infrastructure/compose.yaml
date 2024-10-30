@@ -1,5 +1,17 @@
 services:
 
+# FRONTEND
+  frontend:
+    container_name: frontend
+    build: 
+      context: ${context}
+      dockerfile: ./infrastructure/environments/frontend/Dockerfile
+    ports:
+      - "5173:5173"
+    depends_on:
+        api-gateway:
+          condition: service_started
+
 # API GATEWAY
 
   api-gateway:
@@ -66,12 +78,3 @@ services:
       test: ["CMD-SHELL", "mysql -u root -p${user_management_DB_MySQL_password} --execute 'SELECT @@GLOBAL.version;'"]
       interval: 3s
       retries: 10
-
-# FRONTEND
-  frontend:
-    container_name: frontend
-    build: 
-      context: ${context}
-      dockerfile: ./infrastructure/environments/frontend/Dockerfile
-    ports:
-      - "5173:5173"      
