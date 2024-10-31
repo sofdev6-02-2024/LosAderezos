@@ -75,6 +75,7 @@ services:
       - MYSQL_DATABASE=${USER_MANAGEMENT_DB_MySQL_SCHEMA}
     volumes:
       - ${CONTEXT}/infrastructure/environments/user-management/userDB/init-db:/docker-entrypoint-initdb.d 
+      - ${CONTEXT}/infrastructure/environments/user-management/userDB/Data:/var/lib/mysql-files/
     healthcheck:
       test: ["CMD-SHELL", "mysql -u root -p${USER_MANAGEMENT_DB_MySQL_PASSWORD} --execute 'SELECT @@GLOBAL.version;'"]
       interval: 3s
