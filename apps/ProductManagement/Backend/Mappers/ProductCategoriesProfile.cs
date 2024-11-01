@@ -6,7 +6,7 @@ namespace Backend.Mappers;
 
 public class ProductCategoriesProfile : Profile
 {
-    protected ProductCategoriesProfile()
+    public ProductCategoriesProfile()
     {
         CreateMap<ProductCategoriesDTO, ProductCategories>();
         CreateMap<ProductCategories, ProductCategoriesDTO>();

@@ -1,5 +1,8 @@
+using AutoMapper;
+using Backend.Mappers;
 using Backend.Services;
 using DB;
+using Microsoft.OpenApi.Models;
 
 DBConnector.OpenConnection();
 
@@ -9,7 +12,11 @@ DBInjector.InjectData();
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new OpenApiInfo { Title = "Work", Version = "v1" });
+    c.AddServer(new OpenApiServer { Url = "/products" });  // Añade el prefijo a las rutas
+});
 builder.Services.AddHttpContextAccessor();
 builder.Services.Scan(scan => scan
     .FromAssemblyOf<ProductService>()
@@ -17,6 +24,8 @@ builder.Services.Scan(scan => scan
     .AsImplementedInterfaces()
     .WithScopedLifetime());
 builder.Services.AddControllers();
+builder.Services.AddAutoMapper(typeof(CategoryProfile));
+
 
 builder.Services.Scan(scan => scan
     .FromAssemblyOf<ProductDAO>()
@@ -29,7 +38,7 @@ builder.Services.AddControllers();
 
 
 var app = builder.Build();
-
+/*
 if (!app.Environment.IsDevelopment())
 {
     app.UseDeveloperExceptionPage();
@@ -38,16 +47,16 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 else
+{*/
+app.UseSwagger();
+app.UseSwaggerUI(c =>
 {
-    app.UseSwagger();
-    app.UseSwaggerUI(c => 
-        { 
-            c.SwaggerEndpoint("/swagger/v1/swagger.json", "Work v1"); 
-            c.RoutePrefix = string.Empty;
-        }
-    );
+    c.SwaggerEndpoint("/products/swagger/v1/swagger.json", "Work v1");
+    c.RoutePrefix = string.Empty;
+});
     
-}
+//}
+// discomment for final deployment
 app.MapGet("/", () => "Hello World!");
 
 app.UseRouting();

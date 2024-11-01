@@ -7,7 +7,7 @@ namespace Backend.Mappers;
 
 public class SubsidiaryProfile: Profile
 {
-    protected SubsidiaryProfile()
+    public SubsidiaryProfile()
     {
         CreateMap<Subsidiary, SubsidiaryDTO>();
         CreateMap<SubsidiaryDTO, Subsidiary>();
