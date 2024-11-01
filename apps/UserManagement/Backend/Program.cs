@@ -14,7 +14,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new OpenApiInfo { Title = "Work", Version = "v1" });
-    c.AddServer(new OpenApiServer { Url = "/auth" });  // Añade el prefijo a las rutas
+    c.AddServer(new OpenApiServer { Url = "/users" });  // Añade el prefijo a las rutas
 });
 builder.Services.AddHttpContextAccessor();
 builder.Services.Scan(scan => scan
@@ -58,7 +58,7 @@ else
     app.UseSwagger();
     app.UseSwaggerUI(c => 
         { 
-            c.SwaggerEndpoint("/auth/swagger/v1/swagger.json", "Work v1"); 
+            c.SwaggerEndpoint("/users/swagger/v1/swagger.json", "Work v1"); 
             c.RoutePrefix = string.Empty;
         }
     );
