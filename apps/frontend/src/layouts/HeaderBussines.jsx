@@ -27,9 +27,9 @@ export default function HeaderBussines({bussines, branch})
         <p className="text-[32px] text-white font-medium md:font-bold w-full text-center truncate">
           {bussines}
         </p>
-        <Button className={'w-full bg-white justify-center py-[8px] text-[20px] font-bold rounded-[10px]'}
+        <Button className={'w-full bg-white justify-center py-[8px] text-[20px] font-bold rounded-[10px] truncate'}
         onClick={() => {
-          navigate('*')
+          navigate('/branches')
         }}
         >
           {branch}
@@ -38,7 +38,7 @@ export default function HeaderBussines({bussines, branch})
       <div className="flex flex-row w-full justify-end">
         <Button className={'m-10'}
         onClick={() => {
-          navigate('*')
+          navigate('/notifications')
         }}
         >
           <CgBell size={40} color="white" />
