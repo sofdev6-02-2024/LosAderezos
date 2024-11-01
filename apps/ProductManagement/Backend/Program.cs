@@ -5,6 +5,7 @@ DBConnector.OpenConnection();
 
 // Delete to conserve persistency.
 DBInjector.TruncateAllTables();
+DBInjector.InjectData();
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
