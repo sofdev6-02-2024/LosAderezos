@@ -28,7 +28,7 @@ public class CompanyServiceTests
         {
             // Arrange
             var companies = new List<Company> { new Company { CompanyId = Guid.NewGuid(), Name = "Test Company" } };
-            var companyDTOs = new List<CompanyDTO> { new CompanyDTO { CompanyId = companies[0].CompanyId, Name = "Test Company" } };
+            var companyDtOs = new List<CompanyDTO> { new CompanyDTO { CompanyId = companies[0].CompanyId, Name = "Test Company" } };
             _companyDaoMock.Setup(dao => dao.ReadAll()).Returns(companies);
             _mapperMock.Setup(m => m.Map<CompanyDTO>(It.IsAny<Company>())).Returns((Company source) => new CompanyDTO { CompanyId = source.CompanyId, Name = source.Name });
 
@@ -36,8 +36,8 @@ public class CompanyServiceTests
             var result = await _companyService.GetCompanies();
 
             // Assert
-            Assert.AreEqual(companyDTOs.Count, result.Count);
-            Assert.AreEqual(companyDTOs[0].Name, result[0].Name);
+            Assert.That(result.Count, Is.EqualTo(companyDtOs.Count));
+            Assert.That(result[0].Name, Is.EqualTo(companyDtOs[0].Name));
         }
 
         [Test]
@@ -46,17 +46,17 @@ public class CompanyServiceTests
             // Arrange
             var companyId = Guid.NewGuid();
             var company = new Company { CompanyId = companyId, Name = "Test Company" };
-            var companyDTO = new CompanyDTO { CompanyId = companyId, Name = "Test Company" };
+            var companyDto = new CompanyDTO { CompanyId = companyId, Name = "Test Company" };
             _companyDaoMock.Setup(dao => dao.Read(companyId)).Returns(company);
-            _mapperMock.Setup(m => m.Map<CompanyDTO>(company)).Returns(companyDTO);
+            _mapperMock.Setup(m => m.Map<CompanyDTO>(company)).Returns(companyDto);
 
             // Act
             var result = await _companyService.GetCompanyById(companyId);
 
             // Assert
             Assert.IsNotNull(result);
-            Assert.AreEqual(companyDTO.CompanyId, result?.CompanyId);
-            Assert.AreEqual(companyDTO.Name, result?.Name);
+            Assert.That(result?.CompanyId, Is.EqualTo(companyDto.CompanyId));
+            Assert.That(result?.Name, Is.EqualTo(companyDto.Name));
         }
 
         [Test]
@@ -66,20 +66,20 @@ public class CompanyServiceTests
             var companyWithoutIdDto = new CompanyWithoutIDDTO { Name = "New Company" };
             var companyId = Guid.NewGuid();
             var company = new Company { CompanyId = companyId, Name = "New Company" };
-            var createdCompanyDTO = new CompanyDTO { CompanyId = companyId, Name = "New Company" };
+            var createdCompanyDto = new CompanyDTO { CompanyId = companyId, Name = "New Company" };
 
             _mapperMock.Setup(m => m.Map<Company>(It.IsAny<(CategoryWithoutIDDTO, Guid)>())).Returns(company);
             _companyDaoMock.Setup(dao => dao.Create(company));
             _companyDaoMock.Setup(dao => dao.Read(It.IsAny<Guid>())).Returns(company);
-            _mapperMock.Setup(m => m.Map<CompanyDTO>(company)).Returns(createdCompanyDTO);
+            _mapperMock.Setup(m => m.Map<CompanyDTO>(company)).Returns(createdCompanyDto);
 
             // Act
             var result = await _companyService.CreateCompany(companyWithoutIdDto);
 
             // Assert
             Assert.IsNotNull(result);
-            Assert.AreEqual(createdCompanyDTO.CompanyId, result?.CompanyId);
-            Assert.AreEqual(createdCompanyDTO.Name, result?.Name);
+            Assert.That(result?.CompanyId, Is.EqualTo(createdCompanyDto.CompanyId));
+            Assert.That(result?.Name, Is.EqualTo(createdCompanyDto.Name));
         }
 
         [Test]
@@ -99,8 +99,8 @@ public class CompanyServiceTests
 
             // Assert
             Assert.IsNotNull(result);
-            Assert.AreEqual(companyDto.CompanyId, result?.CompanyId);
-            Assert.AreEqual(companyDto.Name, result?.Name);
+            Assert.That(result?.CompanyId, Is.EqualTo(companyDto.CompanyId));
+            Assert.That(result?.Name, Is.EqualTo(companyDto.Name));
         }
     
 }

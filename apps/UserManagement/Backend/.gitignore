@@ -12,7 +12,6 @@
 *.user
 *.userosscache
 *.sln.docstates
-dbsettings.json
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs

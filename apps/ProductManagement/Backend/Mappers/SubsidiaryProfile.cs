@@ -11,7 +11,8 @@ public class SubsidiaryProfile: Profile
     {
         CreateMap<Subsidiary, SubsidiaryDTO>();
         CreateMap<SubsidiaryDTO, Subsidiary>();
-        CreateMap<(SubsidiaryWithoutDTO, Guid), Subsidiary>();
+        CreateMap<(SubsidiaryWithoutDTO, Guid), Subsidiary>()
+            .ForMember(dest => dest.SubsidiaryId, expression => expression.MapFrom(src => src.Item2));
         CreateMap<Subsidiary, SubsidiaryWithoutDTO>();
     }
 }

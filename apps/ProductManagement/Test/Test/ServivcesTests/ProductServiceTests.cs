@@ -38,9 +38,9 @@ public class ProductServiceTests
         var result = await _service.GetProducts();
 
         // Assert
-        Assert.AreEqual(expectedDtos.Count, result.Count);
-        Assert.AreEqual(expectedDtos[0].ProductId, result[0].ProductId);
-        Assert.AreEqual(expectedDtos[0].Name, result[0].Name);
+        Assert.That(result.Count, Is.EqualTo(expectedDtos.Count));
+        Assert.That(result[0].ProductId, Is.EqualTo(expectedDtos[0].ProductId));
+        Assert.That(result[0].Name, Is.EqualTo(expectedDtos[0].Name));
     }
 
     [Test]
@@ -59,8 +59,8 @@ public class ProductServiceTests
 
         // Assert
         Assert.IsNotNull(result);
-        Assert.AreEqual(expectedDto.ProductId, result.ProductId);
-        Assert.AreEqual(expectedDto.Name, result.Name);
+        Assert.That(result.ProductId, Is.EqualTo(expectedDto.ProductId));
+        Assert.That(result.Name, Is.EqualTo(expectedDto.Name));
     }
 
     [Test]
@@ -82,8 +82,8 @@ public class ProductServiceTests
 
         // Assert
         Assert.IsNotNull(result);
-        Assert.AreEqual(expectedDto.ProductId, result.ProductId);
-        Assert.AreEqual(expectedDto.Name, result.Name);
+        Assert.That(result.ProductId, Is.EqualTo(expectedDto.ProductId));
+        Assert.That(result.Name, Is.EqualTo(expectedDto.Name));
     }
 
     [Test]
@@ -103,8 +103,8 @@ public class ProductServiceTests
 
         // Assert
         Assert.IsNotNull(result);
-        Assert.AreEqual(productDto.ProductId, result.ProductId);
-        Assert.AreEqual(productDto.Name, result.Name);
+        Assert.That(result.ProductId, Is.EqualTo(productDto.ProductId));
+        Assert.That(result.Name, Is.EqualTo(productDto.Name));
     }
 
 }
