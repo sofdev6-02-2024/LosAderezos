@@ -7,7 +7,7 @@ namespace Backend.Mappers;
 
 public class CategoryProfile: Profile
 {
-    protected CategoryProfile()
+    public CategoryProfile()
     {
         CreateMap<Category, CategoryDTO>();
         CreateMap<CategoryDTO, Category>();

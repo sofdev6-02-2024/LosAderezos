@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Backend.Controllers;
 
 [ApiController]
-[Route("api/productManagement/[controller]")]
+[Route("[controller]")]
 public class SubsidiaryUsersController : ControllerBase
 {
     private readonly ISubsidiaryUsersService _subsidiaryUsersService;
@@ -36,7 +36,7 @@ public class SubsidiaryUsersController : ControllerBase
         return Ok(result);
     }
     
-    [HttpPost]
+    [HttpPost("/create")]
     public async Task<ActionResult<SubsidiaryUsersDTO>> CreateSubsidiaryUsers(SubsidiaryUsersDTO subsidiaryUsers)
     {
         var result = _subsidiaryUsersService.CreateSubsidiaryUsers(subsidiaryUsers);
