@@ -8,4 +8,5 @@ app.MapGet("/", () => "Hello World!");
 
 DBConnector.OpenConnection();
 DBInjector.TruncateAllTables();
+DBInjector.InjectData();
 app.Run();
