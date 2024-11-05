@@ -1,11 +1,15 @@
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import ProductInfoCard from "../components/ProductInfoCard";
-import { getProductById } from "../services/ProductService";
+import { getProductById, getProductBranches } from "../services/ProductService";
+import GenericList from "../components/GenericList";
+import BranchItem from "../components/BranchItem";
 
 function SingleProductPage() {
   const { id } = useParams();
   const [productData, setProductData] = useState(null);
+  const [branches, setBranches] = useState(null);
+  const [branchesLoaded, setBranchesLoaded] = useState(false);
 
   useEffect(() => {
     async function fetchProduct() {
@@ -20,16 +24,41 @@ function SingleProductPage() {
     fetchProduct();
   }, [id]);
 
+  async function fetchProductBranches() {
+    try {
+      const branchesData = await getProductBranches(id);
+      setBranches(branchesData);
+      setBranchesLoaded(true);
+    } catch (error) {
+      console.error("Error fetching branches", error);
+    }
+  }
+
   if (!productData) {
-    return <div>Loading...</div>;
+    return <div className="flex justify-center items-center h-full text-2xl font-roboto font-bold">Loading...</div>;
   }
 
   return (
-    <div className="flex justify-center py-10">
+    <div className="flex flex-col lg:flex-row items-center justify-center lg:h-screen lg:py-0 px-6 pt-32 pb-10 space-y-4 lg:space-x-16">
       <ProductInfoCard
         productData={productData}
-        onOtherBranchesClick={() => console.log("Otras sucursales clickeado")}
+        onOtherBranchesClick={fetchProductBranches}
+        showButton={!branchesLoaded}
       />
+      {branches && (
+        <div className="w-full max-w-xl">
+        {branches.length > 0 ? (
+            <div className="lg:h-[650px] overflow-y-scroll">
+              <GenericList
+                items={branches}
+                renderItem={(branch) => <BranchItem branch={branch} />}
+              />
+            </div>
+          ) : (
+            <p className="text-center text-neutral-700">No se encontró el producto en otras sucursales.</p>
+          )}
+      </div>
+      )}
     </div>
   );
 }

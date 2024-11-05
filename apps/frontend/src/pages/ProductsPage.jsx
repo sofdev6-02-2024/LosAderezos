@@ -50,13 +50,13 @@ export default function ProductsPage()
       </div>
       <div className="space-y-5 w-4/5">
         {products.map((item, index) => (
-          <Link key={index} to={`/product/${item.id}`}>
+          <Link key={index} to={`/products/${item.productId}`}>
             <ProductItem
               key = {index} 
               name={item.name || 'Unkown product'} 
               barcode={item.code || 'Unkown code'} 
-              price={item.SellPrice || 0}
-              quantity={10} 
+              price={item.sellPrice || 0}
+              quantity={item.quantity || 0}
               admin
               />
           </Link>

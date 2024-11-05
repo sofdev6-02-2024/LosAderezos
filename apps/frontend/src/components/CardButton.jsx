@@ -1,8 +1,9 @@
 import PropTypes from 'prop-types';
+import Button from './Button';
 
-const CardButton = ({ icon: Icon, label, onClick }) => {
+function CardButton ({ icon: Icon, label, onClick }) {
   return (
-    <button
+    <Button
       onClick={onClick}
       className="flex flex-col items-center justify-center bg-sky-100 w-44 h-44 sm:w-52 sm:h-52 p-6 rounded-[20px] shadow-lg border-4 border-blue-950 
                 hover:bg-sky-200 hover:shadow-none active:bg-sky-100 focus:ring-0 focus:outline-none active:ring-0 transition-all"
@@ -11,7 +12,7 @@ const CardButton = ({ icon: Icon, label, onClick }) => {
         <Icon className="text-7xl sm:text-7xl mb-2 text-neutral-950" />
         <span className="text-xl sm:text-2xl font-roboto font-bold text-neutral-950 text-center">{label}</span>
       </div>
-    </button>
+    </Button>
   );
 };
 

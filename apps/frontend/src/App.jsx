@@ -11,7 +11,7 @@ function App() {
       <Route path='*' element={<NotFound />} />
         <Route path='/' element={<StoreMenu />} />
         <Route path='/products' element={<ProductsPage />} />
-        <Route path='/product/:id' element={<SingleProductPage />} />
+        <Route path='/products/:id' element={<SingleProductPage />} />
       </Routes>
     </div>
   )

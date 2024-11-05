@@ -1,75 +1,88 @@
+import { Card } from 'flowbite-react';
 import PropTypes from 'prop-types';
-import { FaEdit, FaDownload } from 'react-icons/fa';
+import { RiEditLine } from "react-icons/ri";
+import { AiOutlineDownload } from "react-icons/ai";
+import Button from './Button';
+import Line from './Line';
 
-const ProductInfoCard = ({ productData, onOtherBranchesClick }) => {
+function ProductInfoCard ({ productData, onOtherBranchesClick = () => {}, showButton = true }) {
   return (
-    <div className="bg-white shadow-lg p-6 rounded-lg max-w-lg mx-auto md:max-w-3xl">
-      <div className="flex items-center justify-between border-b pb-4">
-        <h2 className="text-xl font-semibold">{productData.name}</h2>
-        <FaEdit className="text-gray-500 cursor-pointer hover:text-blue-500" />
+    <Card className="w-full max-w-sm h-fit lg:max-w-lg shadow-lg rounded-3xl border-neutral-950">
+      <div className="flex items-center justify-between pb-1">
+        <h5 className="text-xl font-roboto font-medium tracking-tight text-neutral-950 dark:text-white">
+          {productData.name}
+        </h5>
+        <RiEditLine className="text-3xl lg:text-6xl text-neutral-950 cursor-pointer hover:text-blue-800" />
       </div>
 
-      <div className="flex items-center justify-between border-b py-4">
+      <Line />     
+
+      <div className="flex items-center justify-between py-1">
         <div>
-          <p className="text-gray-600 text-sm">Código de barras</p>
-          <p className="text-lg font-medium">{productData.barcode}</p>
+          <p className="text-neutral-950 text-base font-bold font-roboto">Código de barras</p>
+          <p className="text-neutral-950 text-base font-roboto font-normal">{productData.code}</p>
         </div>
-        <FaDownload className="text-gray-500 cursor-pointer hover:text-blue-500" />
+        <AiOutlineDownload className="text-3xl lg:text-6xl mb-2 text-neutral-950 cursor-pointer hover:text-blue-800" />
       </div>
 
-      <div className="border-b py-4">
-        <h3 className="text-sm font-medium text-gray-600">Categorías</h3>
-        <ul className="list-disc ml-6 text-sm text-gray-800">
+      <Line />
+
+      <div className="py-1">
+        <h3 className="text-neutral-950 text-base font-roboto font-bold">Categorías</h3>
+        <ul className="list-disc ml-6 font-roboto font-normal text-sm text-neutral-950">
           {productData.categories.map((category, index) => (
             <li key={index}>{category}</li>
           ))}
         </ul>
       </div>
 
-      <div className="border-b py-4">
-        <h3 className="text-sm font-medium text-gray-600">
+      <Line />
+
+      <div className="py-1">
+        <h3 className="text-neutral-950 text-base font-roboto font-bold">
           Notificar cuando el stock esté por debajo de...
         </h3>
-        <p className="text-lg font-medium">{productData.lowStockNotification}</p>
+        <p className="text-neutral-950 text-sm font-roboto font-normal">{productData.lowStockNotification}</p>
       </div>
 
-      <div className="flex justify-between py-4">
+      <Line />
+      
+      <div className="flex justify-between py-1">
         <div>
-          <p className="text-sm font-medium text-gray-600">Precio de compra</p>
-          <p className="text-lg font-medium">{productData.purchasePrice}</p>
+          <p className="text-neutral-950 text-base font-roboto font-bold">Precio de compra</p>
+          <p className="text-neutral-950 text-sm font-roboto font-normal">{productData.incomingPrice}</p>
         </div>
         <div>
-          <p className="text-sm font-medium text-gray-600">Precio de venta</p>
-          <p className="text-lg font-medium">{productData.salePrice}</p>
+          <p className="text-neutral-950 text-base font-roboto font-bold">Precio de venta</p>
+          <p className="text-neutral-950 text-sm font-roboto font-normal">{productData.sellPrice}</p>
         </div>
       </div>
 
-      <div className="flex justify-end mt-4">
-        <button
-          className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition duration-300"
-          onClick={onOtherBranchesClick}
-        >
-          Otras sucursales
-        </button>
-      </div>
-    </div>
+      {showButton && (
+        <div className='flex justify-end'>
+          <Button 
+            onClick={onOtherBranchesClick} 
+            className="mt-4 bg-blue-800 text-white hover:bg-blue-950"
+            type="common"
+            text="Otras sucursales"
+          />
+        </div>
+      )}
+    </Card>
   );
 };
 
 ProductInfoCard.propTypes = {
   productData: PropTypes.shape({
     name: PropTypes.string.isRequired,
-    barcode: PropTypes.string.isRequired,
+    code: PropTypes.number.isRequired,
     categories: PropTypes.arrayOf(PropTypes.string).isRequired,
     lowStockNotification: PropTypes.number.isRequired,
-    purchasePrice: PropTypes.string.isRequired,
-    salePrice: PropTypes.string.isRequired,
+    incomingPrice: PropTypes.number.isRequired,
+    sellPrice: PropTypes.number.isRequired,
   }).isRequired,
   onOtherBranchesClick: PropTypes.func,
-};
-
-ProductInfoCard.defaultProps = {
-  onOtherBranchesClick: () => {},
+  showButton: PropTypes.bool,
 };
 
 export default ProductInfoCard;

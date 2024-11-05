@@ -1,27 +1,32 @@
 import axios from 'axios';
 
 export const productAPI = axios.create({
-  baseURL: 'https://c7a1c2df-ffdd-494f-8e38-1ad130bdb3ec.mock.pstmn.io/papi',
+  baseURL: 'http://localhost:3000/papi',
 });
 
 export const getProducts = async () => {
   try {
-    const response = await productAPI.get('/Products');
+    const response = await productAPI.get('/products');
     return response.data;
   } catch (error) {
     throw new Error(error.response?.data?.message || 'Error al conseguir los productos');
   }
 };
 
-export async function getProductById(id) {
+export async function getProductById(productId) {
   try {
-    const response = await fetch(`/Products/${id}`);
-    if (!response.ok) {
-      throw new Error("Network response was not ok");
-    }
-    const product = await response.json();
-    return product;
+    const response = await productAPI.get(`/products/${productId}`);
+    return response.data;
   } catch (error) {
     throw new Error(error.response?.data?.message || 'Error al cargar los datos del producto');
+  }
+}
+
+export async function getProductBranches(productId) {
+  try {
+    const response = await productAPI.get(`/products/${productId}/branches`);
+    return response.data;
+  } catch (error) {
+    throw new Error(error.response?.data?.message || 'Error al cargar las sucursales en las que hay existencias del producto');
   }
 }
