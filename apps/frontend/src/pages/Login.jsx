@@ -2,9 +2,12 @@ import Button from '../components/Button';
 import LoginImage from '../assets/Login-image.png'
 import Logo from '../assets/Logo.png';
 import Google from "../assets/googleLogo.png"
-import { handleGoogleLogin } from '../services/LoginService';
 
 function Login() {
+  const handleGoogleLogin = () => {
+    window.location.href = "http://API/auth/google";
+  };
+
   return (
     <div className="flex flex-row items-center justify-between h-screen w-full bg-neutral-200">
       <div className='flex w-full h-screen justify-center items-center'>
