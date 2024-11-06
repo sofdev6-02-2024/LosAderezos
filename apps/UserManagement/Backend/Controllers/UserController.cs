@@ -43,4 +43,10 @@ public class UserController: ControllerBase
         var result = await _userService.UpdateUser(user);
         return Ok(result);
     }
+
+    [HttpPost("email")]
+    public async Task<ActionResult<UserDTO>> GetUserByEmail(UserBySubsidiaryDTO user)
+    {
+        return await _userService.GetUserByEmail(user);
+    }
 }

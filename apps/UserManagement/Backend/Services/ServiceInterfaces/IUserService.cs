@@ -9,4 +9,5 @@ public interface IUserService
     public Task<UserDTO?> GetUserById(Guid id);
     public Task<UserDTO?> CreateUser(UserWithoutIdDTO user);
     public Task<UserDTO?> UpdateUser(UserDTO user);
+    public Task<UserDTO?> GetUserByEmail(UserBySubsidiaryDTO user);
 }

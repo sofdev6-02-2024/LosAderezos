@@ -108,7 +108,8 @@ DELIMITER //
 CREATE PROCEDURE GetSubsidiaryUsersBySubsidiaryId(IN subsidiaryId CHAR(36))
 BEGIN
   SELECT
-    su.UserId
+    su.UserId,
+    su.SubsidiaryId
   FROM
     SubsidiaryUsers su
   WHERE
@@ -120,6 +121,7 @@ DELIMITER //
 CREATE PROCEDURE GetSubsidiaryUsersByUserId(IN userId CHAR(36))
 BEGIN
   SELECT
+    su.UserId,
     su.SubsidiaryId
   FROM
     SubsidiaryUsers su

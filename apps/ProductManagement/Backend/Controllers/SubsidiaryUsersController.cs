@@ -15,38 +15,61 @@ public class SubsidiaryUsersController : ControllerBase
         _subsidiaryUsersService = subsidiaryUsersService;
     }
 
-    [HttpGet("{subsidiaryId}")]
+    [HttpGet("subsidiary/{subsidiaryId}")]
     public async Task<ActionResult<List<SubsidiaryUsersDTO>>> GetSubsidiaryUsersBySubsidiaryId(Guid subsidiaryId)
     {
-        var result = _subsidiaryUsersService.GetSubsidiaryUsersBySubsidiaryId(subsidiaryId);
+        var result = await _subsidiaryUsersService.GetSubsidiaryUsersBySubsidiaryId(subsidiaryId);
         return Ok(result);
     }
     
-    [HttpGet("{userId}")]
+    [HttpGet("user/{userId}")]
     public async Task<ActionResult<List<SubsidiaryUsersDTO>>> GetSubsidiaryUsersByUserId(Guid userId)
     {
-        var result = _subsidiaryUsersService.GetSubsidiaryUsersByUserId(userId);
+        var result = await _subsidiaryUsersService.GetSubsidiaryUsersByUserId(userId);
+        return Ok(result);
+    }
+
+    [HttpGet("subsidiary/user")]
+    public async Task<ActionResult<SubsidiaryUsersDTO>> GetSubsidiaryUsersByUserId(SubsidiaryUsersDTO user)
+    {
+        var result = await _subsidiaryUsersService.GetSubsidiaryUsersByBothIds(user);
         return Ok(result);
     }
     
     [HttpPost]
     public async Task<ActionResult<SubsidiaryUsersDTO>> GetSubsidiaryUsersByBothIds(SubsidiaryUsersDTO subsidiaryUsers)
     {
-        var result = _subsidiaryUsersService.GetSubsidiaryUsersByBothIds(subsidiaryUsers);
+        var result = await _subsidiaryUsersService.GetSubsidiaryUsersByBothIds(subsidiaryUsers);
         return Ok(result);
     }
     
     [HttpPost("/create")]
     public async Task<ActionResult<SubsidiaryUsersDTO>> CreateSubsidiaryUsers(SubsidiaryUsersDTO subsidiaryUsers)
     {
-        var result = _subsidiaryUsersService.CreateSubsidiaryUsers(subsidiaryUsers);
+        var result = await _subsidiaryUsersService.CreateSubsidiaryUsers(subsidiaryUsers);
         return Ok(result);
+    }
+    
+    
+    [HttpPost("/create/list")]
+    public async Task<ActionResult<List<SubsidiaryUsersDTO>>> CreateSubsidiaryUsersList(UserSubsidiaryCreateListDTO subsidiaryUsers)
+    {
+        var results = new List<SubsidiaryUsersDTO>();
+        foreach (Guid userId in subsidiaryUsers.UserIds)
+        {
+            results.Add(_subsidiaryUsersService.CreateSubsidiaryUsers(new SubsidiaryUsersDTO()
+            {
+                UserId = userId,
+                SubsidiaryId = subsidiaryUsers.SubsidiaryId,
+            }).Result);    
+        }
+        return Ok(results);
     }
     
     [HttpDelete]
     public async Task<ActionResult<bool>> DeleteSubsidiaryUsers(SubsidiaryUsersDTO subsidiaryUsers)
     {
-        var result = _subsidiaryUsersService.DeleteSubsidiaryUsers(subsidiaryUsers);
+        var result = await _subsidiaryUsersService.DeleteSubsidiaryUsers(subsidiaryUsers);
         return Ok(result);
     }
     

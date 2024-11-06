@@ -1,5 +1,6 @@
 using Backend.Mappers;
 using Backend.Services;
+using Backend.Services.ServiceInterfaces;
 using DB;
 using Microsoft.OpenApi.Models;
 
@@ -23,6 +24,7 @@ builder.Services.Scan(scan => scan
     .AsImplementedInterfaces()
     .WithScopedLifetime());
 builder.Services.AddControllers();
+builder.Services.AddHttpClient<IUserService, UserService>();
 
 builder.Services.Scan(scan => scan
     .FromAssemblyOf<UserDAO>()

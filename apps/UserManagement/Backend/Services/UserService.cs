@@ -1,3 +1,4 @@
+using System.Text.Json;
 using AutoMapper;
 using Backend.DTOs.WithID;
 using Backend.DTOs.WithoutID;
@@ -9,13 +10,16 @@ namespace Backend.Services;
 
 public class UserService : IUserService
 {
+    private readonly HttpClient _httpClient;
+
     private readonly IUserDAO _userDao;
     private readonly IMapper _mapper;
 
-    public UserService(IUserDAO userDao, IMapper mapper)
+    public UserService(IUserDAO userDao, IMapper mapper, HttpClient httpClient)
     {
         _userDao = userDao;
         _mapper = mapper;
+        _httpClient = httpClient;
     }
 
     public async Task<List<UserDTO>> GetUsers()
@@ -41,5 +45,24 @@ public class UserService : IUserService
     {
         _userDao.Update(_mapper.Map<User>(user));
         return _mapper.Map<UserDTO>(_userDao.Read(user.UserId));
+    }
+
+    public async Task<UserDTO?> GetUserByEmail(UserBySubsidiaryDTO user)
+    {
+        var foundUser = _userDao.ReadAll().First(u => u.Email == user.Email);
+        if (foundUser != null)
+        {
+            string url = $"http://ProductManagementService/SubsidiaryUsers/subsidiary/{user.SubsidiaryId}";    
+            HttpResponseMessage response = await _httpClient.GetAsync(url);
+            response.EnsureSuccessStatusCode();
+            string content = await response.Content.ReadAsStringAsync();
+            var persons = JsonSerializer.Deserialize<List<UserDTO>>(content);
+
+            if (persons.Any(dto => dto.UserId == foundUser.UserId))
+            {
+                return _mapper.Map<UserDTO>(_mapper.Map<User>(foundUser));
+            }    
+        }
+        return null;
     }
 }
