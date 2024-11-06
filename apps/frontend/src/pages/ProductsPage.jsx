@@ -5,6 +5,7 @@ import Button from "../components/Button";
 import { useEffect, useState } from "react";
 import { getProducts } from "../services/ProductService";
 import SearchBar from "../components/SearchBar";
+import { Link } from "react-router-dom";
 
 export default function ProductsPage()
 {
@@ -34,7 +35,7 @@ export default function ProductsPage()
           <Button>
               <IoMdBarcode size={40}/>
             </Button>
-            <Button text={'Add'} className={'bg-[#E5E5E5] hover:bg-[#A3A3A3] w-[92px] h-[32px] text-[14px]'} type={'common'}>
+            <Button text={'Añadir'} className={'bg-[#E5E5E5] hover:bg-[#A3A3A3] w-[92px] h-[32px] text-[14px]'} type={'common'}>
               <FaPlus />
           </Button>
         </div>
@@ -49,15 +50,16 @@ export default function ProductsPage()
       </div>
       <div className="space-y-5 w-4/5">
         {products.map((item, index) => (
-          <ProductItem
-            key = {index} 
-            name={item.name || 'Unkown product'} 
-            barcode={item.code || 'Unkown code'} 
-            price={item.SellPrice || 0}
-            quantity={10} 
-            admin
-            />
-
+          <Link key={index} to={`/products/${item.productId}`}>
+            <ProductItem
+              key = {index} 
+              name={item.name || 'Unkown product'} 
+              barcode={item.code || 'Unkown code'} 
+              price={item.sellPrice || 0}
+              quantity={item.quantity || 0}
+              admin
+              />
+          </Link>
         ))}
       </div>
     </div>

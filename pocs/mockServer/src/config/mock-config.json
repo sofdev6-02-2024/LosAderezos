@@ -31,7 +31,7 @@
     "responseStatus": 200
   },
   {
-    "endpoint": "/papi/products/:d6b2a7c7-34ad-4eab-8a1a-83e8c569d579",
+    "endpoint": "/papi/products/d6b2a7c7-34ad-4eab-8a1a-83e8c569d579",
     "method": "get",
     "response": {
       "productId": "d6b2a7c7-34ad-4eab-8a1a-83e8c569d579",
@@ -45,7 +45,7 @@
     "responseStatus": 200
   },
   {
-    "endpoint": "/papi/products/:ab3f7c67-89e5-4f57-9241-7f9f8bfc1e33",
+    "endpoint": "/papi/products/ab3f7c67-89e5-4f57-9241-7f9f8bfc1e33",
     "method": "get",
     "response": {
       "productId": "ab3f7c67-89e5-4f57-9241-7f9f8bfc1e33",
@@ -59,7 +59,7 @@
     "responseStatus": 200
   },
   {
-    "endpoint": "/papi/products/:f2a1e9bc-c89e-456f-9176-4cde7a1f08fa",
+    "endpoint": "/papi/products/f2a1e9bc-c89e-456f-9176-4cde7a1f08fa",
     "method": "get",
     "response": {
       "productId": "f2a1e9bc-c89e-456f-9176-4cde7a1f08fa",
@@ -70,6 +70,121 @@
       "incomingPrice": 60.00,
       "sellPrice": 90.00
     },
+    "responseStatus": 200
+  },
+  {
+    "endpoint": "/papi/products/d6b2a7c7-34ad-4eab-8a1a-83e8c569d579/branches",
+    "method": "get",
+    "response": [
+      {
+        "branchName": "Sucursal Central",
+        "address": "Av. Principal 123",
+        "quantity": 5
+      },
+      {
+        "branchName": "Sucursal Norte",
+        "address": "Calle Secundaria 456",
+        "quantity": 8
+      },
+      {
+        "branchName": "Sucursal Sur",
+        "address": "Av. Tercera 789",
+        "quantity": 2
+      },
+      {
+        "branchName": "Sucursal Este",
+        "address": "Av. Segunda 789",
+        "quantity": 4
+      },
+      {
+        "branchName": "Sucursal Oeste",
+        "address": "Av. America 789",
+        "quantity": 10
+      },
+      {
+        "branchName": "Sucursal Final Sur",
+        "address": "Av. Quinta 789",
+        "quantity": 20
+      },
+      {
+        "branchName": "Sucursal Final Este",
+        "address": "Av. Simon Lopez 789",
+        "quantity": 40
+      },
+      {
+        "branchName": "Sucursal Circunvalación",
+        "address": "Av. Circunvalación 789",
+        "quantity": 20
+      },
+      {
+        "branchName": "Sucursal Final Norte",
+        "address": "Av. Ayacucho 789",
+        "quantity": 20
+      },
+      {
+        "branchName": "Sucursal Final Oeste",
+        "address": "Av. Heroinas 789",
+        "quantity": 20
+      },
+      {
+        "branchName": "Sucursal Melchor",
+        "address": "Av. Melchor Perez 789",
+        "quantity": 20
+      }
+    ],
+    "responseStatus": 200
+  },
+  {
+    "endpoint": "/papi/products/ab3f7c67-89e5-4f57-9241-7f9f8bfc1e33/branches",
+    "method": "get",
+    "response": [
+      {
+        "branchName": "Sucursal Central",
+        "address": "Av. Principal 123",
+        "quantity": 5
+      },
+      {
+        "branchName": "Sucursal Norte",
+        "address": "Calle Secundaria 456",
+        "quantity": 8
+      },
+      {
+        "branchName": "Sucursal Sur",
+        "address": "Av. Tercera 789",
+        "quantity": 2
+      },
+      {
+        "branchName": "Sucursal Este",
+        "address": "Av. Segunda 789",
+        "quantity": 4
+      },
+      {
+        "branchName": "Sucursal Oeste",
+        "address": "Av. America 789",
+        "quantity": 10
+      },
+      {
+        "branchName": "Sucursal Final Sur",
+        "address": "Av. Quinta 789",
+        "quantity": 20
+      },
+      {
+        "branchName": "Sucursal Final Este",
+        "address": "Av. Simon Lopez 789",
+        "quantity": 40
+      },
+      {
+        "branchName": "Sucursal Circunvalación",
+        "address": "Av. Circunvalación 789",
+        "quantity": 50
+      }
+    ],
+    "responseStatus": 200
+  },
+  {
+    "endpoint": "/papi/products/f2a1e9bc-c89e-456f-9176-4cde7a1f08fa/branches",
+    "method": "get",
+    "response": [],
     "responseStatus": 200
   }
 ]
