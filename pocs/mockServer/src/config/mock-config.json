@@ -186,5 +186,108 @@
     "method": "get",
     "response": [],
     "responseStatus": 200
+  },
+  {
+    "endpoint": "/suapi/user/johndoe@gmail.com",
+    "method": "get",
+    "response": {
+      "userId": "e6a111c0-4f52-467f-a2d3-123e5efbc111",
+      "name": "John Doe",
+      "rol": "default",
+      "email": "johndoe@gmail.com",
+      "phoneNumber": "+1234567890",
+      "birthDate": "1985-01-15T00:00:00Z"
+    },
+    "responseStatus": 200
+  },
+  {
+    "endpoint": "/suapi/user/emma.jones@gmail.com",
+    "method": "get",
+    "response": {
+      "userId": "f8b3c15a-3db8-4dfb-9c1e-5f4313bbf9ea",
+      "name": "Emma Jones",
+      "rol": "default",
+      "email": "emma.jones@gmail.com",
+      "phoneNumber": "+1234567891",
+      "birthDate": "1990-04-22T00:00:00Z"
+    },
+    "responseStatus": 200
+  },
+  {
+    "endpoint": "/suapi/user/oliver.brown@gmail.com",
+    "method": "get",
+    "response": {
+      "userId": "a3d02c68-5a6f-48d1-9de1-d93b3b8c52bb",
+      "name": "Oliver Brown",
+      "rol": "default",
+      "email": "oliver.brown@gmail.com",
+      "phoneNumber": "+1234567892",
+      "birthDate": "1988-07-30T00:00:00Z"
+    },
+    "responseStatus": 200
+  },
+  {
+    "endpoint": "/suapi/user/sophia.davis@gmail.com",
+    "method": "get",
+    "response": {
+      "userId": "ce9d97b4-2f45-4e61-a9a5-7e2b47f9d2f7",
+      "name": "Sophia Davis",
+      "rol": "Operador",
+      "email": "sophia.davis@gmail.com",
+      "phoneNumber": "+1234567893",
+      "birthDate": "1995-11-10T00:00:00Z"
+    },
+    "responseStatus": 200
+  },
+  {
+    "endpoint": "/suapi/user/liam.johnson@gmail.com",
+    "method": "get",
+    "response": {
+      "userId": "b54f333b-986f-4f1e-8a20-527db7a5e3cb",
+      "name": "Liam Johnson",
+      "rol": "default",
+      "email": "liam.johnson@gmail.com",
+      "phoneNumber": "+1234567894",
+      "birthDate": "1992-03-05T00:00:00Z"
+    },
+    "responseStatus": 200
+  },
+  {
+    "endpoint": "/papi/create/list",
+    "method": "post",
+    "body": {
+      "UserIds": [
+        "e6a111c0-4f52-467f-a2d3-123e5efbc111"
+      ],
+      "SubsidiaryId": "a71e04ab-63a2-4886-a7a2-723da0cee050"
+    },
+    "response": {
+      "UserIds": [
+        "e6a111c0-4f52-467f-a2d3-123e5efbc111"
+      ],
+      "SubsidiaryId": "a71e04ab-63a2-4886-a7a2-723da0cee050"
+    },
+    "responseStatus": 200
+  },
+  {
+    "endpoint": "/suapi/user/",
+    "method": "put",
+    "body": {
+      "userId": "e6a111c0-4f52-467f-a2d3-123e5efbc111",
+      "name": "John Doe",
+      "rol": "Operador",
+      "email": "johndoe@gmail.com",
+      "phoneNumber": "+1234567890",
+      "birthDate": "1985-01-15T00:00:00Z"
+    },
+    "response": {
+      "userId": "e6a111c0-4f52-467f-a2d3-123e5efbc111",
+      "name": "John Doe",
+      "rol": "Operador",
+      "email": "johndoe@gmail.com",
+      "phoneNumber": "+1234567890",
+      "birthDate": "1985-01-15T00:00:00Z"
+    },
+    "responseStatus": 200
   }
 ]

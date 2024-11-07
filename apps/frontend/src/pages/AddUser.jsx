@@ -4,7 +4,8 @@ import SearchBar from "../components/SearchBar";
 import Button from "../components/Button";
 import { IoMdAdd } from "react-icons/io";
 import { MdOutlineCancel } from "react-icons/md";
-import { getUserByGmail } from "../services/UserService";
+import { getUserByGmail, updateUser } from "../services/UserService";
+import { addUsersToSubsudiary } from "../services/ProductService";
 
 export default function AddUser() {
   const [users, setUsers] = useState([]);
@@ -29,13 +30,45 @@ export default function AddUser() {
     setUsers(updatedUsers);
   };
 
-  const submit = () => {
-    for(var i = 0; i < users.length; i++) {
-      if(!users[i].rol){
+  const addUsers = async () => {
+    const UserIds = users.map((user) => user.userId);
+
+    const request = {
+      UserIds,
+      SubsidiaryId: "a71e04ab-63a2-4886-a7a2-723da0cee050",
+    };
+
+    try {
+      await addUsersToSubsudiary(request);
+      console.log(request);
+    } catch (error) {
+      throw new Error(
+        error.response?.data?.message || "Error al añadir los usuarios"
+      );
+    }
+  };
+
+  const updateRoles = () => {
+    try {
+      users.forEach(async user => {
+        await updateUser(user);
+      });
+    } catch (error) {
+      throw new Error(
+        error.response?.data?.message || "Error al añadir los usuarios"
+      );
+    }
+  }
+
+  const submit = async () => {
+    for (var i = 0; i < users.length; i++) {
+      if (users[i].rol === "default") {
         return;
       }
     }
-    console.log("Si funca");
+
+    addUsers();
+    updateRoles();
   };
 
   const data = ["Administrador de sucursal", "Operador"];

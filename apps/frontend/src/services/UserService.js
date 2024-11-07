@@ -12,3 +12,12 @@ export const getUserByGmail = async (gmail) => {
     throw new Error(error.response?.data?.message || 'Error al conseguir el usuario');
   }
 };
+
+export async function updateUser(user) {
+  try {
+    const response = await userAPI.put(`/user/`, user);
+    return response.data;
+  } catch (error) {
+    throw new Error(error.response?.data?.message || 'Error al conseguir el usuario');
+  }
+}
