@@ -50,7 +50,7 @@ function Login() {
   };
 
   const handleGoogleLogin = () => {
-    window.location.href = "http://localhost:8000/auth/google";
+    window.location.href = "http://API/auth/google";
   };
 
   const handleRegisterClick = () => {
