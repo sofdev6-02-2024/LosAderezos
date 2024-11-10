@@ -15,7 +15,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new OpenApiInfo { Title = "Work", Version = "v1" });
-    c.AddServer(new OpenApiServer { Url = "/users" });  // Añade el prefijo a las rutas
+    c.AddServer(new OpenApiServer { Url = "/users" }); 
 });
 builder.Services.AddHttpContextAccessor();
 builder.Services.Scan(scan => scan
@@ -23,8 +23,6 @@ builder.Services.Scan(scan => scan
     .AddClasses(classes => classes.Where(type => type.Name.EndsWith("Service")  && type.Namespace == "Backend.Services"))
     .AsImplementedInterfaces()
     .WithScopedLifetime());
-builder.Services.AddControllers();
-builder.Services.AddHttpClient<IUserService, UserService>();
 
 builder.Services.Scan(scan => scan
     .FromAssemblyOf<UserDAO>()
