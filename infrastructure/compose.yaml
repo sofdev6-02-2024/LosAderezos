@@ -15,7 +15,7 @@ services:
 # API GATEWAY
 
   api-gateway:
-    container_name: API
+    container_name: api
     build:
       context: ${CONTEXT}
       dockerfile: ./infrastructure/environments/api-gateway/Dockerfile
@@ -25,6 +25,8 @@ services:
       product-management-service:
         condition: service_started
       user-management-service:
+        condition: service_started
+      user-authentication-service:
         condition: service_started
 
 # PRODUCT MANAGEMENT
@@ -80,3 +82,16 @@ services:
       test: ["CMD-SHELL", "mysql -u root -p${USER_MANAGEMENT_DB_MySQL_PASSWORD} --execute 'SELECT @@GLOBAL.version;'"]
       interval: 3s
       retries: 10
+
+# USER AUTHENTICATION
+  
+  user-authentication-service:
+    container_name: AuthenticationService
+    build:
+      context: ${CONTEXT}
+      dockerfile: ./infrastructure/environments/third-authentication/Dockerfile
+    depends_on:
+      user-management-service:
+        condition: service_started
+    ports:
+      - "9000:8000"
