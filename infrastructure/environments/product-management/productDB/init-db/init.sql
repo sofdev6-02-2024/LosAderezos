@@ -48,6 +48,8 @@ CREATE TABLE IF NOT EXISTS Product(
     Code        INT,
     SellPrice   DECIMAL(7,2),
     CompanyId   VARCHAR(36),
+    LowExistence INT,
+    Notify      BIT,
     FOREIGN KEY (CompanyId) REFERENCES Company(Id)
 );
 
@@ -59,7 +61,9 @@ BEGIN
     p.Name,
     p.IncomePrice,
     p.Code,
-    p.SellPrice
+    p.SellPrice,
+    p.LowExistence,
+    p.Notify
   FROM
     Product p
   WHERE
