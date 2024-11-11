@@ -289,5 +289,20 @@
       "birthDate": "1985-01-15T00:00:00Z"
     },
     "responseStatus": 200
+  },
+  {
+    "endpoint": "/suapi/user",
+    "method": "get",
+    "response": [
+      {
+        "userId": "e6a111c0-4f52-467f-a2d3-123e5efbc111",
+        "name": "John Doe",
+        "rol": "Administrador de sucursal",
+        "email": "johndoe@gmail.com",
+        "phoneNumber": "+1234567890",
+        "birthDate": "1985-01-15T00:00:00Z"
+      }
+  ],
+    "responseStatus": 200
   }
 ]

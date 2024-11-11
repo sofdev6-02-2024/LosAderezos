@@ -21,3 +21,13 @@ export async function updateUser(user) {
     throw new Error(error.response?.data?.message || 'Error al conseguir el usuario');
   }
 }
+
+export async function getUsers()
+{
+  try {
+    const response = await userAPI.get("/user");
+    return response.data
+  } catch (error) {
+    throw new Error(error.response?.data?.message || 'Error al conseguir usuarios');
+  }
+}

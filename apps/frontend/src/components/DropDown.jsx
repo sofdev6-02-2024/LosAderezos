@@ -4,9 +4,9 @@ import { IoIosArrowDropdown } from "react-icons/io";
 import { useState } from "react";
 import Button from "./Button";
 
-export default function DropDown({ onChange, data, option, setOption }) {
+export default function DropDown({ onChange, data, option, setOption, isSelected }) {
   const [isOpen, setIsOpen] = useState(false);
-  const [selected, setSelected] = useState(false);
+  const [selected, setSelected] = useState(isSelected);
 
   const handleOptionClick = (option) => {
     setOption(option);
@@ -68,4 +68,5 @@ DropDown.propTypes = {
   data: PropTypes.array,
   option: PropTypes.string,
   setOption: PropTypes.func,
+  isSelected: PropTypes.bool
 };
