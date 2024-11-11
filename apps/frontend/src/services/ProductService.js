@@ -30,3 +30,12 @@ export async function getProductBranches(productId) {
     throw new Error(error.response?.data?.message || 'Error al cargar las sucursales en las que hay existencias del producto');
   }
 }
+
+export async function addUsersToSubsidiary(request) {
+  try {
+    const response = await productAPI.post("/create/list", request)
+    return response.data;
+  } catch (error) {
+    throw new Error(error.response?.data?.message || 'Error al añadir los usuarios');
+  }
+}
