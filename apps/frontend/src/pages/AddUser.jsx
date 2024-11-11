@@ -5,7 +5,7 @@ import Button from "../components/Button";
 import { IoMdAdd } from "react-icons/io";
 import { MdOutlineCancel } from "react-icons/md";
 import { getUserByGmail, updateUser } from "../services/UserService";
-import { addUsersToSubsudiary } from "../services/ProductService";
+import { addUsersToSubsidiary } from "../services/ProductService";
 
 export default function AddUser() {
   const [users, setUsers] = useState([]);
@@ -39,8 +39,7 @@ export default function AddUser() {
     };
 
     try {
-      await addUsersToSubsudiary(request);
-      console.log(request);
+      await addUsersToSubsidiary(request);
     } catch (error) {
       throw new Error(
         error.response?.data?.message || "Error al añadir los usuarios"

@@ -31,7 +31,7 @@ export async function getProductBranches(productId) {
   }
 }
 
-export async function addUsersToSubsudiary(request) {
+export async function addUsersToSubsidiary(request) {
   try {
     const response = await productAPI.post("/create/list", request)
     return response.data;
