@@ -57,12 +57,16 @@ func main() {
 	providerIndex := &ProviderIndex{Providers: keys, ProvidersMap: m}
 
 	p := pat.New()
-	p.Get("/auth/{provider}/callback", func(res http.ResponseWriter, req *http.Request) {
+	p.Get("/{provider}/callback", func(res http.ResponseWriter, req *http.Request) {
+		fmt.Println("ENTERING")
+
 		user, err := gothic.CompleteUserAuth(res, req)
 		if err != nil {
 			res.Header().Set("Location", redirectionFrontEndRootUrl)
 			res.WriteHeader(http.StatusTemporaryRedirect)
 		}
+
+		fmt.Println("FIRST")
 
 		userEmail := user.Email
 		userToken := user.AccessToken
@@ -77,17 +81,23 @@ func main() {
 			return
 		}
 
+		fmt.Println("SECOND")
+
 		defer hresp.Body.Close()
 
 		var r PostCookieRequest
 
 		requestBody, err := ioutil.ReadAll(hresp.Body)
 
+		fmt.Println(requestBody)
+
 		err = json.Unmarshal(requestBody, &r)
 		if err != nil {
 			fmt.Println(err)
 			return
 		}
+
+		fmt.Println("THIRD")
 		
 		res.Header().Set("Location", redirectionBackendGetCookieUrl+r.UserID)
 		res.WriteHeader(http.StatusTemporaryRedirect)
@@ -100,6 +110,7 @@ func main() {
 	})
 
 	p.Get("/{provider}", func(res http.ResponseWriter, req *http.Request) {
+		fmt.Println("LOGIN")
 		gothic.BeginAuthHandler(res, req)
 	})
 

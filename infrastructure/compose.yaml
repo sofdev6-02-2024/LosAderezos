@@ -20,7 +20,7 @@ services:
       context: ${CONTEXT}
       dockerfile: ./infrastructure/environments/api-gateway/Dockerfile
     ports:
-      - "8080:80"
+      - "8000:80"
     depends_on:
       product-management-service:
         condition: service_started
