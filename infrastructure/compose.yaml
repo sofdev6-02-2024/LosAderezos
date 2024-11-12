@@ -36,6 +36,8 @@ services:
     build: 
       context: ${CONTEXT}
       dockerfile: ./infrastructure/environments/product-management/Dockerfile
+    ports:
+    - "7575:80"
     environment:
       ASPNETCORE_HTTP_PORTS: 80
     depends_on:
@@ -63,6 +65,8 @@ services:
     build:
       context: ${CONTEXT}
       dockerfile: ./infrastructure/environments/user-management/Dockerfile
+    ports:
+    - "9090:80"
     environment:
       ASPNETCORE_HTTP_PORTS: 80
     depends_on:

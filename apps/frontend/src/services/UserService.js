@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 export const userAPI = axios.create({
-  baseURL: 'http://localhost:8080/users',
+  baseURL: 'http://localhost:9090/users',
 });
 
 export const getUserByGmail = async (gmail) => {

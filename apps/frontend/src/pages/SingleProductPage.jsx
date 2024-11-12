@@ -18,7 +18,7 @@ function SingleProductPage() {
         const product = await getProductById(id);
         const categories = await getCategoriesByProductId(id);
         setProductData(product);
-        setProductCategories(categories);
+        setProductCategories(categories.map(cat => cat.categoryId));
       } catch (error) {
         console.error("Error fetching product data", error);
       }
