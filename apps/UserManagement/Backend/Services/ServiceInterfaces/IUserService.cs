@@ -5,9 +5,9 @@ namespace Backend.Services.ServiceInterfaces;
 
 public interface IUserService
 {
-    public Task<List<UserDTO>> GetUsers();
-    public Task<UserDTO?> GetUserById(Guid id);
-    public Task<UserDTO?> CreateUser(UserWithoutIdDTO user);
-    public Task<UserDTO?> UpdateUser(UserDTO user);
+    public List<UserDTO> GetUsers();
+    public UserDTO? GetUserById(Guid id);
+    public UserDTO? CreateUser(UserWithoutIdDTO user);
+    public UserDTO? UpdateUser(UserDTO user);
     public Task<UserDTO?> GetUserByEmail(UserBySubsidiaryDTO user);
 }

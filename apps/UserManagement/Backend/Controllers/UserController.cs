@@ -17,36 +17,36 @@ public class UserController: ControllerBase
     }
     
     [HttpGet]
-    public async Task<ActionResult<List<UserDTO>>> GetAllUsers()
+    public ActionResult<List<UserDTO>> GetAllUsers()
     {
-        var result = await _userService.GetUsers();
+        var result = _userService.GetUsers();
         return Ok(result);
     }
 
     [HttpGet("{userId}")]
-    public async Task<ActionResult<UserDTO>> GetUserById(Guid userId)
+    public ActionResult<UserDTO> GetUserById(Guid userId)
     {
-        var result = await _userService.GetUserById(userId);
+        var result = _userService.GetUserById(userId);
         return Ok(result);
     }
 
     [HttpPost]
-    public async Task<ActionResult<UserDTO>> CreateUser(UserWithoutIdDTO user)
+    public ActionResult<UserDTO> CreateUser(UserWithoutIdDTO user)
     {
-        var result = await _userService.CreateUser(user);
+        var result = _userService.CreateUser(user);
         return Ok(result);
     }
 
     [HttpPut]
-    public async Task<ActionResult<UserDTO>> UpdateUser(UserDTO user)
+    public ActionResult<UserDTO> UpdateUser(UserDTO user)
     {
-        var result = await _userService.UpdateUser(user);
+        var result = _userService.UpdateUser(user);
         return Ok(result);
     }
 
     [HttpPost("email")]
     public async Task<ActionResult<UserDTO>> GetUserByEmail(UserBySubsidiaryDTO user)
     {
-        return await _userService.GetUserByEmail(user);
+        return Ok(await _userService.GetUserByEmail(user));
     }
 }

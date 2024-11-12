@@ -5,12 +5,12 @@ namespace Test.EntitiesTest;
 [TestFixture]
 public class TokensTests
 {
-    private Tokens _token;
+    private SessionToken _token;
 
         [SetUp]
         public void SetUp()
         {
-            _token = new Tokens();
+            _token = new SessionToken();
         }
 
         [Test]
