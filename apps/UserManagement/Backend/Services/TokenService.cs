@@ -66,7 +66,7 @@ public class TokenService: ITokenservice
             new Claim("UserPhoneNumber", user.PhoneNumber),
             new Claim("UserName", user.Name),
             new Claim("Token", session.Token),
-        };
+    };
         Console.WriteLine(claims);
 
         var tokenDescriptor = new SecurityTokenDescriptor
