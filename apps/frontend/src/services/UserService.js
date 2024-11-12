@@ -1,12 +1,12 @@
 import axios from 'axios';
 
 export const userAPI = axios.create({
-  baseURL: 'http://localhost:3000/suapi',
+  baseURL: 'http://localhost:8080/users',
 });
 
 export const getUserByGmail = async (gmail) => {
   try {
-    const response = await userAPI.get(`/user/${gmail}`);
+    const response = await userAPI.get(`/User/${gmail}`);
     return response.data;
   } catch (error) {
     throw new Error(error.response?.data?.message || 'Error al conseguir el usuario');
@@ -15,7 +15,7 @@ export const getUserByGmail = async (gmail) => {
 
 export async function updateUser(user) {
   try {
-    const response = await userAPI.put(`/user/`, user);
+    const response = await userAPI.put(`/User/`, user);
     return response.data;
   } catch (error) {
     throw new Error(error.response?.data?.message || 'Error al conseguir el usuario');
@@ -25,7 +25,7 @@ export async function updateUser(user) {
 export async function getUsers()
 {
   try {
-    const response = await userAPI.get("/user");
+    const response = await userAPI.get("/User");
     return response.data
   } catch (error) {
     throw new Error(error.response?.data?.message || 'Error al conseguir usuarios');

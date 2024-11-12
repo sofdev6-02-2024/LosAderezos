@@ -1,12 +1,12 @@
 import axios from 'axios';
 
 export const productAPI = axios.create({
-  baseURL: 'http://localhost:3000/papi',
+  baseURL: 'http://localhost:8080/products',
 });
 
 export const getProducts = async () => {
   try {
-    const response = await productAPI.get('/products');
+    const response = await productAPI.get('/Product');
     return response.data;
   } catch (error) {
     throw new Error(error.response?.data?.message || 'Error al conseguir los productos');
@@ -15,7 +15,7 @@ export const getProducts = async () => {
 
 export async function getProductById(productId) {
   try {
-    const response = await productAPI.get(`/products/${productId}`);
+    const response = await productAPI.get(`/Product/${productId}`);
     return response.data;
   } catch (error) {
     throw new Error(error.response?.data?.message || 'Error al cargar los datos del producto');
@@ -24,7 +24,7 @@ export async function getProductById(productId) {
 
 export async function getProductBranches(productId) {
   try {
-    const response = await productAPI.get(`/products/${productId}/branches`);
+    const response = await productAPI.get(`/Product/${productId}/branches`);
     return response.data;
   } catch (error) {
     throw new Error(error.response?.data?.message || 'Error al cargar las sucursales en las que hay existencias del producto');
