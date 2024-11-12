@@ -7,6 +7,8 @@ public class Product
     public decimal IncomingPrice {get; set;}
     public int Code { get; set; }
     public decimal SellPrice {get; set;}
+    public int LowExistence { get; set; }
+    public bool Notify { get; set; }
     
     //Foreign Key
     public Guid CompanyId { get; set; }
