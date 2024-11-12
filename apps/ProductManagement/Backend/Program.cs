@@ -57,8 +57,17 @@ app.UseSwaggerUI(c =>
     
 //}
 // discomment for final deployment
-app.MapGet("/", () => "Hello World!");
 
+app.UseCors(policyBuilder =>
+{
+    policyBuilder.WithOrigins("http://localhost:5173")
+        .AllowAnyHeader()
+        .AllowAnyMethod()
+        .AllowCredentials();
+});
+
+app.MapGet("/", () => "Hello World!");
+builder.Services.AddCors();
 app.UseRouting();
 app.UseAuthorization();
 app.MapControllers();

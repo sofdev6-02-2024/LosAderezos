@@ -23,14 +23,14 @@ public class StockController : ControllerBase
         return Ok(result);
     }
 
-    [HttpGet("{stockId}")]
+    [HttpGet("stock/{stockId}")]
     public async Task<ActionResult<StockDTO>> GetStockById(Guid stockId)
     {
         var result = await _stockService.GetStockById(stockId);
         return Ok(result);
     }
     
-    [HttpGet("{subsidiaryId}")]
+    [HttpGet("subsidiary/{subsidiaryId}")]
     public async Task<ActionResult<List<StockDTO>>> GetStocksBySubsidiaryId(Guid subsidiaryId)
     {
         var result = await _stockService.GetStocksBySubsidiaryId(subsidiaryId);
