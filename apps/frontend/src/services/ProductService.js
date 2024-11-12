@@ -15,7 +15,7 @@ export const getProducts = async () => {
 
 export async function getProductById(productId) {
   try {
-    const response = await productAPI.get(`/Product/:${productId}`);
+    const response = await productAPI.get(`/Product/${productId}`);
     return response.data;
   } catch (error) {
     throw new Error(error.response?.data?.message || 'Error al cargar los datos del producto');
@@ -24,7 +24,7 @@ export async function getProductById(productId) {
 
 export async function getCategoriesByProductId(productId) {
   try {
-    const response = await productAPI.get(`/ProductCategories/:${productId}`);
+    const response = await productAPI.get(`/ProductCategories/${productId}`);
     return response.data;
   } catch (error) {
     throw new Error(error.response?.data?.message || 'Error al cargar los datos del producto');
