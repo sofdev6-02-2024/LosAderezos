@@ -15,14 +15,14 @@ public class ProductCategoriesController : ControllerBase
         _productCategoriesService = productCategoriesService;
     }
 
-    [HttpGet("{categoryId}")]
+    [HttpGet("category/{categoryId}")]
     public async Task<ActionResult<List<ProductCategoriesDTO>>> GetProductCategoriesByCategoryId(Guid categoryId)
     {
         var result = _productCategoriesService.GetProductCategoriesByCategoryId(categoryId);
         return Ok(result);
     }
     
-    [HttpGet("{productId}")]
+    [HttpGet("product/{productId}")]
     public async Task<ActionResult<List<ProductCategoriesDTO>>> GetProductCategoriesByProductId(Guid productId)
     {
         var result = _productCategoriesService.GetProductCategoriesByProductId(productId);
