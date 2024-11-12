@@ -142,6 +142,7 @@ DELIMITER //
 CREATE PROCEDURE GetProductCategoriesByProductId(IN productId CHAR(36))
 BEGIN
   SELECT
+    pc.ProductId
     pc.CategoryId
   FROM
     ProductCategories pc
@@ -155,6 +156,7 @@ CREATE PROCEDURE GetProductCategoriesByCategoryId(IN categoryId CHAR(36))
 BEGIN
   SELECT
     pc.ProductId
+    pc.CategoryId
   FROM
     ProductCategories pc
   WHERE
