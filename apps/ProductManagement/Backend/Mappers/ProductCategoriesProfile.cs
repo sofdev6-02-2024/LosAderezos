@@ -8,7 +8,11 @@ public class ProductCategoriesProfile : Profile
 {
     public ProductCategoriesProfile()
     {
-        CreateMap<ProductCategoriesDTO, ProductCategories>();
-        CreateMap<ProductCategories, ProductCategoriesDTO>();
+        CreateMap<ProductCategoriesDTO, ProductCategories>()
+            .ForMember(dst => dst.ProductId, opt => opt.MapFrom(src => src.ProductId))
+            .ForMember(dst => dst.CategoryId, opt => opt.MapFrom(src => src.CategoryId));
+        CreateMap<ProductCategories, ProductCategoriesDTO>()
+            .ForMember(dst => dst.ProductId, opt => opt.MapFrom(src => src.ProductId))
+            .ForMember(dst => dst.CategoryId, opt => opt.MapFrom(src => src.CategoryId));
     }
 }
