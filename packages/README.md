@@ -10,10 +10,10 @@
 [Goth](https://github.com/markbates/goth): Golang library to implement third authentication, (using only Google auth provider, version 1.80.0)
 
 ## Frontend
-[Vite](https://vite.dev/guide/): A build tool that provides an extremely fast development server and optimized builds, enhancing the performance of the application.
+[Vite](https://vite.dev/guide/): A build tool that provides an extremely fast development server and optimized builds, enhancing the performance of the application. (version 5.3.10)
 
-[React](https://es.react.dev/): A JavaScript library for building user interfaces, used to create the dynamic components.
+[React](https://es.react.dev/): A JavaScript library for building user interfaces, used to create the dynamic components. (version 18.3.1)
 
-[Tailwind CSS](https://tailwindcss.com/docs/installation): A utility-first CSS framework for building custom, responsive designs quickly without writing traditional CSS.
+[Tailwind CSS](https://tailwindcss.com/docs/installation): A utility-first CSS framework for building custom, responsive designs quickly without writing traditional CSS. (version 3.4.13)
 
-[PostCSS](https://postcss.org/): A tool for transforming CSS with JavaScript plugins, enabling additional flexibility and optimizations for Tailwind CSS.
+[PostCSS](https://postcss.org/): A tool for transforming CSS with JavaScript plugins, enabling additional flexibility and optimizations for Tailwind CSS. (version 8.4.47)
