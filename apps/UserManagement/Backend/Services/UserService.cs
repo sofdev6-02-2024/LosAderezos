@@ -22,26 +22,26 @@ public class UserService : IUserService
         _httpClient = httpClient;
     }
 
-    public async Task<List<UserDTO>> GetUsers()
+    public List<UserDTO> GetUsers()
     {
         var result = _userDao.ReadAll().Select(_mapper.Map<UserDTO>).ToList();
         return result;
     }
 
-    public async Task<UserDTO?> GetUserById(Guid id)
+    public UserDTO? GetUserById(Guid id)
     {
         var result = _mapper.Map<UserDTO>(_userDao.Read(id));
         return result;
     }
 
-    public async Task<UserDTO?> CreateUser(UserWithoutIdDTO user)
+    public UserDTO? CreateUser(UserWithoutIdDTO user)
     {
         Guid id = Guid.NewGuid();
         _userDao.Create(_mapper.Map<User>((user, id)));
         return _mapper.Map<UserDTO>(_userDao.Read(id));
     }
 
-    public async Task<UserDTO?> UpdateUser(UserDTO user)
+    public UserDTO? UpdateUser(UserDTO user)
     {
         _userDao.Update(_mapper.Map<User>(user));
         return _mapper.Map<UserDTO>(_userDao.Read(user.UserId));
