@@ -36,6 +36,16 @@ builder.Services.Scan(scan => scan
 builder.Services.AddControllers();
 
 
+builder.Services.AddCors(policyBuilder =>
+{
+    policyBuilder.AddPolicy("AllowLocalhost",
+        builder => builder.WithOrigins("http://localhost:5173", "http://localhost:5174")
+            .AllowAnyMethod()
+            .AllowAnyHeader()
+    );
+});
+
+
 
 var app = builder.Build();
 /*
@@ -57,15 +67,6 @@ app.UseSwaggerUI(c =>
     
 //}
 // discomment for final deployment
-
-builder.Services.AddCors(policyBuilder =>
-{
-    policyBuilder.AddPolicy("AllowLocalhost",
-        builder => builder.WithOrigins("http://localhost:5173", "http://localhost:5174")
-            .AllowAnyMethod()
-            .AllowAnyHeader()
-    );
-});
 
 app.MapGet("/", () => "Hello World!");
 app.UseCors("AllowLocalhost");
