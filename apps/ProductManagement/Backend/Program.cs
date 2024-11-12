@@ -58,16 +58,17 @@ app.UseSwaggerUI(c =>
 //}
 // discomment for final deployment
 
-app.UseCors(policyBuilder =>
+builder.Services.AddCors(policyBuilder =>
 {
-    policyBuilder.WithOrigins("http://localhost:5173")
-        .AllowAnyHeader()
-        .AllowAnyMethod()
-        .AllowCredentials();
+    policyBuilder.AddPolicy("AllowLocalhost",
+        builder => builder.WithOrigins("http://localhost:5173", "http://localhost:5174")
+            .AllowAnyMethod()
+            .AllowAnyHeader()
+    );
 });
 
 app.MapGet("/", () => "Hello World!");
-builder.Services.AddCors();
+app.UseCors("AllowLocalhost");
 app.UseRouting();
 app.UseAuthorization();
 app.MapControllers();
