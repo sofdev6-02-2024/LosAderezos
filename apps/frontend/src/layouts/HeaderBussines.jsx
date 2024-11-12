@@ -12,12 +12,12 @@ export default function HeaderBussines({bussines, branch})
   return(
     <div className="grid grid-cols-3 bg-blue-950 h-[150px] w-full items-center ">
       <div className="w-full m-10">
-        {location.pathname === '/' ? (
+        {location.pathname === '/store_menu' ? (
           <></>
         ) : (
           <Button 
           onClick={() => {
-            navigate('/')
+            navigate('/store_menu')
           }}>
             <IoMdArrowBack size={40} color="white"/>
           </Button>
