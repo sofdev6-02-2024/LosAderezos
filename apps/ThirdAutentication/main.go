@@ -89,7 +89,7 @@ func main() {
 			return
 		}
 		
-		res.Header().Set("Location", redirectionBackendGetCookieUrl+r.SessionID)
+		res.Header().Set("Location", redirectionBackendGetCookieUrl+r.UserID)
 		res.WriteHeader(http.StatusTemporaryRedirect)
 	})
 
@@ -117,11 +117,14 @@ var indexTemplate = `{{range $key,$value:=.Providers}}
 {{end}}`
 
 type PostCookieRequest struct {
-	SessionID   string `json:"sessionID"`
-	Token       string `json:"token"`
-	ContactID   string `json:"contactID"`
+	UserID      string `json:"userId"`
+	Name        string `json:"name"`
+	Rol         string `json:"rol"`
 	Email       string `json:"email"`
 	PhoneNumber string `json:"phoneNumber"`
+	BirthDate   string `json:"birthDate"`
+	Token       string `json:"token"`
+	Time        string `json:"time"`
 }
 
 type ProviderIndex struct {
