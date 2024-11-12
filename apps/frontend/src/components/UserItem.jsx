@@ -4,8 +4,8 @@ import DropDown from "./DropDown";
 import Button from "./Button";
 import { useState } from "react";
 
-export default function UserItem({ user, onDelete, onChange, data }) {
-  const [option, setOption] = useState('Select')
+export default function UserItem({ user, onDelete, onChange, data, rolOption, hasRol }) {
+  const [option, setOption] = useState(rolOption)
 
   return (
     <div className="bg-sky-100 w-full rounded-[20px] border-blue-950 border-2 font-roboto">
@@ -22,6 +22,7 @@ export default function UserItem({ user, onDelete, onChange, data }) {
             data={data}
             option={option}
             setOption={setOption}
+            isSelected={hasRol}
           />
         </div>
       </div>
@@ -33,5 +34,7 @@ UserItem.propTypes = {
   user: PropTypes.string,
   onDelete: PropTypes.func,
   onChange: PropTypes.func,
-  data: PropTypes.array
+  data: PropTypes.array,
+  rolOption: PropTypes.string,
+  hasRol: PropTypes.bool
 };

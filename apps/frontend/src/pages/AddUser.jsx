@@ -6,9 +6,11 @@ import { IoMdAdd } from "react-icons/io";
 import { MdOutlineCancel } from "react-icons/md";
 import { getUserByGmail, updateUser } from "../services/UserService";
 import { addUsersToSubsidiary } from "../services/ProductService";
+import { useNavigate } from "react-router-dom";
 
 export default function AddUser() {
   const [users, setUsers] = useState([]);
+  const navigate = useNavigate();
 
   const handleAdd = async (input) => {
     if (input.trim()) {
@@ -68,6 +70,7 @@ export default function AddUser() {
 
     addUsers();
     updateRoles();
+    navigate("/users")    
   };
 
   const data = ["Administrador de sucursal", "Operador"];
@@ -86,6 +89,8 @@ export default function AddUser() {
             data={data}
             onDelete={() => handleDel(index)}
             onChange={(newRole) => onChange(index, newRole)}
+            rolOption="Select"
+            hasRol={false}
           />
         ))}
       </div>
@@ -103,6 +108,7 @@ export default function AddUser() {
           className={
             "bg-red-600 w-2/5 py-2 items-start justify-center text-white font-medium text-[20px] rounded-[12px]"
           }
+          onClick={() => {navigate('/users')}}
         >
           Cancelar
           <MdOutlineCancel />

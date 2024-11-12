@@ -43,7 +43,7 @@ function StoreMenu() {
           <CardButton 
             icon={FaRegUser} 
             label="Usuarios" 
-            onClick={() => handleButtonClick("Usuarios")}
+            onClick={() => navigate('/users')}
           />
         </div>
       </div>

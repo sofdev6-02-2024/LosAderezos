@@ -5,6 +5,7 @@ import ProductsPage from "./pages/ProductsPage";
 import SingleProductPage from "./pages/SingleProductPage";
 import Header from "./layouts/Header";
 import AddUser from "./pages/AddUser";
+import UserPage from "./pages/UserPage";
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
         <Route path="/branches" element={<NotFound />} />
         <Route path="/notifications" element={<NotFound />} />
         <Route path="/addUsers" element={<AddUser />} />
+        <Route path="/users" element={<UserPage />} />
       </Routes>
     </div>
   );
