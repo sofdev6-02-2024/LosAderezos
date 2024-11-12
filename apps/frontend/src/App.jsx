@@ -12,9 +12,9 @@ function App() {
   return (
     <Routes>
       <Route path="*" element={<NotFound />} />
-      <Route path='/login' element={<Login />} />
+      <Route path='/' element={<Login />} />
       <Route element={<AppLayout />}>
-        <Route path="/" element={<StoreMenu />} />
+        <Route path="/store_menu" element={<StoreMenu />} />
         <Route path="/products" element={<ProductsPage />} />
         <Route path="/products/:id" element={<SingleProductPage />} />
         <Route path="/branches" element={<NotFound />} />
