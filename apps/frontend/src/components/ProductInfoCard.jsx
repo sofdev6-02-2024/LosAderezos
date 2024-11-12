@@ -5,7 +5,7 @@ import { AiOutlineDownload } from "react-icons/ai";
 import Button from './Button';
 import Line from './Line';
 
-function ProductInfoCard ({ productData, onOtherBranchesClick = () => {}, showButton = true }) {
+function ProductInfoCard ({ productData, productCategories, onOtherBranchesClick = () => {}, showButton = true }) {
   return (
     <Card className="w-full max-w-sm h-fit lg:max-w-lg shadow-lg rounded-3xl border-neutral-950">
       <div className="flex items-center justify-between pb-1">
@@ -30,7 +30,7 @@ function ProductInfoCard ({ productData, onOtherBranchesClick = () => {}, showBu
       <div className="py-1">
         <h3 className="text-neutral-950 text-base font-roboto font-bold">Categorías</h3>
         <ul className="list-disc ml-6 font-roboto font-normal text-sm text-neutral-950">
-          {productData.categories.map((category, index) => (
+          {productCategories.map((category, index) => (
             <li key={index}>{category}</li>
           ))}
         </ul>
@@ -81,6 +81,7 @@ ProductInfoCard.propTypes = {
     incomingPrice: PropTypes.number.isRequired,
     sellPrice: PropTypes.number.isRequired,
   }).isRequired,
+  productCategories: PropTypes.arrayOf(PropTypes.string).isRequired,
   onOtherBranchesClick: PropTypes.func,
   showButton: PropTypes.bool,
 };

@@ -1,13 +1,14 @@
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import ProductInfoCard from "../components/ProductInfoCard";
-import { getProductById, getProductBranches } from "../services/ProductService";
+import { getProductById, getProductBranches, getCategoriesByProductId } from "../services/ProductService";
 import GenericList from "../components/GenericList";
 import BranchItem from "../components/BranchItem";
 
 function SingleProductPage() {
   const { id } = useParams();
   const [productData, setProductData] = useState(null);
+  const [productCategories, setProductCategories] = useState(null);
   const [branches, setBranches] = useState(null);
   const [branchesLoaded, setBranchesLoaded] = useState(false);
 
@@ -15,7 +16,9 @@ function SingleProductPage() {
     async function fetchProduct() {
       try {
         const product = await getProductById(id);
+        const categories = await getCategoriesByProductId(id);
         setProductData(product);
+        setProductCategories(categories);
       } catch (error) {
         console.error("Error fetching product data", error);
       }
@@ -42,6 +45,7 @@ function SingleProductPage() {
     <div className="flex flex-col lg:flex-row items-center justify-center lg:h-screen lg:py-0 px-6 pt-32 pb-10 space-y-4 lg:space-x-16">
       <ProductInfoCard
         productData={productData}
+        productCategories={productCategories}
         onOtherBranchesClick={fetchProductBranches}
         showButton={!branchesLoaded}
       />
