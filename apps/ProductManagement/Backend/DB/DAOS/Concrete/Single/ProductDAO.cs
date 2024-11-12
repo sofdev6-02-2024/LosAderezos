@@ -1,4 +1,5 @@
 using System.Text;
+using Backend.DB;
 using MySql.Data;
 using Backend.Entities;
 
@@ -59,18 +60,19 @@ public sealed class ProductDAO : SingleDAO<Product>, IProductDAO
         string productSellPriceC = product.SellPrice.ToString();
         string productCompanyIdC = product.CompanyId.ToString();
         string productLowExistenceC = product.LowExistence.ToString();
-        string productNotifyC = product.Notify.ToString();
+        string productNotifyC = ObjectMapper.MapBoolean(product.Notify);
 
         _sb = new StringBuilder();
-        _sb.Append("INSERT INTO ").Append(_tableName).Append(" (Id, Name, IncomePrice, Code, SellPrice, CompanyId)")
+        _sb.Append("INSERT INTO ").Append(_tableName).Append(" (Id, Name, IncomePrice, Code, SellPrice, CompanyId, LowExistence, Notify) ")
             .Append("VALUES ('").Append(productIdC).Append("','")
                                 .Append(productNameC).Append("',")
                                 .Append(productIncomingPriceC).Append(",")
                                 .Append(productCodeC).Append(",")
                                 .Append(productSellPriceC).Append(",'")
-                                .Append(productCompanyIdC).Append(",'")
-                                .Append(productLowExistenceC).Append(",'")
-                                .Append(productNotifyC).Append("');");
+                                .Append(productCompanyIdC).Append("',")
+                                .Append(productLowExistenceC).Append(", ")
+                                .Append(productNotifyC).Append(");");
+        Console.WriteLine(_sb);
         return _sb;
     }
 
@@ -83,7 +85,7 @@ public sealed class ProductDAO : SingleDAO<Product>, IProductDAO
         string productSellPriceC = product.SellPrice.ToString();
         string productCompanyIdC = product.CompanyId.ToString();
         string productLowExistenceC = product.LowExistence.ToString();
-        string productNotifyC = product.Notify.ToString();
+        string productNotifyC = ObjectMapper.MapBoolean(product.Notify);
 
         _sb = new StringBuilder();
         _sb.Append("UPDATE ").Append(_tableName)
@@ -93,7 +95,7 @@ public sealed class ProductDAO : SingleDAO<Product>, IProductDAO
             .Append(" SellPrice = ").Append(productSellPriceC).Append(", ")
             .Append(" CompanyId = ").Append(productCompanyIdC).Append(", ")
             .Append(" LowExistence = ").Append(productLowExistenceC).Append(", ")
-            .Append(" Notify = '").Append(productNotifyC).Append("' ")
+            .Append(" Notify = ").Append(productNotifyC)
             .Append(" WHERE Id = '").Append(productIdC).Append("';");
         
         return _sb;
