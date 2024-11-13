@@ -6,7 +6,7 @@ export const productAPI = axios.create({
 
 export const getProducts = async () => {
   try {
-    const response = await productAPI.get('/Product');
+    const response = await productAPI.get('/Stock');
     return response.data;
   } catch (error) {
     throw new Error(error.response?.data?.message || 'Error al conseguir los productos');
