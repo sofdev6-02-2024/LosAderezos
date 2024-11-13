@@ -39,32 +39,35 @@ public class TokenService: ITokenservice
 
     public bool GetCookie(Guid userId)
     {
-        
-        SessionToken? session = _sessionTokenDao.ReadAll().FirstOrDefault(u => u.UserId == userId);
+
+        SessionToken? session = _sessionTokenDao.Read(userId);
         if (session == null)
         {
+            Console.WriteLine("session not found");
             return false;
         }
+        
         User? user = _userDao.Read(userId);
         if (user == null)
         {
+            Console.WriteLine("User not found");
             return false;
         }
-        var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(session.Token + "XD"));
+
+        var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(session.Token));
         var signingCredentials = new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha256);
 
         var claims = new[]
         {
-            new Claim(JwtRegisteredClaimNames.Email, user.Email),
-            new Claim(JwtRegisteredClaimNames.PhoneNumber, user.PhoneNumber),
             new Claim("UserId", user.UserId.ToString()),
             new Claim("UserEmail", user.Email),
             new Claim("UserRol", user.Rol),
-            new Claim("UserBirthDate", user.BirthDate.ToString("dd-mm-yyyy")),
+            new Claim("UserBirthDate", user.BirthDate.ToString("dd-MM-yyyy")),
             new Claim("UserPhoneNumber", user.PhoneNumber),
             new Claim("UserName", user.Name),
-            new Claim( "Token", session.Token),
+            new Claim("Token", session.Token),
         };
+        Console.WriteLine(claims);
 
         var tokenDescriptor = new SecurityTokenDescriptor
         {
@@ -75,9 +78,10 @@ public class TokenService: ITokenservice
 
         var tokenHandler = new JwtSecurityTokenHandler();
         var token = tokenHandler.CreateToken(tokenDescriptor);
+        
         var cookieOptions = new CookieOptions
         {
-            HttpOnly = false, 
+            HttpOnly = false,
             Secure = true,
             Expires = DateTime.UtcNow.AddDays(1),
             SameSite = SameSiteMode.None

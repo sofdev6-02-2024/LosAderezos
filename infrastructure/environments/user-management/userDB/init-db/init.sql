@@ -16,7 +16,7 @@ CREATE TABLE IF NOT EXISTS User(
 CREATE TABLE IF NOT EXISTS SessionToken(
     Token   VARCHAR(2000),
     Time    DATETIME,
-    UserId  VARCHAR(36)
+    Id  VARCHAR(36)
 );
 
 CREATE EVENT IF NOT EXISTS Delete_Tokens_Event

@@ -29,7 +29,7 @@ public class TokenController : ControllerBase
         var result = _tokenService.GetCookie(userId);
         if (!result)
             return Redirect("http://localhost:5173/");
-        return Redirect("https://localhost:5173/store_menu");
+        return Redirect("http://localhost:5173/store_menu");
     }
 
     [HttpPost("RefreshToken")]
