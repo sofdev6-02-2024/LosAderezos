@@ -25,7 +25,6 @@ public class TokenController : ControllerBase
     [HttpGet("GetCookie/{userId}")]
     public ActionResult<bool> GetCookie(Guid userId)
     {
-        Console.WriteLine("fghsjkdfg");
         var result = _tokenService.GetCookie(userId);
         if (!result)
             return Redirect("http://localhost:5173/");
