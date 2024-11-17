@@ -16,10 +16,10 @@ public class TokenController : ControllerBase
     }
 
     [HttpPost]
-    public Task<ActionResult<UserFullInfoDTO>> PostToken(CreateTokenDTO sessionPostDto)
+    public async Task<ActionResult<UserFullInfoDTO>> PostToken(CreateTokenDTO sessionPostDto)
     {
         var result = _tokenService.PostToken(sessionPostDto);
-        return Task.FromResult<ActionResult<UserFullInfoDTO>>(Ok(result));
+        return Ok(result);
     }
 
     [HttpGet("GetCookie/{userId}")]

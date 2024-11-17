@@ -32,9 +32,13 @@ public class TokenService: ITokenservice
         _productApiService = productApiService;
     }
 
-    public UserFullInfoDTO PostToken(CreateTokenDTO sessionPostDto)
+    public UserFullInfoDTO? PostToken(CreateTokenDTO sessionPostDto)
     {
-        var user = _userDao.ReadAll().Where(u => u.Email == sessionPostDto.Email).First();
+        var user = _userDao.ReadAll().Where(u => u.Email == sessionPostDto.Email).FirstOrDefault();
+        if (user == null)
+        {
+            return null;
+        }
         var token = _mapper.Map<SessionToken>((sessionPostDto.Token, user.UserId, DateTime.Now));
         _sessionTokenDao.Create(token);
         return _mapper.Map<UserFullInfoDTO>((token, user));
