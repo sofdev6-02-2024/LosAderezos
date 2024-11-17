@@ -1,4 +1,3 @@
-
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -8,6 +7,8 @@ using Backend.Entities;
 using Backend.Services.ServiceInterfaces;
 using DB;
 using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json;
+using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace Backend.Services;
 
@@ -18,14 +19,17 @@ public class TokenService: ITokenservice
     private readonly IMapper _mapper;
     private readonly IHttpContextAccessor _httpContextAccessor;
     private static readonly TimeSpan ExpirationTime = new TimeSpan(0, 30, 1);
+    private readonly IProductAPIService _productApiService;
 
 
-    public TokenService(ISessionTokenDAO sessionTokenDao, IUserDAO userDao, IMapper mapper, IHttpContextAccessor httpContextAccessor)
+
+    public TokenService(ISessionTokenDAO sessionTokenDao, IUserDAO userDao, IMapper mapper, IHttpContextAccessor httpContextAccessor, IProductAPIService productApiService)
     {
         _sessionTokenDao = sessionTokenDao;
         _userDao = userDao;
         _mapper = mapper;
         _httpContextAccessor = httpContextAccessor;
+        _productApiService = productApiService;
     }
 
     public UserFullInfoDTO PostToken(CreateTokenDTO sessionPostDto)
@@ -57,15 +61,20 @@ public class TokenService: ITokenservice
         var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(session.Token));
         var signingCredentials = new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha256);
 
+        var subsIds = _productApiService.GetSubsidiariesIdsByUserId(user.UserId).Result?.Select(sub => sub.ToString()).ToList();
+        string? companyId = _productApiService.GetCompanyIdByUserId(user.UserId).Result.ToString();
+        
         var claims = new[]
         {
-            new Claim("UserId", user.UserId.ToString()),
+            new Claim("userId", user.UserId.ToString()),
             new Claim("UserEmail", user.Email),
             new Claim("UserRol", user.Rol),
             new Claim("UserBirthDate", user.BirthDate.ToString("dd-MM-yyyy")),
             new Claim("UserPhoneNumber", user.PhoneNumber),
             new Claim("UserName", user.Name),
             new Claim("Token", session.Token),
+            new Claim("subsidiaryId", JsonSerializer.Serialize(subsIds)),
+            new Claim("companyId", companyId ?? string.Empty)
     };
         Console.WriteLine(claims);
 
@@ -123,6 +132,5 @@ public class TokenService: ITokenservice
             return false;
         }
         return (DateTime.Now - token.Time)  < ExpirationTime;
-
     }
 }

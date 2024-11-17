@@ -56,7 +56,7 @@ public sealed class UserDAO : SingleDAO<User>, IUserDAO
         string userBirthdateC = user.BirthDate.ToString("yyyy-MM-dd");
 
         _sb = new StringBuilder();
-        _sb.Append("INSERT INTO ").Append(_tableName).Append(" (Id, Name, Rol, Email, PhoneNumber, Birthdate)")
+        _sb.Append("INSERT INTO ").Append(_tableName).Append(" (Id, name, Rol, Email, PhoneNumber, Birthdate)")
             .Append("VALUES ('").Append(userIdC).Append("', '")
             .Append(userNameC).Append("', '")
             .Append(userRolC).Append("', '")
@@ -77,7 +77,7 @@ public sealed class UserDAO : SingleDAO<User>, IUserDAO
 
         _sb = new StringBuilder();
         _sb.Append("UPDATE ").Append(_tableName)
-            .Append(" Set Name = '").Append(userNameC).Append("', Rol = '")
+            .Append(" Set name = '").Append(userNameC).Append("', Rol = '")
                 .Append(userRolC).Append("', Email = '")
                 .Append(userEmailC).Append("', PhoneNumber = '")
                 .Append(userPhoneNumberC).Append("', Birthdate = '")

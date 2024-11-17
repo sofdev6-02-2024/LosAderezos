@@ -1,6 +1,5 @@
 using Backend.Mappers;
 using Backend.Services;
-using Backend.Services.ServiceInterfaces;
 using DB;
 using Microsoft.OpenApi.Models;
 
@@ -37,6 +36,7 @@ builder.Services.AddControllers();
 builder.Services.AddAutoMapper(typeof(UserProfile));
 builder.Services.AddHttpClient<UserService>();
 builder.Services.AddHttpClient<TokenService>();
+builder.Services.AddHttpClient<ProductAPIService>();
 
 
 builder.Services.AddCors(options =>

@@ -31,6 +31,14 @@ public class SubsidiaryController: ControllerBase
         var subsidiary = await _subsidiaryService.GetSubsidiaryById(subsidiaryId);
         return Ok(subsidiary);
     }
+    
+    
+    [HttpGet("company/{companyId}")]
+    public async Task<ActionResult<List<SubsidiaryDTO>>> GetSubsidiariesByCompanyId(Guid companyId)
+    {
+        var subsidiary = await _subsidiaryService.GetSubsidiariesByCompanyId(companyId);
+        return Ok(subsidiary);
+    }
 
 
     [HttpPost]
