@@ -8,7 +8,8 @@ public interface IStockService
     public Task<List<StockDTO>> GetStocks();
     public Task<StockDTO?> GetStockById(Guid stockId);
     public Task<List<StockDTO>> GetStocksBySubsidiaryId(Guid subsidiaryId);
+    public Task<StockDTO> GetStocksBySubsidiaryAndProductId(Guid subsidiaryId, Guid productId);
     public Task<StockDTO> CreateStock(StockWithoutIDDTO stock);
-    public Task<StockDTO> UpdateStock(StockDTO stock);
+    public Task<StockDTO> UpdateStock(StockWithoutIDDTO stock, Guid stockId);
     
 }

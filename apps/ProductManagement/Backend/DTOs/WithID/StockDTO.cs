@@ -14,4 +14,5 @@ public class StockDTO
     public int LowExistence { get; set; }
     public bool Notify  { get; set; }
     public Guid SubsidiaryId { get; set; }
+    public List<CategoryDTO> Categories { get; set; } = new List<CategoryDTO>();
 }
