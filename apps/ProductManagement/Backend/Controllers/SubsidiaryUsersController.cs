@@ -28,13 +28,6 @@ public class SubsidiaryUsersController : ControllerBase
         var result = await _subsidiaryUsersService.GetSubsidiaryUsersByUserId(userId);
         return Ok(result);
     }
-
-    [HttpPost("subsidiary/user")]
-    public async Task<ActionResult<SubsidiaryUsersDTO>> GetSubsidiaryUsersByUserId(SubsidiaryUsersDTO user)
-    {
-        var result = await _subsidiaryUsersService.GetSubsidiaryUsersByBothIds(user);
-        return Ok(result);
-    }
     
     [HttpPost]
     public async Task<ActionResult<SubsidiaryUsersDTO>> GetSubsidiaryUsersByBothIds(SubsidiaryUsersDTO subsidiaryUsers)
