@@ -1,8 +1,8 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 import PropTypes from "prop-types";
-import { getDecodedToken } from "./AuthService";
+import { getDecodedToken } from "../services/AuthService";
 
-const UserContext = createContext();
+export const UserContext = createContext();
 
 export function UserProvider({ children }) {
   const [user, setUser] = useState(null);
@@ -15,10 +15,6 @@ export function UserProvider({ children }) {
   }, []);
 
   return <UserContext.Provider value={user}>{children}</UserContext.Provider>;
-}
-
-export function useUser() {
-  return useContext(UserContext);
 }
 
 UserProvider.propTypes = {

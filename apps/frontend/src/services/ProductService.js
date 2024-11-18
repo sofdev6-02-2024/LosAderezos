@@ -68,7 +68,7 @@ export async function getSubsidiaryById(id) {
     return response.data;
   } catch (error) {
     throw new Error(
-      error.response?.data?.message || "Error al añadir los usuarios"
+      error.response?.data?.message || "Error al conseguir subsidiary"
     );
   }
 }
@@ -79,7 +79,7 @@ export async function getCompanyById(id) {
     return response.data;
   } catch (error) {
     throw new Error(
-      error.response?.data?.message || "Error al añadir los usuarios"
+      error.response?.data?.message || "Error al conseguir company"
     );
   }
 }
