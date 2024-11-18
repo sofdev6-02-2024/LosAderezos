@@ -5,7 +5,7 @@ import Google from "../assets/googleLogo.png"
 
 function Login() {
   const handleGoogleLogin = () => {
-    window.location.href = "http://API/auth/google";
+    window.location.href = "http://localhost:8000/auth/google";
   };
 
   return (
