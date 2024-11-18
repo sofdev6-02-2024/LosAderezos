@@ -63,6 +63,7 @@ public sealed class UserDAO : SingleDAO<User>, IUserDAO
             .Append(userEmailC).Append("', '")
             .Append(userPhoneNumberC).Append("', '")
             .Append(userBirthdateC).Append("');");
+        _mySqlReader?.Close();
         return _sb;
     }
 
@@ -83,6 +84,7 @@ public sealed class UserDAO : SingleDAO<User>, IUserDAO
                 .Append(userPhoneNumberC).Append("', Birthdate = '")
                 .Append(userBirthdateC).Append("'")
                 .Append(" WHERE Id = '").Append(userIdC).Append("';");
+        _mySqlReader?.Close();
         return _sb;
     }
     

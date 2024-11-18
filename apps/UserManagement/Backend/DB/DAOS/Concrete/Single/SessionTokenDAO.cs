@@ -26,6 +26,7 @@ public sealed class SessionTokenDAO : SingleDAO<SessionToken>, ISessionTokenDAO
     private protected override List<SessionToken> MapReaderToEntitiesList()
     {
         _entitiesList = new List<SessionToken>();
+        _mySqlReader?.Close();
         return _entitiesList;
     }
     
@@ -40,12 +41,14 @@ public sealed class SessionTokenDAO : SingleDAO<SessionToken>, ISessionTokenDAO
             .Append("VALUES ('").Append(sessionTokenC).Append("', '")
             .Append(sessionTimeC).Append("', '")
             .Append(sessionUserIdC).Append("');");
+        _mySqlReader?.Close();
         return _sb;
     }
 
     private protected override StringBuilder UpdateCommandIntoStringBuilder(SessionToken session)
     {
         _sb = new StringBuilder();
+        _mySqlReader?.Close();
         return _sb;
     }
 }

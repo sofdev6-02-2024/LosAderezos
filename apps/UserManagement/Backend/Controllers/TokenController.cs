@@ -1,3 +1,4 @@
+using Backend.DTOs.WithID;
 using Backend.DTOs.WithoutID;
 using Backend.Services.ServiceInterfaces;
 using Microsoft.AspNetCore.Mvc;
@@ -16,7 +17,7 @@ public class TokenController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<ActionResult<UserFullInfoDTO>> PostToken(CreateTokenDTO sessionPostDto)
+    public ActionResult<UserFullInfoDTO> PostToken(CreateTokenDTO sessionPostDto)
     {
         var result = _tokenService.PostToken(sessionPostDto);
         return Ok(result);
@@ -39,16 +40,16 @@ public class TokenController : ControllerBase
     }
 
     [HttpGet("GetTokenUser/{userId}")]
-    public ActionResult<UserFullInfoDTO> GetTokenUser(Guid userId)
+    public ActionResult<UserFullInfoDTO?> GetTokenUser(Guid userId)
     {
         var result = _tokenService.GetTokenUser(userId);
         return Ok(result);
     }
 
-    [HttpGet("IsTokenValid/{userId}")]
-    public ActionResult<bool> IsTokenValid(Guid userId)
+    [HttpPost("IsTokenValid")]
+    public ActionResult<bool> IsTokenValid(ValidateTokenDTO token)
     {
-        var result = _tokenService.IsTokenValid(userId);
+        var result = _tokenService.IsTokenValid(token);
         return Ok(result);
     }
 }
