@@ -45,6 +45,14 @@ public class StockController : ControllerBase
         return Ok(result);
     }
     
+    
+    [HttpGet("company/{companyId}/product/{productId}")]
+    public async Task<ActionResult<List<OtherSubsidiariesProductsDTO>>> GetOtherSubsidiariesProducts(Guid companyId, Guid productId)
+    {
+        var result = await _stockService.GetOtherSubsidiariesProducts(companyId, productId);
+        return Ok(result);
+    }
+    
     [HttpPost]
     public async Task<ActionResult<StockDTO>> PostStock(StockWithoutIDDTO stock)
     {

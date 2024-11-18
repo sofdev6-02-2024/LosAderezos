@@ -13,15 +13,17 @@ public class StockService : IStockService
     private readonly IProductDAO _productDao;
     private readonly ICategoryDAO _categoryDao;
     private readonly IProductCategoriesDAO _productCategoriesDao;
+    private readonly ISubsidiaryService _subsidiaryService;
     private readonly IMapper _mapper;
 
-    public StockService(IStockDAO stockDao, IMapper mapper, IProductDAO productDao, ICategoryDAO categoryDao, IProductCategoriesDAO productCategoriesDao)
+    public StockService(IStockDAO stockDao, IMapper mapper, IProductDAO productDao, ICategoryDAO categoryDao, IProductCategoriesDAO productCategoriesDao, ISubsidiaryService subsidiaryService)
     {
         _stockDao = stockDao;
         _mapper = mapper;
         _productDao = productDao;
         _categoryDao = categoryDao;
         _productCategoriesDao = productCategoriesDao;
+        _subsidiaryService = subsidiaryService;
     }
 
     public async Task<List<StockDTO>> GetStocks()
@@ -77,22 +79,61 @@ public class StockService : IStockService
         }).ToList();
     }
 
-    public async Task<StockDTO> GetStocksBySubsidiaryAndProductId(Guid subsidiaryId, Guid productId)
+    public async Task<List<StockDTO>> GetStocksByProductId(Guid productId)
+    {
+        
+        return _stockDao.ReadAll().Where(s => s.ProductId == productId).Select(s => {
+            List<Category> categories = new List<Category>();
+            var matches = _productCategoriesDao.GetProductCategoriesByProductId(s.ProductId);
+            foreach (ProductCategories match in matches)
+            {
+                var category = _categoryDao.Read(match.CategoryId);
+                if (category != null)
+                {
+                    categories.Add(category);    
+                }
+            }
+            var product = _productDao.Read(s.ProductId);
+            return _mapper.Map<StockDTO>((s, product, categories));
+        }).ToList();
+    }
+
+    public async Task<StockDTO?> GetStocksBySubsidiaryAndProductId(Guid subsidiaryId, Guid productId)
     {
         var stock = _stockDao.ReadAll().FirstOrDefault(s => s.SubsidiaryId == subsidiaryId && s.ProductId == productId);
         var product = _productDao.Read(productId);
         List<Category> categories = new List<Category>();
-        var matches = _productCategoriesDao.GetProductCategoriesByProductId(stock.ProductId);
-        foreach (ProductCategories match in matches)
+        if (stock != null)
         {
-            var category = _categoryDao.Read(match.CategoryId);
-            if (category != null)
+            var matches = _productCategoriesDao.GetProductCategoriesByProductId(stock.ProductId);
+            foreach (ProductCategories match in matches)
             {
-                categories.Add(category);    
+                var category = _categoryDao.Read(match.CategoryId);
+                if (category != null)
+                {
+                    categories.Add(category);    
+                }
             }
+            return _mapper.Map<StockDTO>((stock, product, categories));
         }
 
-        return _mapper.Map<StockDTO>((stock, product, categories));
+        return null;
+    }
+
+    public async Task<List<OtherSubsidiariesProductsDTO>> GetOtherSubsidiariesProducts(Guid companyId, Guid productId)
+    {
+        var companySubsidiaries = await _subsidiaryService.GetSubsidiariesByCompanyId(companyId);
+        List<OtherSubsidiariesProductsDTO> result = new List<OtherSubsidiariesProductsDTO>();
+        foreach (SubsidiaryDTO subsidiary in companySubsidiaries)
+        {
+            var stock = await GetStocksBySubsidiaryAndProductId(subsidiary.SubsidiaryId, productId);
+            if (stock != null)
+            {
+                result.Add(_mapper.Map<OtherSubsidiariesProductsDTO>((subsidiary, stock)));    
+            }
+            
+        }
+        return result;
     }
 
     public async Task<StockDTO> CreateStock(StockWithoutIDDTO stock)
