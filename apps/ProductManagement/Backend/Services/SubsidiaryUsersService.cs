@@ -29,13 +29,13 @@ public class SubsidiaryUsersService : ISubsidiaryUsersService
 
     public async Task<SubsidiaryUsersDTO> GetSubsidiaryUsersByBothIds(SubsidiaryUsersDTO subsidiaryUsers)
     {
-        return _mapper.Map<SubsidiaryUsersDTO>(_subsidiaryUsersDao.Read(subsidiaryUsers.SubsidiaryId, subsidiaryUsers.UserId));
+        return _mapper.Map<SubsidiaryUsersDTO>(_subsidiaryUsersDao.Read(subsidiaryUsers.UserId, subsidiaryUsers.SubsidiaryId));
     }
 
     public async Task<SubsidiaryUsersDTO> CreateSubsidiaryUsers(SubsidiaryUsersDTO subsidiaryUsers)
     {
         _subsidiaryUsersDao.Create(_mapper.Map<SubsidiaryUsers>(subsidiaryUsers));
-        return _mapper.Map<SubsidiaryUsersDTO>(_subsidiaryUsersDao.Read(subsidiaryUsers.SubsidiaryId, subsidiaryUsers.UserId));
+        return _mapper.Map<SubsidiaryUsersDTO>(_subsidiaryUsersDao.Read(subsidiaryUsers.UserId, subsidiaryUsers.SubsidiaryId));
     }
 
     public async Task<bool> DeleteSubsidiaryUsers(SubsidiaryUsersDTO subsidiaryUsers)

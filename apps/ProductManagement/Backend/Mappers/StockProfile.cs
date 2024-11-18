@@ -9,7 +9,7 @@ public class StockProfile : Profile
 {
     public StockProfile()
     {
-        CreateMap< (Stock, Product), StockDTO>()
+        CreateMap< (Stock, Product, List<Category>), StockDTO>()
             .ForMember(dst => dst.ProductId, opt => opt.MapFrom(src => src.Item1.ProductId))
             .ForMember(dst => dst.StockId, opt => opt.MapFrom(src => src.Item1.StockId))
             .ForMember(dst => dst.Code, opt => opt.MapFrom(src => src.Item1.Code))
@@ -21,7 +21,8 @@ public class StockProfile : Profile
             .ForMember(dst => dst.CompanyId, opt => opt.MapFrom(src => src.Item2.CompanyId))
             .ForMember(dst => dst.IncomingPrice, opt => opt.MapFrom(src => src.Item2.IncomingPrice))
             .ForMember(dst => dst.SellPrice, opt => opt.MapFrom(src => src.Item2.SellPrice))
-            .ForMember(dst => dst.LowExistence, opt => opt.MapFrom(src => src.Item2.LowExistence));
+            .ForMember(dst => dst.LowExistence, opt => opt.MapFrom(src => src.Item2.LowExistence))
+            .ForMember(dst => dst.Categories, opt => opt.MapFrom(src => src.Item3));
         CreateMap<StockDTO, Stock>()
             .ForMember(dst => dst.ProductId, opt => opt.MapFrom(src => src.ProductId))
             .ForMember(dst => dst.StockId, opt => opt.MapFrom(src => src.StockId))

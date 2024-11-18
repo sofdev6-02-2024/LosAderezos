@@ -44,9 +44,15 @@ public class UserController: ControllerBase
         return Ok(result);
     }
 
-    [HttpPost("email")]
-    public async Task<ActionResult<UserDTO>> GetUserByEmail(UserBySubsidiaryDTO user)
+    [HttpPost("subsidiary/email")]
+    public async Task<ActionResult<UserDTO>> GetUserBySubsidiaryAndEmail(UserBySubsidiaryDTO user)
     {
-        return Ok(await _userService.GetUserByEmail(user));
+        return Ok(await _userService.GetUserBySubsidiaryAndEmail(user));
+    }
+    
+    [HttpPost("email")]
+    public async Task<ActionResult<UserDTO>> GetUserByEmail(EmailDTO email)
+    {
+        return Ok(await _userService.GetUserByEmail(email));
     }
 }

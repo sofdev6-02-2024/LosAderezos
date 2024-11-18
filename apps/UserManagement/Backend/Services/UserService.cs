@@ -46,7 +46,7 @@ public class UserService : IUserService
         return _mapper.Map<UserDTO>(_userDao.Read(user.UserId));
     }
 
-    public async Task<UserDTO?> GetUserByEmail(UserBySubsidiaryDTO user)
+    public async Task<UserDTO?> GetUserBySubsidiaryAndEmail(UserBySubsidiaryDTO user)
     {
         var foundUser = _userDao.ReadAll().FirstOrDefault(u => u.Email == user.Email);
         if (foundUser != null)
@@ -71,5 +71,10 @@ public class UserService : IUserService
             }
         }
         return null;
+    }
+
+    public async Task<UserDTO?> GetUserByEmail(EmailDTO email)
+    {
+        return _mapper.Map<UserDTO>(_userDao.ReadAll().FirstOrDefault(u => u.Email == email.Email));
     }
 }
