@@ -1,3 +1,4 @@
+
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -7,8 +8,6 @@ using Backend.Entities;
 using Backend.Services.ServiceInterfaces;
 using DB;
 using Microsoft.IdentityModel.Tokens;
-using Newtonsoft.Json;
-using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace Backend.Services;
 
@@ -19,26 +18,19 @@ public class TokenService: ITokenservice
     private readonly IMapper _mapper;
     private readonly IHttpContextAccessor _httpContextAccessor;
     private static readonly TimeSpan ExpirationTime = new TimeSpan(0, 30, 1);
-    private readonly IProductAPIService _productApiService;
 
 
-
-    public TokenService(ISessionTokenDAO sessionTokenDao, IUserDAO userDao, IMapper mapper, IHttpContextAccessor httpContextAccessor, IProductAPIService productApiService)
+    public TokenService(ISessionTokenDAO sessionTokenDao, IUserDAO userDao, IMapper mapper, IHttpContextAccessor httpContextAccessor)
     {
         _sessionTokenDao = sessionTokenDao;
         _userDao = userDao;
         _mapper = mapper;
         _httpContextAccessor = httpContextAccessor;
-        _productApiService = productApiService;
     }
 
-    public UserFullInfoDTO? PostToken(CreateTokenDTO sessionPostDto)
+    public UserFullInfoDTO PostToken(CreateTokenDTO sessionPostDto)
     {
-        var user = _userDao.ReadAll().Where(u => u.Email == sessionPostDto.Email).FirstOrDefault();
-        if (user == null)
-        {
-            return null;
-        }
+        var user = _userDao.ReadAll().Where(u => u.Email == sessionPostDto.Email).First();
         var token = _mapper.Map<SessionToken>((sessionPostDto.Token, user.UserId, DateTime.Now));
         _sessionTokenDao.Create(token);
         return _mapper.Map<UserFullInfoDTO>((token, user));
@@ -47,40 +39,32 @@ public class TokenService: ITokenservice
 
     public bool GetCookie(Guid userId)
     {
-
-        SessionToken? session = _sessionTokenDao.Read(userId);
+        
+        SessionToken? session = _sessionTokenDao.ReadAll().FirstOrDefault(u => u.UserId == userId);
         if (session == null)
         {
-            Console.WriteLine("session not found");
             return false;
         }
-        
         User? user = _userDao.Read(userId);
         if (user == null)
         {
-            Console.WriteLine("User not found");
             return false;
         }
-
-        var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(session.Token));
+        var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(session.Token + "XD"));
         var signingCredentials = new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha256);
 
-        var subsIds = _productApiService.GetSubsidiariesIdsByUserId(user.UserId).Result?.Select(sub => sub.ToString()).ToList();
-        string? companyId = _productApiService.GetCompanyIdByUserId(user.UserId).Result.ToString();
-        
         var claims = new[]
         {
-            new Claim("userId", user.UserId.ToString()),
+            new Claim(JwtRegisteredClaimNames.Email, user.Email),
+            new Claim(JwtRegisteredClaimNames.PhoneNumber, user.PhoneNumber),
+            new Claim("UserId", user.UserId.ToString()),
             new Claim("UserEmail", user.Email),
             new Claim("UserRol", user.Rol),
-            new Claim("UserBirthDate", user.BirthDate.ToString("dd-MM-yyyy")),
+            new Claim("UserBirthDate", user.BirthDate.ToString("dd-mm-yyyy")),
             new Claim("UserPhoneNumber", user.PhoneNumber),
             new Claim("UserName", user.Name),
-            new Claim("Token", session.Token),
-            new Claim("subsidiaryId", JsonSerializer.Serialize(subsIds)),
-            new Claim("companyId", companyId ?? string.Empty)
-    };
-        Console.WriteLine(claims);
+            new Claim( "Token", session.Token),
+        };
 
         var tokenDescriptor = new SecurityTokenDescriptor
         {
@@ -91,10 +75,9 @@ public class TokenService: ITokenservice
 
         var tokenHandler = new JwtSecurityTokenHandler();
         var token = tokenHandler.CreateToken(tokenDescriptor);
-        
         var cookieOptions = new CookieOptions
         {
-            HttpOnly = false,
+            HttpOnly = false, 
             Secure = true,
             Expires = DateTime.UtcNow.AddDays(1),
             SameSite = SameSiteMode.None
@@ -136,5 +119,6 @@ public class TokenService: ITokenservice
             return false;
         }
         return (DateTime.Now - token.Time)  < ExpirationTime;
+
     }
 }

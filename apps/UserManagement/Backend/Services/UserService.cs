@@ -10,15 +10,16 @@ namespace Backend.Services;
 
 public class UserService : IUserService
 {
+    private readonly HttpClient _httpClient;
+
     private readonly IUserDAO _userDao;
     private readonly IMapper _mapper;
-    private readonly IProductAPIService _productApiService;
 
-    public UserService(IUserDAO userDao, IMapper mapper, IProductAPIService productApiService)
+    public UserService(IUserDAO userDao, IMapper mapper, HttpClient httpClient)
     {
         _userDao = userDao;
         _mapper = mapper;
-        _productApiService = productApiService;
+        _httpClient = httpClient;
     }
 
     public List<UserDTO> GetUsers()
@@ -48,27 +49,19 @@ public class UserService : IUserService
 
     public async Task<UserDTO?> GetUserByEmail(UserBySubsidiaryDTO user)
     {
-        var foundUser = _userDao.ReadAll().FirstOrDefault(u => u.Email == user.Email);
+        var foundUser = _userDao.ReadAll().First(u => u.Email == user.Email);
         if (foundUser != null)
         {
-            List<SubsidiaryUsersDTO>? subsidiaryUsers = await _productApiService.GetUsersBySubsidiaryId(user.SubsidiaryId);
-            if (subsidiaryUsers != null)
+            string url = $"http://ProductManagementService/SubsidiaryUsers/subsidiary/{user.SubsidiaryId}";    
+            HttpResponseMessage response = await _httpClient.GetAsync(url);
+            response.EnsureSuccessStatusCode();
+            string content = await response.Content.ReadAsStringAsync();
+            var persons = JsonSerializer.Deserialize<List<UserDTO>>(content);
+
+            if (persons.Any(dto => dto.UserId == foundUser.UserId))
             {
-                List<UserDTO> users = new List<UserDTO>();
-                foreach (SubsidiaryUsersDTO subsidiaryUser in subsidiaryUsers)
-                {
-                    var newUser = GetUserById(subsidiaryUser.userId);
-                    if (newUser != null)
-                    {
-                        users.Add(newUser);
-                    }
-                    
-                }
-                if (users.Any(dto => dto.UserId == foundUser.UserId))
-                {
-                    return _mapper.Map<UserDTO>(_mapper.Map<User>(foundUser));
-                }
-            }
+                return _mapper.Map<UserDTO>(_mapper.Map<User>(foundUser));
+            }    
         }
         return null;
     }
