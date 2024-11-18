@@ -36,7 +36,7 @@ public sealed class SessionTokenDAO : SingleDAO<SessionToken>, ISessionTokenDAO
         string sessionUserIdC = session.UserId.ToString();
 
         _sb = new StringBuilder();
-        _sb.Append("INSERT INTO ").Append(_tableName).Append(" (Token, Time, Id) ")
+        _sb.Append("INSERT INTO ").Append(_tableName).Append(" (Token, Time, UserId) ")
             .Append("VALUES ('").Append(sessionTokenC).Append("', '")
             .Append(sessionTimeC).Append("', '")
             .Append(sessionUserIdC).Append("');");

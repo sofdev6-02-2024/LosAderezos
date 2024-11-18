@@ -16,10 +16,10 @@ public class TokenController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<ActionResult<UserFullInfoDTO>> PostToken(CreateTokenDTO sessionPostDto)
+    public Task<ActionResult<UserFullInfoDTO>> PostToken(CreateTokenDTO sessionPostDto)
     {
         var result = _tokenService.PostToken(sessionPostDto);
-        return Ok(result);
+        return Task.FromResult<ActionResult<UserFullInfoDTO>>(Ok(result));
     }
 
     [HttpGet("GetCookie/{userId}")]
@@ -28,7 +28,7 @@ public class TokenController : ControllerBase
         var result = _tokenService.GetCookie(userId);
         if (!result)
             return Redirect("http://localhost:5173/");
-        return Redirect("http://localhost:5173/store_menu");
+        return Redirect("https://localhost:5173/store_menu");
     }
 
     [HttpPost("RefreshToken")]

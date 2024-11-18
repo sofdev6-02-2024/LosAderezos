@@ -8,7 +8,7 @@ public sealed class UserDataInjector : DataInjector
                             " INTO TABLE User" +
                             " FIELDS TERMINATED BY ','" +
                             " IGNORE 1 LINES" + 
-                            " (Id,name,Rol,Email,PhoneNumber,@BirthDate) SET" +
+                            " (Id,Name,Rol,Email,PhoneNumber,@BirthDate) SET" +
                             " BirthDate = CAST(@BirthDate AS DATETIME);";
     }
 }
