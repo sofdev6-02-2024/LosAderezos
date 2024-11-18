@@ -28,6 +28,13 @@ public class SubsidiaryService : ISubsidiaryService
         return _mapper.Map<SubsidiaryDTO>(_subsidiaryDao.Read(id));
     }
 
+    public async Task<List<SubsidiaryDTO>> GetSubsidiariesByCompanyId(Guid id)
+    {
+        var subsidiaries = _subsidiaryDao.ReadAll().Where(s => s.CompanyId == id)
+            .Select(s => _mapper.Map<SubsidiaryDTO>(s)).ToList();
+        return subsidiaries;
+    }
+
     public async Task<SubsidiaryDTO> CreateSubsidiary(SubsidiaryWithoutDTO subsidiary)
     {
         
