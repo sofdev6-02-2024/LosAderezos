@@ -17,8 +17,7 @@ CREATE TABLE IF NOT EXISTS Company(
 -- SUBSIDIARY
 CREATE TABLE IF NOT EXISTS Subsidiary(
     Id          VARCHAR(36) PRIMARY KEY NOT NULL,
-    Latitude    DECIMAL(8,6),
-    Longitude   DECIMAL(9,6),
+    Location    VARCHAR(50),
     Name        VARCHAR(80),
     Type        VARCHAR(80),
     CompanyId   VARCHAR(36),

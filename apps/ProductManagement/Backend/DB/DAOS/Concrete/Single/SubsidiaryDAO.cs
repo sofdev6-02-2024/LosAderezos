@@ -1,6 +1,7 @@
 using System.Text;
 using MySql.Data;
 using Backend.Entities;
+using Microsoft.Extensions.Primitives;
 
 namespace DB;
 
@@ -16,11 +17,10 @@ public sealed class SubsidiaryDAO : SingleDAO<Subsidiary>, ISubsidiaryDAO
         _entity = new Subsidiary 
                     {
                         SubsidiaryId = _mySqlReader!.GetGuid(0),
-                        Latitude = _mySqlReader!.GetDecimal(1),
-                        Longitude = _mySqlReader!.GetDecimal(2),
-                        Name = _mySqlReader!.GetString(3),
-                        Type = _mySqlReader!.GetString(4),
-                        CompanyId = _mySqlReader!.GetGuid(5)
+                        Location = _mySqlReader!.GetString(1),
+                        Name = _mySqlReader!.GetString(2),
+                        Type = _mySqlReader!.GetString(3),
+                        CompanyId = _mySqlReader!.GetGuid(4)
                     };
         _mySqlReader.Close();
         return _entity;
@@ -34,11 +34,10 @@ public sealed class SubsidiaryDAO : SingleDAO<Subsidiary>, ISubsidiaryDAO
             _entity = new Subsidiary 
                     {
                         SubsidiaryId = _mySqlReader.GetGuid(0),
-                        Latitude = _mySqlReader.GetDecimal(1),
-                        Longitude = _mySqlReader.GetDecimal(2),
-                        Name = _mySqlReader.GetString(3),
-                        Type = _mySqlReader.GetString(4),
-                        CompanyId = _mySqlReader.GetGuid(5)
+                        Location = _mySqlReader.GetString(1),
+                        Name = _mySqlReader.GetString(2),
+                        Type = _mySqlReader.GetString(3),
+                        CompanyId = _mySqlReader.GetGuid(4)
                     };
             _entitiesList.Add(_entity);
         }
@@ -49,19 +48,17 @@ public sealed class SubsidiaryDAO : SingleDAO<Subsidiary>, ISubsidiaryDAO
     private protected override StringBuilder CreateCommandIntoStringBuilder(Subsidiary subsidiary)
     {
         string subsidiaryIdC = subsidiary.SubsidiaryId.ToString();
-        string subsidiaryLatitudeC = subsidiary.Latitude.ToString();
-        string subsidiaryLongitudeC = subsidiary.Latitude.ToString();
+        string subsidiaryLocationC = subsidiary.Location;
         string subsidiaryNameC = subsidiary.Name;
         string subsidiaryTypeC = subsidiary.Type;
         string subsidiaryCompanyIdC = subsidiary.CompanyId.ToString();
 
         _sb = new StringBuilder();
-        _sb.Append("INSERT INTO ").Append(_tableName).Append(" (Id, Latitude, Longitude, Name, Type, CompanyId)")
-            .Append("VALUES ('").Append(subsidiaryIdC).Append("',")
-                                .Append(subsidiaryLatitudeC).Append(",")
-                                .Append(subsidiaryLongitudeC).Append(",'")
-                                .Append(subsidiaryNameC).Append("','")
-                                .Append(subsidiaryTypeC).Append("','")
+        _sb.Append("INSERT INTO ").Append(_tableName).Append(" (Id, Location, Name, Type, CompanyId)")
+            .Append("VALUES ('").Append(subsidiaryIdC).Append("', '")
+                                .Append(subsidiaryLocationC).Append("', '")
+                                .Append(subsidiaryNameC).Append("', '")
+                                .Append(subsidiaryTypeC).Append("', '")
                                 .Append(subsidiaryCompanyIdC).Append("');");
         return _sb;
     }
@@ -69,17 +66,15 @@ public sealed class SubsidiaryDAO : SingleDAO<Subsidiary>, ISubsidiaryDAO
     private protected override StringBuilder UpdateCommandIntoStringBuilder(Subsidiary subsidiary)
     {
         string subsidiaryIdC = subsidiary.SubsidiaryId.ToString();
-        string subsidiaryLatitudeC = subsidiary.Latitude.ToString();
-        string subsidiaryLongitudeC = subsidiary.Latitude.ToString();
+        string subsidiaryLocationC = subsidiary.Location;
         string subsidiaryNameC = subsidiary.Name;
         string subsidiaryTypeC = subsidiary.Type;
         string subsidiaryCompanyIdC = subsidiary.CompanyId.ToString();
 
         _sb = new StringBuilder();
         _sb.Append("UPDATE ").Append(_tableName)
-            .Append(" Set Latitude = ").Append(subsidiaryLatitudeC).Append(", ")
-            .Append(" Longitude = ").Append(subsidiaryLongitudeC).Append(", ")
-            .Append(" Name = '").Append(subsidiaryNameC).Append("',")
+            .Append(" Set Location = '").Append(subsidiaryLocationC).Append("', ")
+            .Append(" Name = '").Append(subsidiaryNameC).Append("', ")
             .Append(" Type = '").Append(subsidiaryTypeC).Append("', ")
             .Append(" CompanyId = '").Append(subsidiaryCompanyIdC).Append("' ")
             .Append(" WHERE Id = '").Append(subsidiaryIdC).Append("';");
