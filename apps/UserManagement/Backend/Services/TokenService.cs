@@ -2,13 +2,12 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using AutoMapper;
+using Backend.DTOs.WithID;
 using Backend.DTOs.WithoutID;
 using Backend.Entities;
 using Backend.Services.ServiceInterfaces;
 using DB;
 using Microsoft.IdentityModel.Tokens;
-using Newtonsoft.Json;
-using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace Backend.Services;
 
@@ -66,6 +65,13 @@ public class TokenService: ITokenservice
         var signingCredentials = new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha256);
 
         var subsIds = _productApiService.GetSubsidiariesIdsByUserId(user.UserId).Result?.Select(sub => sub.ToString()).ToList();
+        var subsString = string.Empty;
+        if (subsIds != null)
+        {
+            subsString = string.Join(',', subsIds);
+        }
+            
+
         string? companyId = _productApiService.GetCompanyIdByUserId(user.UserId).Result.ToString();
         
         var claims = new[]
@@ -77,7 +83,7 @@ public class TokenService: ITokenservice
             new Claim("UserPhoneNumber", user.PhoneNumber),
             new Claim("UserName", user.Name),
             new Claim("Token", session.Token),
-            new Claim("subsidiaryId", JsonSerializer.Serialize(subsIds)),
+            new Claim("subsidiaryId", subsString),
             new Claim("companyId", companyId ?? string.Empty)
     };
         Console.WriteLine(claims);
@@ -121,20 +127,24 @@ public class TokenService: ITokenservice
         
     }
 
-    public UserFullInfoDTO GetTokenUser(Guid userId)
+    public UserFullInfoDTO? GetTokenUser(Guid userId)
     {
-        var token = _sessionTokenDao.ReadAll().FirstOrDefault(u => u.UserId == userId); 
+        SessionToken? token = _sessionTokenDao.Read(userId);
+        if (token == null)
+        {
+            return null;
+        }
         var user = _userDao.Read(userId);
         return _mapper.Map<UserFullInfoDTO>((token, user));
     }
 
-    public bool IsTokenValid(Guid userId)
+    public bool IsTokenValid(ValidateTokenDTO token)
     {
-        var token = _sessionTokenDao.ReadAll().FirstOrDefault(u => u.UserId == userId);
-        if (token == null)
+        SessionToken? userToken = _sessionTokenDao.Read(token.UserId);
+        if (userToken == null)
         {
             return false;
         }
-        return (DateTime.Now - token.Time)  < ExpirationTime;
+        return DateTime.Now - userToken.Time  < ExpirationTime && userToken.Token == token.Token;
     }
 }
