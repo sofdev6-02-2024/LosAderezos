@@ -56,8 +56,8 @@ public class UserController: ControllerBase
     }
     
     [HttpPost("email")]
-    public async Task<ActionResult<UserDTO>> GetUserByEmail(EmailDTO email)
+    public ActionResult<UserDTO> GetUserByEmail(EmailDTO email)
     {
-        return Ok(await _userService.GetUserByEmail(email));
+        return Ok(_userService.GetUserByEmail(email));
     }
 }

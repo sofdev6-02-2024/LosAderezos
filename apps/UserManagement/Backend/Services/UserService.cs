@@ -1,4 +1,3 @@
-using System.Text.Json;
 using AutoMapper;
 using Backend.DTOs.WithID;
 using Backend.DTOs.WithoutID;
@@ -92,7 +91,7 @@ public class UserService : IUserService
         return null;
     }
 
-    public async Task<UserDTO?> GetUserByEmail(EmailDTO email)
+    public UserDTO? GetUserByEmail(EmailDTO email)
     {
         return _mapper.Map<UserDTO>(_userDao.ReadAll().FirstOrDefault(u => u.Email == email.Email));
     }
