@@ -17,28 +17,28 @@ public class SubsidiaryUsersService : ISubsidiaryUsersService
         _mapper = mapper;
     }
 
-    public async Task<List<SubsidiaryUsersDTO>> GetSubsidiaryUsersByUserId(Guid userId)
+    public List<SubsidiaryUsersDTO> GetSubsidiaryUsersByUserId(Guid userId)
     {
         return _subsidiaryUsersDao.GetSubsidiaryUsersByUserId(userId).Select(u => _mapper.Map<SubsidiaryUsersDTO>(u)).ToList();
     }
 
-    public async Task<List<SubsidiaryUsersDTO>> GetSubsidiaryUsersBySubsidiaryId(Guid subsidiaryId)
+    public List<SubsidiaryUsersDTO> GetSubsidiaryUsersBySubsidiaryId(Guid subsidiaryId)
     {
         return _subsidiaryUsersDao.GetSubsidiaryUsersBySubsidiaryId(subsidiaryId).Select(u => _mapper.Map<SubsidiaryUsersDTO>(u)).ToList();
     }
 
-    public async Task<SubsidiaryUsersDTO> GetSubsidiaryUsersByBothIds(SubsidiaryUsersDTO subsidiaryUsers)
+    public SubsidiaryUsersDTO GetSubsidiaryUsersByBothIds(SubsidiaryUsersDTO subsidiaryUsers)
     {
         return _mapper.Map<SubsidiaryUsersDTO>(_subsidiaryUsersDao.Read(subsidiaryUsers.UserId, subsidiaryUsers.SubsidiaryId));
     }
 
-    public async Task<SubsidiaryUsersDTO> CreateSubsidiaryUsers(SubsidiaryUsersDTO subsidiaryUsers)
+    public SubsidiaryUsersDTO CreateSubsidiaryUsers(SubsidiaryUsersDTO subsidiaryUsers)
     {
         _subsidiaryUsersDao.Create(_mapper.Map<SubsidiaryUsers>(subsidiaryUsers));
         return _mapper.Map<SubsidiaryUsersDTO>(_subsidiaryUsersDao.Read(subsidiaryUsers.UserId, subsidiaryUsers.SubsidiaryId));
     }
 
-    public async Task<bool> DeleteSubsidiaryUsers(SubsidiaryUsersDTO subsidiaryUsers)
+    public bool DeleteSubsidiaryUsers(SubsidiaryUsersDTO subsidiaryUsers)
     {
         return _subsidiaryUsersDao.Delete(subsidiaryUsers.SubsidiaryId, subsidiaryUsers.UserId);
     }

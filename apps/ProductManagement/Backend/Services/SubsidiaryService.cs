@@ -18,24 +18,24 @@ public class SubsidiaryService : ISubsidiaryService
         _mapper = mapper;
     }
 
-    public async Task<List<SubsidiaryDTO>> GetSubsidiaries()
+    public List<SubsidiaryDTO> GetSubsidiaries()
     {
         return _subsidiaryDao.ReadAll().Select(_mapper.Map<SubsidiaryDTO>).ToList();
     }
 
-    public async Task<SubsidiaryDTO> GetSubsidiaryById(Guid id)
+    public SubsidiaryDTO? GetSubsidiaryById(Guid id)
     {
         return _mapper.Map<SubsidiaryDTO>(_subsidiaryDao.Read(id));
     }
 
-    public async Task<List<SubsidiaryDTO>> GetSubsidiariesByCompanyId(Guid id)
+    public List<SubsidiaryDTO> GetSubsidiariesByCompanyId(Guid id)
     {
         var subsidiaries = _subsidiaryDao.ReadAll().Where(s => s.CompanyId == id)
             .Select(s => _mapper.Map<SubsidiaryDTO>(s)).ToList();
         return subsidiaries;
     }
 
-    public async Task<SubsidiaryDTO> CreateSubsidiary(SubsidiaryWithoutDTO subsidiary)
+    public SubsidiaryDTO CreateSubsidiary(SubsidiaryWithoutDTO subsidiary)
     {
         
         Guid guid = Guid.NewGuid();
@@ -43,7 +43,7 @@ public class SubsidiaryService : ISubsidiaryService
         return _mapper.Map<SubsidiaryDTO>(_subsidiaryDao.Read(guid));
     }
 
-    public async Task<SubsidiaryDTO> UpdateSubsidiary(SubsidiaryDTO subsidiary)
+    public SubsidiaryDTO UpdateSubsidiary(SubsidiaryDTO subsidiary)
     {
         _subsidiaryDao.Update(_mapper.Map<Subsidiary>(subsidiary));
         return _mapper.Map<SubsidiaryDTO>(_subsidiaryDao.Read(subsidiary.SubsidiaryId));

@@ -18,30 +18,30 @@ public class CompanyController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult<List<CompanyDTO>>> GetCompanies()
+    public ActionResult<List<CompanyDTO>> GetCompanies()
     {
-        var result = await _companyService.GetCompanies();
+        var result = _companyService.GetCompanies();
         return Ok(result);
     }
     
     [HttpGet("{companyId}")]
-    public async Task<ActionResult<CompanyDTO>> GetCompanyById(Guid companyId)
+    public ActionResult<CompanyDTO> GetCompanyById(Guid companyId)
     {
-        var result = await _companyService.GetCompanyById(companyId);
+        var result = _companyService.GetCompanyById(companyId);
         return Ok(result);
     }
     
     [HttpPost]
-    public async Task<ActionResult<List<CompanyDTO>>> CreateCompany(CompanyWithoutIDDTO company)
+    public ActionResult<List<CompanyDTO>> CreateCompany(CompanyWithoutIDDTO company)
     {
-        var result = await _companyService.CreateCompany(company);
+        var result = _companyService.CreateCompany(company);
         return Ok(result);
     }
     
     [HttpPut]
-    public async Task<ActionResult<List<CompanyDTO>>> UpdateCompany(CompanyDTO company)
+    public ActionResult<List<CompanyDTO>> UpdateCompany(CompanyDTO company)
     {
-        var result = await _companyService.UpdateCompany(company);
+        var result = _companyService.UpdateCompany(company);
         return Ok(result);
     }
 }

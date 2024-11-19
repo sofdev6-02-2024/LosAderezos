@@ -17,30 +17,30 @@ public class CategoryController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult<List<CategoryDTO>>> GetAllCategories()
+    public ActionResult<List<CategoryDTO>> GetAllCategories()
     {
-        var result = await _categoryService.GetCategories();
+        var result = _categoryService.GetCategories();
         return Ok(result);
     }
 
     [HttpGet("{categoryId}")]
-    public async Task<ActionResult<CategoryDTO>> GetCategoryById(Guid categoryId)
+    public ActionResult<CategoryDTO> GetCategoryById(Guid categoryId)
     {
-        var result = await _categoryService.GetCategoryById(categoryId);
+        var result = _categoryService.GetCategoryById(categoryId);
         return Ok(result);
     }
 
     [HttpPost]
-    public async Task<ActionResult<CategoryDTO>> CreateCategory(CategoryWithoutIDDTO category)
+    public ActionResult<CategoryDTO> CreateCategory(CategoryWithoutIDDTO category)
     {
-        var result = await _categoryService.CreateCategory(category);
+        var result = _categoryService.CreateCategory(category);
         return Ok(result);
     }
 
     [HttpPut]
-    public async Task<ActionResult<CategoryDTO>> UpdateCategory(CategoryDTO category)
+    public ActionResult<CategoryDTO> UpdateCategory(CategoryDTO category)
     {
-        var result = await _categoryService.UpdateCategory(category);
+        var result = _categoryService.UpdateCategory(category);
         return Ok(result);
     }
 }

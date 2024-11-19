@@ -6,10 +6,10 @@ namespace Backend.Services.ServiceInterfaces;
 
 public interface ISubsidiaryService
 {
-    public Task<List<SubsidiaryDTO>> GetSubsidiaries();
-    public Task<SubsidiaryDTO> GetSubsidiaryById(Guid id);
-    public Task<List<SubsidiaryDTO>> GetSubsidiariesByCompanyId(Guid id);
-    public Task<SubsidiaryDTO> CreateSubsidiary(SubsidiaryWithoutDTO subsidiary);
-    public Task<SubsidiaryDTO> UpdateSubsidiary(SubsidiaryDTO subsidiary);
+    public List<SubsidiaryDTO> GetSubsidiaries();
+    public SubsidiaryDTO? GetSubsidiaryById(Guid id);
+    public List<SubsidiaryDTO> GetSubsidiariesByCompanyId(Guid id);
+    public SubsidiaryDTO CreateSubsidiary(SubsidiaryWithoutDTO subsidiary);
+    public SubsidiaryDTO UpdateSubsidiary(SubsidiaryDTO subsidiary);
     
 }

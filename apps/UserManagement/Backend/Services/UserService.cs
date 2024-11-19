@@ -33,6 +33,25 @@ public class UserService : IUserService
         return result;
     }
 
+    public async Task<List<UserDTO>> GetUsersBySubsidiaryId(Guid subsidiaryId)
+    {
+        var subsidiaryUsers = await _productApiService.GetUsersBySubsidiaryId(subsidiaryId);
+        List<UserDTO> users = new List<UserDTO>();
+        if (subsidiaryUsers == null)
+        {
+            return users;
+        }
+        foreach (SubsidiaryUsersDTO subsidiaryUser in subsidiaryUsers)
+        {
+            var user = _userDao.Read(subsidiaryUser.userId);
+            if (user != null)
+            {
+                users.Add(_mapper.Map<UserDTO>(user));    
+            }
+        }
+        return users;
+    }
+
     public UserDTO? CreateUser(UserWithoutIdDTO user)
     {
         Guid id = Guid.NewGuid();
