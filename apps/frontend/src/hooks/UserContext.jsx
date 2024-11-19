@@ -10,7 +10,17 @@ export function UserProvider({ children }) {
   useEffect(() => {
     const decodedUser = getDecodedToken();
     if (decodedUser) {
-      setUser(decodedUser);
+      setUser({
+        userId: decodedUser.userId,
+        UserEmail: decodedUser.UserEmail,
+        UserRol: decodedUser.UserRol,
+        UserBirthDate: decodedUser.UserBirthDate,
+        UserPhoneNumber: decodedUser.UserPhoneNumber,
+        UserName: decodedUser.UserName,
+        Token: decodedUser.Token,
+        subsidiaryId: "87c28dd0-c12b-482a-b0e2-548a7021668b",
+        companyId: decodedUser.companyId
+      });
     }
   }, []);
 

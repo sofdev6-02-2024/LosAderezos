@@ -16,16 +16,18 @@ export default function Header() {
       return;
     }
     console.log(user);
-    console.log(user.subsidiaryId[1]);
 
     async function fetchData() {
       try {
-        const [fetchedSubsidiary, fetchedCompany] = await Promise.all([
-          getSubsidiaryById(user.subsidiaryId[1]),
+        const [fetchedCompany, fetchedSubsidiary] = await Promise.all([
+          getSubsidiaryById(user.subsidiaryId),
           getCompanyById(user.companyId),
         ]);
-        setSubsidiary(fetchedSubsidiary);
-        setCompany(fetchedCompany);
+        console.log(fetchedSubsidiary);
+        console.log(fetchedCompany);
+
+        setSubsidiary(fetchedSubsidiary.name);
+        setCompany(fetchedCompany.name);
       } catch (error) {
         console.error("Error fetching data", error);
       } finally {

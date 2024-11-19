@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 export const productAPI = axios.create({
-  baseURL: 'http://localhost:8080/products',
+  baseURL: 'http://localhost:8000/products',
 });
 
 export async function getCategoryById(categoryId) {
