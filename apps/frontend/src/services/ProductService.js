@@ -4,20 +4,20 @@ export const productAPI = axios.create({
   baseURL: "http://localhost:8000/products",
 });
 
-export const getProducts = async () => {
+export const getProducts = async (subsidiaryId) => {
   try {
-    const response = await productAPI.get("/Stock");
+    const response = await productAPI.get(`/Stock/subsidiary/${subsidiaryId}`);
     return response.data;
   } catch (error) {
     throw new Error(
-      error.response?.data?.message || "Error al conseguir los productos"
+      error.response?.data?.message || "Error al conseguir los productos de la sucursal"
     );
   }
 };
 
-export async function getProductById(productId) {
+export async function getProductById(subsidiaryId, productId) {
   try {
-    const response = await productAPI.get(`/Product/${productId}`);
+    const response = await productAPI.get(`/Stock/subsidiary/${subsidiaryId}/product/${productId}`);
     return response.data;
   } catch (error) {
     throw new Error(
@@ -39,9 +39,9 @@ export async function getCategoriesByProductId(productId) {
   }
 }
 
-export async function getProductBranches(productId) {
+export async function getProductBranches(companyId, productId) {
   try {
-    const response = await productAPI.get(`/Product/${productId}/branches`);
+    const response = await productAPI.get(`/Stock/company/${companyId}/product/${productId}`);
     return response.data;
   } catch (error) {
     throw new Error(
@@ -68,7 +68,7 @@ export async function getSubsidiaryById(id) {
     return response.data;
   } catch (error) {
     throw new Error(
-      error.response?.data?.message || "Error al conseguir subsidiary"
+      error.response?.data?.message || "Error al conseguir subsidiaria"
     );
   }
 }
@@ -79,7 +79,7 @@ export async function getCompanyById(id) {
     return response.data;
   } catch (error) {
     throw new Error(
-      error.response?.data?.message || "Error al conseguir company"
+      error.response?.data?.message || "Error al conseguir compañia"
     );
   }
 }

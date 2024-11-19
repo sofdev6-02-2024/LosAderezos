@@ -4,27 +4,8 @@ import { RiEditLine } from "react-icons/ri";
 import { AiOutlineDownload } from "react-icons/ai";
 import Button from './Button';
 import Line from './Line';
-import { getCategoryById } from '../services/CategoryService';
-import { useState, useEffect } from "react";
 
 function ProductInfoCard ({ productData, productCategories, onOtherBranchesClick = () => {}, showButton = true }) {
-  const [categories, setCategories] = useState([]);
-
-  useEffect(() => {
-    async function fetchCategories() {
-      try {
-        const categoryData = await Promise.all(
-          productCategories.map(id => getCategoryById(id))
-        );
-          setCategories(categoryData);
-        } catch (error) {
-        console.error("Error fetching categories", error);
-      }
-    }
-    if (productCategories?.length) {
-      fetchCategories();
-    }
-  }, [productCategories]);
 
   return (
     <Card className="w-full max-w-sm h-fit lg:max-w-lg shadow-lg rounded-3xl border-neutral-950">
@@ -50,7 +31,7 @@ function ProductInfoCard ({ productData, productCategories, onOtherBranchesClick
       <div className="py-1">
         <h3 className="text-neutral-950 text-base font-roboto font-bold">Categorías</h3>
         <ul className="list-disc ml-6 font-roboto font-normal text-sm text-neutral-950">
-          {categories.map((category, index) => (
+          {productCategories.map((category, index) => (
             <li key={index}>{category.name}</li>
           ))}
         </ul>
@@ -100,7 +81,11 @@ ProductInfoCard.propTypes = {
     incomingPrice: PropTypes.number.isRequired,
     sellPrice: PropTypes.number.isRequired,
   }).isRequired,
-  productCategories: PropTypes.arrayOf(PropTypes.string).isRequired,
+  productCategories: PropTypes.arrayOf(
+    PropTypes.shape({
+      name: PropTypes.string.isRequired,
+    })
+  ).isRequired,
   onOtherBranchesClick: PropTypes.func,
   showButton: PropTypes.bool,
 };
