@@ -1,30 +1,56 @@
 import { useEffect, useState } from "react";
 import Button from "../components/Button";
 import SearchBar from "../components/SearchBar";
-import { getUsers, updateUser } from "../services/UserService";
 import UserItem from "../components/UserItem";
 import { FaPlus } from "react-icons/fa6";
 import { useNavigate } from "react-router-dom";
+import { getUsersBySubsidiaryId } from "../services/ProductService";
+import { useUser } from "../hooks/UserUser";
+import { getUserById, updateUser } from "../services/UserService";
 
 export default function UserPage() {
+  const myUser = useUser();
   const [users, setUsers] = useState([]);
+  const [loading, setLoading] = useState(true);
   const data = ["Administrador de sucursal", "Operador"];
   const navigate = useNavigate();
 
   useEffect(() => {
     async function fetchProducts() {
       try {
-        const fetchedUsers = await getUsers();
-        setUsers(fetchedUsers);
+        console.log(myUser.subsidiaryId)
+        const fetchedUsers = await getUsersBySubsidiaryId(myUser.subsidiaryId);
+  
+        const usersWithDetails = await Promise.all(
+          fetchedUsers.map(async (user) => {
+            try {
+              const userDetails = await getUserById(user.userId);
+              return userDetails;
+            } catch (error) {
+              console.error("Error fetching user details:", error);
+              return {
+                userId: user.userId,
+                name: "Usuario desconocido",
+                rol: "Desconocido",
+              };
+            }
+          })
+        );
+  
+        setUsers(usersWithDetails);
       } catch (error) {
-        console.error("Error fetching users", error);
+        console.error("Error fetching users:", error);
+      } finally {
+        setLoading(false);
       }
     }
-
+  
     fetchProducts();
-  }, []);
+  }, [myUser.subsidiaryId]);
+  
 
   const updateRol = async (newRole, index) => {
+    const previousUsers = [...users];
     const updatedUsers = users.map((user, i) =>
       i === index ? { ...user, rol: newRole } : user
     );
@@ -34,8 +60,13 @@ export default function UserPage() {
       await updateUser(updatedUsers[index]);
     } catch (error) {
       console.error(error.response?.data?.message || "Error al actualizar rol");
+      setUsers(previousUsers);
     }
   };
+
+  if (loading) {
+    return <p>Cargando usuarios...</p>;
+  }
 
   return (
     <div

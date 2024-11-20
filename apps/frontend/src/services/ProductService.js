@@ -83,3 +83,13 @@ export async function getCompanyById(id) {
     );
   }
 }
+
+export async function getUsersBySubsidiaryId(id)
+{
+  try {
+    const response = await productAPI.get(`/SubsidiaryUsers/subsidiary/${id}`);
+    return response.data
+  } catch (error) {
+    throw new Error(error.response?.data?.message || 'Error al conseguir usuarios');
+  }
+}

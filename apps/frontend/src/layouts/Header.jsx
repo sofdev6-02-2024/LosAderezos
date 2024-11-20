@@ -15,7 +15,6 @@ export default function Header() {
       setLoading(false);
       return;
     }
-    console.log(user);
 
     async function fetchData() {
       try {
@@ -23,8 +22,6 @@ export default function Header() {
           getSubsidiaryById(user.subsidiaryId),
           getCompanyById(user.companyId),
         ]);
-        console.log(fetchedSubsidiary);
-        console.log(fetchedCompany);
 
         setSubsidiary(fetchedSubsidiary.name);
         setCompany(fetchedCompany.name);

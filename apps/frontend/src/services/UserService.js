@@ -6,7 +6,7 @@ export const userAPI = axios.create({
 
 export const getUserByGmail = async (gmail) => {
   try {
-    const response = await userAPI.get(`/User/${gmail}`);
+    const response = await userAPI.get(`/User`, {email: gmail});
     return response.data;
   } catch (error) {
     throw new Error(error.response?.data?.message || 'Error al conseguir el usuario');
@@ -22,12 +22,11 @@ export async function updateUser(user) {
   }
 }
 
-export async function getUsers()
-{
+export async function getUserById(user) {
   try {
-    const response = await userAPI.get("/User");
-    return response.data
+    const response = await userAPI.get(`/User/${user}`);
+    return response.data;
   } catch (error) {
-    throw new Error(error.response?.data?.message || 'Error al conseguir usuarios');
+    throw new Error(error.response?.data?.message || 'Error al conseguir el usuario');
   }
 }
