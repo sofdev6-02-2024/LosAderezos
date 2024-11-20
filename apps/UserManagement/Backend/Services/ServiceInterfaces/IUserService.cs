@@ -12,4 +12,5 @@ public interface IUserService
     public UserDTO? UpdateUser(UserDTO user);
     public Task<UserDTO?> GetUserBySubsidiaryAndEmail(UserBySubsidiaryDTO user);
     public UserDTO? GetUserByEmail(EmailDTO email);
+    public List<UserDTO> UpdateUsers(List<UserDTO> users);
 }
