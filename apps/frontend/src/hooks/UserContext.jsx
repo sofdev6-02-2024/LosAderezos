@@ -9,6 +9,7 @@ export function UserProvider({ children }) {
 
   useEffect(() => {
     const decodedUser = getDecodedToken();
+    const subIds = decodedUser.subsidiaryId.split(',')
     if (decodedUser) {
       setUser({
         userId: decodedUser.userId,
@@ -18,7 +19,7 @@ export function UserProvider({ children }) {
         UserPhoneNumber: decodedUser.UserPhoneNumber,
         UserName: decodedUser.UserName,
         Token: decodedUser.Token,
-        subsidiaryId: "87c28dd0-c12b-482a-b0e2-548a7021668b",
+        subsidiaryId: subIds[0],
         companyId: decodedUser.companyId
       });
     }
