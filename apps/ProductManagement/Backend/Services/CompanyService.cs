@@ -18,24 +18,24 @@ public class CompanyService : ICompanyService
         _mapper = mapper;
     }
 
-    public async Task<List<CompanyDTO>> GetCompanies()
+    public List<CompanyDTO> GetCompanies()
     {
         return _companyDao.ReadAll().Select(company => _mapper.Map<CompanyDTO>(company)).ToList();
     }
 
-    public async Task<CompanyDTO?> GetCompanyById(Guid id)
+    public CompanyDTO? GetCompanyById(Guid id)
     {
         return _mapper.Map<CompanyDTO>(_companyDao.Read(id));
     }
 
-    public async Task<CompanyDTO?> CreateCompany(CompanyWithoutIDDTO company)
+    public CompanyDTO? CreateCompany(CompanyWithoutIDDTO company)
     {
         Guid guid = Guid.NewGuid();
         _companyDao.Create(_mapper.Map<Company>((company, guid)));
         return _mapper.Map<CompanyDTO>(_companyDao.Read(guid));
     }
 
-    public async Task<CompanyDTO?> UpdateCompany(CompanyDTO company)
+    public CompanyDTO? UpdateCompany(CompanyDTO company)
     {
         _companyDao.Update(_mapper.Map<Company>(company));
         return _mapper.Map<CompanyDTO>(_companyDao.Read(company.CompanyId));

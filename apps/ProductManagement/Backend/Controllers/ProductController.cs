@@ -16,30 +16,30 @@ public class ProductController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult<List<ProductDTO>>> GetProducts()
+    public ActionResult<List<ProductDTO>> GetProducts()
     {
-        var result = await _productService.GetProducts();
+        var result = _productService.GetProducts();
         return Ok(result);
     }
 
     [HttpGet("{productId}")]
-    public async Task<ActionResult<ProductDTO>> GetProductById(Guid productId)
+    public ActionResult<ProductDTO> GetProductById(Guid productId)
     {
-        var result = await _productService.GetProductById(productId);
+        var result = _productService.GetProductById(productId);
         return Ok(result);
     }
 
     [HttpPost]
-    public async Task<ActionResult<ProductDTO>> CreateProduct(ProductWithoutIDDTO product)
+    public ActionResult<ProductDTO> CreateProduct(ProductWithoutIDDTO product)
     {
-        var result = await _productService.CreateProduct(product);
+        var result = _productService.CreateProduct(product);
         return Ok(result);
     }
 
     [HttpPut]
-    public async Task<ActionResult<ProductDTO>> UpdateProduct(ProductDTO product)
+    public ActionResult<ProductDTO> UpdateProduct(ProductDTO product)
     {
-        var result = await _productService.UpdateProduct(product);
+        var result = _productService.UpdateProduct(product);
         return Ok(result);
     }
 }

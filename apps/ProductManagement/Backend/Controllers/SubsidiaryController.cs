@@ -19,39 +19,39 @@ public class SubsidiaryController: ControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult<List<SubsidiaryDTO>>> GetSubsidiary()
+    public ActionResult<List<SubsidiaryDTO>> GetSubsidiary()
     {
-        var subsidiaries = await _subsidiaryService.GetSubsidiaries();
+        var subsidiaries = _subsidiaryService.GetSubsidiaries();
         return Ok(subsidiaries);
     }
 
     [HttpGet("{subsidiaryId}")]
-    public async Task<ActionResult<SubsidiaryDTO>> GetSubsidiary(Guid subsidiaryId)
+    public ActionResult<SubsidiaryDTO> GetSubsidiary(Guid subsidiaryId)
     {
-        var subsidiary = await _subsidiaryService.GetSubsidiaryById(subsidiaryId);
+        var subsidiary = _subsidiaryService.GetSubsidiaryById(subsidiaryId);
         return Ok(subsidiary);
     }
     
     
     [HttpGet("company/{companyId}")]
-    public async Task<ActionResult<List<SubsidiaryDTO>>> GetSubsidiariesByCompanyId(Guid companyId)
+    public ActionResult<List<SubsidiaryDTO>> GetSubsidiariesByCompanyId(Guid companyId)
     {
-        var subsidiary = await _subsidiaryService.GetSubsidiariesByCompanyId(companyId);
+        var subsidiary = _subsidiaryService.GetSubsidiariesByCompanyId(companyId);
         return Ok(subsidiary);
     }
 
 
     [HttpPost]
-    public async Task<ActionResult<List<SubsidiaryDTO>>> CreateSubsidiary(SubsidiaryWithoutDTO subsidiary)
+    public ActionResult<List<SubsidiaryDTO>> CreateSubsidiary(SubsidiaryWithoutDTO subsidiary)
     {
-        var subsidiaryCreated = await _subsidiaryService.CreateSubsidiary(subsidiary);
+        var subsidiaryCreated = _subsidiaryService.CreateSubsidiary(subsidiary);
         return Ok(subsidiary);
     }
     
     [HttpPut]
-    public async Task<ActionResult<List<SubsidiaryDTO>>> UpdateSubsidiary(SubsidiaryDTO subsidiary)
+    public ActionResult<List<SubsidiaryDTO>> UpdateSubsidiary(SubsidiaryDTO subsidiary)
     {
-        var subsidiaryCreated = await _subsidiaryService.UpdateSubsidiary(subsidiary);
+        var subsidiaryCreated = _subsidiaryService.UpdateSubsidiary(subsidiary);
         return Ok(subsidiary);
     }
     

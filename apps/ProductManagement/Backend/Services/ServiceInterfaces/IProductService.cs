@@ -5,8 +5,8 @@ namespace Backend.Services.ServiceInterfaces;
 
 public interface IProductService
 {
-    public Task<List<ProductDTO>> GetProducts();
-    public Task<ProductDTO> GetProductById(Guid id);
-    public Task<ProductDTO> CreateProduct(ProductWithoutIDDTO product);
-    public Task<ProductDTO> UpdateProduct(ProductDTO product);
+    public List<ProductDTO> GetProducts();
+    public ProductDTO? GetProductById(Guid id);
+    public ProductDTO CreateProduct(ProductWithoutIDDTO product);
+    public ProductDTO UpdateProduct(ProductDTO product);
 }

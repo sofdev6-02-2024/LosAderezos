@@ -1,4 +1,3 @@
-using System.Text.Json;
 using AutoMapper;
 using Backend.DTOs.WithID;
 using Backend.DTOs.WithoutID;
@@ -31,6 +30,25 @@ public class UserService : IUserService
     {
         var result = _mapper.Map<UserDTO>(_userDao.Read(id));
         return result;
+    }
+
+    public async Task<List<UserDTO>> GetUsersBySubsidiaryId(Guid subsidiaryId)
+    {
+        var subsidiaryUsers = await _productApiService.GetUsersBySubsidiaryId(subsidiaryId);
+        List<UserDTO> users = new List<UserDTO>();
+        if (subsidiaryUsers == null)
+        {
+            return users;
+        }
+        foreach (SubsidiaryUsersDTO subsidiaryUser in subsidiaryUsers)
+        {
+            var user = _userDao.Read(subsidiaryUser.userId);
+            if (user != null)
+            {
+                users.Add(_mapper.Map<UserDTO>(user));    
+            }
+        }
+        return users;
     }
 
     public UserDTO? CreateUser(UserWithoutIdDTO user)
@@ -73,7 +91,7 @@ public class UserService : IUserService
         return null;
     }
 
-    public async Task<UserDTO?> GetUserByEmail(EmailDTO email)
+    public UserDTO? GetUserByEmail(EmailDTO email)
     {
         return _mapper.Map<UserDTO>(_userDao.ReadAll().FirstOrDefault(u => u.Email == email.Email));
     }

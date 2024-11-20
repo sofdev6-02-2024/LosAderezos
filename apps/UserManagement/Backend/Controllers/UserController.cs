@@ -36,6 +36,11 @@ public class UserController: ControllerBase
         var result = _userService.CreateUser(user);
         return Ok(result);
     }
+    [HttpGet("subsidiary/{subsidiaryId}")]
+    public async Task<ActionResult<UserDTO>> GetUserBySubsidiaryId(Guid subsidiaryId)
+    {
+        return Ok(await _userService.GetUsersBySubsidiaryId(subsidiaryId));
+    }
 
     [HttpPut]
     public ActionResult<UserDTO> UpdateUser(UserDTO user)
@@ -51,8 +56,8 @@ public class UserController: ControllerBase
     }
     
     [HttpPost("email")]
-    public async Task<ActionResult<UserDTO>> GetUserByEmail(EmailDTO email)
+    public ActionResult<UserDTO> GetUserByEmail(EmailDTO email)
     {
-        return Ok(await _userService.GetUserByEmail(email));
+        return Ok(_userService.GetUserByEmail(email));
     }
 }

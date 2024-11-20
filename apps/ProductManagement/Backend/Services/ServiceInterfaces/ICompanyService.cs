@@ -5,8 +5,8 @@ namespace Backend.Services.ServiceInterfaces;
 
 public interface ICompanyService
 {
-    public Task<List<CompanyDTO>> GetCompanies();
-    public Task<CompanyDTO?> GetCompanyById(Guid id);
-    public Task<CompanyDTO?> CreateCompany(CompanyWithoutIDDTO company);
-    public Task<CompanyDTO?> UpdateCompany(CompanyDTO company);
+    public List<CompanyDTO> GetCompanies();
+    public CompanyDTO? GetCompanyById(Guid id);
+    public CompanyDTO? CreateCompany(CompanyWithoutIDDTO company);
+    public CompanyDTO? UpdateCompany(CompanyDTO company);
 }

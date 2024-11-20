@@ -16,30 +16,30 @@ public class ProductCategoriesController : ControllerBase
     }
 
     [HttpGet("category/{categoryId}")]
-    public async Task<ActionResult<List<ProductCategoriesDTO>>> GetProductCategoriesByCategoryId(Guid categoryId)
+    public ActionResult<List<ProductCategoriesDTO>> GetProductCategoriesByCategoryId(Guid categoryId)
     {
-        var result = await _productCategoriesService.GetProductCategoriesByCategoryId(categoryId);
+        var result = _productCategoriesService.GetProductCategoriesByCategoryId(categoryId);
         return Ok(result);
     }
     
     [HttpGet("product/{productId}")]
-    public async Task<ActionResult<List<ProductCategoriesDTO>>> GetProductCategoriesByProductId(Guid productId)
+    public ActionResult<List<ProductCategoriesDTO>> GetProductCategoriesByProductId(Guid productId)
     {
-        var result = await _productCategoriesService.GetProductCategoriesByProductId(productId);
+        var result = _productCategoriesService.GetProductCategoriesByProductId(productId);
         return Ok(result);
     }
     
     [HttpPost]
-    public async Task<ActionResult<ProductCategoriesDTO>> GetProductCategoryByBothIds(ProductCategoriesDTO productCategoriesDto)
+    public ActionResult<ProductCategoriesDTO> GetProductCategoryByBothIds(ProductCategoriesDTO productCategoriesDto)
     {
-        var result = await _productCategoriesService.GetProductCategoryByBothIds(productCategoriesDto);
+        var result = _productCategoriesService.GetProductCategoryByBothIds(productCategoriesDto);
         return Ok(result);
     }
     
     [HttpDelete]
-    public async Task<ActionResult<bool>> DeleteProductCategoryByBothIds(ProductCategoriesDTO productCategoriesDto)
+    public ActionResult<bool> DeleteProductCategoryByBothIds(ProductCategoriesDTO productCategoriesDto)
     {
-        var result = await _productCategoriesService.DeleteProductCategory(productCategoriesDto);
+        var result = _productCategoriesService.DeleteProductCategory(productCategoriesDto);
         return Ok(result);
     }
 }
