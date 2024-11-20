@@ -95,4 +95,23 @@ public class UserService : IUserService
     {
         return _mapper.Map<UserDTO>(_userDao.ReadAll().FirstOrDefault(u => u.Email == email.Email));
     }
+    
+    public List<UserDTO> UpdateUsers(List<UserDTO> users)
+    {
+        var updatedUsers = new List<UserDTO>();
+    
+        foreach (var userDto in users)
+        {
+            var user = _userDao.Read(userDto.UserId);
+            if (user != null)
+            {
+                _userDao.Update(_mapper.Map<User>(userDto));
+                var updatedUser = _userDao.Read(userDto.UserId);
+                updatedUsers.Add(_mapper.Map<UserDTO>(updatedUser));
+            }
+        }
+
+        return updatedUsers;
+    }
+
 }

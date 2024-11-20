@@ -60,4 +60,12 @@ public class UserController: ControllerBase
     {
         return Ok(_userService.GetUserByEmail(email));
     }
+    
+    [HttpPut("update-users")]
+    public ActionResult<List<UserDTO>> UpdateUsers([FromBody] List<UserDTO> users)
+    {
+        var result = _userService.UpdateUsers(users);
+        return Ok(result);
+    }
+
 }
