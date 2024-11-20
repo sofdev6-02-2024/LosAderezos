@@ -4,9 +4,8 @@ import SearchBar from "../components/SearchBar";
 import UserItem from "../components/UserItem";
 import { FaPlus } from "react-icons/fa6";
 import { useNavigate } from "react-router-dom";
-import { getUsersBySubsidiaryId } from "../services/ProductService";
 import { useUser } from "../hooks/UserUser";
-import { getUserById, updateUser } from "../services/UserService";
+import { getUsersBySubsidiaryId, updateUser } from "../services/UserService";
 
 export default function UserPage() {
   const myUser = useUser();
@@ -18,36 +17,18 @@ export default function UserPage() {
   useEffect(() => {
     async function fetchProducts() {
       try {
-        console.log(myUser.subsidiaryId)
         const fetchedUsers = await getUsersBySubsidiaryId(myUser.subsidiaryId);
-  
-        const usersWithDetails = await Promise.all(
-          fetchedUsers.map(async (user) => {
-            try {
-              const userDetails = await getUserById(user.userId);
-              return userDetails;
-            } catch (error) {
-              console.error("Error fetching user details:", error);
-              return {
-                userId: user.userId,
-                name: "Usuario desconocido",
-                rol: "Desconocido",
-              };
-            }
-          })
-        );
-  
-        setUsers(usersWithDetails);
+
+        setUsers(fetchedUsers);
       } catch (error) {
         console.error("Error fetching users:", error);
       } finally {
         setLoading(false);
       }
     }
-  
+
     fetchProducts();
   }, [myUser.subsidiaryId]);
-  
 
   const updateRol = async (newRole, index) => {
     const previousUsers = [...users];

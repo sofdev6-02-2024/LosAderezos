@@ -12,7 +12,7 @@ import { useUser } from "../hooks/UserUser";
 export default function AddUser() {
   const [users, setUsers] = useState([]);
   const navigate = useNavigate();
-  const myUser = useUser()
+  const myUser = useUser();
 
   const handleAdd = async (input) => {
     if (input.trim()) {
@@ -51,17 +51,16 @@ export default function AddUser() {
     }
   };
 
-  const updateRoles = () => {
+  const updateRoles = async () => {
     try {
-      users.forEach(async user => {
-        await updateUser(user);
-      });
+      const updatePromises = users.map((user) => updateUser(user));
+      await Promise.all(updatePromises);
     } catch (error) {
       throw new Error(
-        error.response?.data?.message || "Error al añadir los usuarios"
+        error.response?.data?.message || "Error al actualizar los usuarios"
       );
     }
-  }
+  };
 
   const submit = async () => {
     for (var i = 0; i < users.length; i++) {
@@ -71,8 +70,8 @@ export default function AddUser() {
     }
 
     addUsers();
-    updateRoles();
-    navigate("/users")    
+    //updateRoles();
+    navigate("/users");
   };
 
   const data = ["Administrador de sucursal", "Operador"];
@@ -110,7 +109,9 @@ export default function AddUser() {
           className={
             "bg-red-600 w-2/5 py-2 items-start justify-center text-white font-medium text-[20px] rounded-[12px]"
           }
-          onClick={() => {navigate('/users')}}
+          onClick={() => {
+            navigate("/users");
+          }}
         >
           Cancelar
           <MdOutlineCancel />
