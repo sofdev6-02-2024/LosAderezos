@@ -5,7 +5,7 @@ import Button from "../components/Button";
 import { IoMdAdd } from "react-icons/io";
 import { MdOutlineCancel } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
-import { getUserByGmail, updateUser } from "../services/UserService";
+import { getUserByGmail, updateUserList } from "../services/UserService";
 import { addUsersToSubsidiary } from "../services/ProductService";
 import { useUser } from "../hooks/UserUser";
 
@@ -53,8 +53,7 @@ export default function AddUser() {
 
   const updateRoles = async () => {
     try {
-      const updatePromises = users.map((user) => updateUser(user));
-      await Promise.all(updatePromises);
+      await updateUserList(users);
     } catch (error) {
       throw new Error(
         error.response?.data?.message || "Error al actualizar los usuarios"
@@ -70,8 +69,8 @@ export default function AddUser() {
     }
 
     addUsers();
-    //updateRoles();
-    navigate("/users");
+    updateRoles();
+    navigate("/store_menu");
   };
 
   const data = ["Administrador de sucursal", "Operador"];
