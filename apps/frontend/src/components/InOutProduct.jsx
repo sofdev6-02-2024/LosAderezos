@@ -10,6 +10,7 @@ export default function InOutProduct({
   price,
   quantity,
   setQuantity,
+  onDelete,
 }) {
   return (
     <div className="bg-sky-100 w-full rounded-[20px] cursor-pointer border-blue-950 border-2 font-roboto">
@@ -27,7 +28,7 @@ export default function InOutProduct({
           <div className="flex items-center flex-row space-x-2 md:space-x-10">
             <QuantityInput value={quantity} setValue={setQuantity} />
             <p className="font-bold md:text-[24px] text-[14px]">{price}$</p>
-            <Button>
+            <Button onClick={onDelete}>
               <FaRegTrashAlt className="text-[20px] md:text-[40px]" />
             </Button>
           </div>
@@ -43,4 +44,5 @@ InOutProduct.propTypes = {
   price: PropTypes.number,
   quantity: PropTypes.number,
   setQuantity: PropTypes.func,
+  onDelete: PropTypes.func
 };
