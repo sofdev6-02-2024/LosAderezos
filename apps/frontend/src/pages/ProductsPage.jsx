@@ -6,16 +6,17 @@ import { useEffect, useState } from "react";
 import { getProducts } from "../services/ProductService";
 import SearchBar from "../components/SearchBar";
 import { Link } from "react-router-dom";
+import { useUser } from "../hooks/UserUser";
 
 export default function ProductsPage()
 {
-
+  const user = useUser();
   const [products, setProducts] = useState([]);
 
   useEffect(() => {
     async function fetchProducts() {
       try {
-        const fetchedroducts = await getProducts();
+        const fetchedroducts = await getProducts(user.subsidiaryId);
         setProducts(fetchedroducts);
       } catch (error) {
         console.error('Error fetching products', error)
@@ -23,7 +24,8 @@ export default function ProductsPage()
     }
 
     fetchProducts();
-  }, [])
+  }, [user])
+
   return(
     <div className="flex flex-col space-y-5 py-10 w-full items-center font-roboto">
       <p className="font-roboto font-bold text-[24px]">Productos</p>

@@ -4,13 +4,15 @@ import SearchBar from "../components/SearchBar";
 import Button from "../components/Button";
 import { IoMdAdd } from "react-icons/io";
 import { MdOutlineCancel } from "react-icons/md";
-import { getUserByGmail, updateUser } from "../services/UserService";
-import { addUsersToSubsidiary } from "../services/ProductService";
 import { useNavigate } from "react-router-dom";
+import { getUserByGmail, updateUserList } from "../services/UserService";
+import { addUsersToSubsidiary } from "../services/ProductService";
+import { useUser } from "../hooks/UserUser";
 
 export default function AddUser() {
   const [users, setUsers] = useState([]);
   const navigate = useNavigate();
+  const myUser = useUser();
 
   const handleAdd = async (input) => {
     if (input.trim()) {
@@ -37,7 +39,7 @@ export default function AddUser() {
 
     const request = {
       UserIds,
-      SubsidiaryId: "a71e04ab-63a2-4886-a7a2-723da0cee050",
+      SubsidiaryId: myUser.subsidiaryId,
     };
 
     try {
@@ -49,17 +51,15 @@ export default function AddUser() {
     }
   };
 
-  const updateRoles = () => {
+  const updateRoles = async () => {
     try {
-      users.forEach(async user => {
-        await updateUser(user);
-      });
+      await updateUserList(users);
     } catch (error) {
       throw new Error(
-        error.response?.data?.message || "Error al añadir los usuarios"
+        error.response?.data?.message || "Error al actualizar los usuarios"
       );
     }
-  }
+  };
 
   const submit = async () => {
     for (var i = 0; i < users.length; i++) {
@@ -70,7 +70,7 @@ export default function AddUser() {
 
     addUsers();
     updateRoles();
-    navigate("/users")    
+    navigate("/store_menu");
   };
 
   const data = ["Administrador de sucursal", "Operador"];
@@ -108,7 +108,9 @@ export default function AddUser() {
           className={
             "bg-red-600 w-2/5 py-2 items-start justify-center text-white font-medium text-[20px] rounded-[12px]"
           }
-          onClick={() => {navigate('/users')}}
+          onClick={() => {
+            navigate("/users");
+          }}
         >
           Cancelar
           <MdOutlineCancel />

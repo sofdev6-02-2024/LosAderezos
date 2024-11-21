@@ -5,7 +5,8 @@ import { AiOutlineDownload } from "react-icons/ai";
 import Button from './Button';
 import Line from './Line';
 
-function ProductInfoCard ({ productData, onOtherBranchesClick = () => {}, showButton = true }) {
+function ProductInfoCard ({ productData, productCategories, onOtherBranchesClick = () => {}, showButton = true }) {
+
   return (
     <Card className="w-full max-w-sm h-fit lg:max-w-lg shadow-lg rounded-3xl border-neutral-950">
       <div className="flex items-center justify-between pb-1">
@@ -30,8 +31,8 @@ function ProductInfoCard ({ productData, onOtherBranchesClick = () => {}, showBu
       <div className="py-1">
         <h3 className="text-neutral-950 text-base font-roboto font-bold">Categorías</h3>
         <ul className="list-disc ml-6 font-roboto font-normal text-sm text-neutral-950">
-          {productData.categories.map((category, index) => (
-            <li key={index}>{category}</li>
+          {productCategories.map((category, index) => (
+            <li key={index}>{category.name}</li>
           ))}
         </ul>
       </div>
@@ -42,7 +43,7 @@ function ProductInfoCard ({ productData, onOtherBranchesClick = () => {}, showBu
         <h3 className="text-neutral-950 text-base font-roboto font-bold">
           Notificar cuando el stock esté por debajo de...
         </h3>
-        <p className="text-neutral-950 text-sm font-roboto font-normal">{productData.lowStockNotification}</p>
+        <p className="text-neutral-950 text-sm font-roboto font-normal">{productData.lowExistence}</p>
       </div>
 
       <Line />
@@ -76,11 +77,15 @@ ProductInfoCard.propTypes = {
   productData: PropTypes.shape({
     name: PropTypes.string.isRequired,
     code: PropTypes.number.isRequired,
-    categories: PropTypes.arrayOf(PropTypes.string).isRequired,
-    lowStockNotification: PropTypes.number.isRequired,
+    lowExistence: PropTypes.number.isRequired,
     incomingPrice: PropTypes.number.isRequired,
     sellPrice: PropTypes.number.isRequired,
   }).isRequired,
+  productCategories: PropTypes.arrayOf(
+    PropTypes.shape({
+      name: PropTypes.string.isRequired,
+    })
+  ).isRequired,
   onOtherBranchesClick: PropTypes.func,
   showButton: PropTypes.bool,
 };
