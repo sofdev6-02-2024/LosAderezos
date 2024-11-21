@@ -14,5 +14,6 @@ public interface IStockService
 
     public StockDTO CreateStock(StockWithoutIDDTO stock);
     public StockDTO UpdateStock(StockWithoutIDDTO stock, Guid stockId);
-    
+    public List<StockDTO> UpdateStocks(List<StockDTO> stocks);
+
 }

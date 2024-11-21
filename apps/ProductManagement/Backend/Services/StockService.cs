@@ -176,4 +176,33 @@ public class StockService : IStockService
 
         return _mapper.Map<StockDTO>((updatedStock, _productDao.Read(stock.ProductId), categories));
     }
+    
+    public List<StockDTO> UpdateStocks(List<StockDTO> stocks)
+    {
+        var updatedStocks = new List<StockDTO>();
+        foreach (var stock in stocks)
+        {
+            var updatedStockEntity = _mapper.Map<Stock>((stock, stock.StockId));
+            _stockDao.Update(updatedStockEntity);
+
+            var updatedStock = _stockDao.Read(stock.StockId);
+            if (updatedStock != null)
+            {
+                List<Category> categories = new List<Category>();
+                var matches = _productCategoriesDao.GetProductCategoriesByProductId(stock.ProductId);
+                foreach (ProductCategories match in matches)
+                {
+                    var category = _categoryDao.Read(match.CategoryId);
+                    if (category != null)
+                    {
+                        categories.Add(category);
+                    }
+                }
+                var stockDTO = _mapper.Map<StockDTO>((updatedStock, _productDao.Read(stock.ProductId), categories));
+                updatedStocks.Add(stockDTO);
+            }
+        }
+        return updatedStocks;
+    }
+
 }

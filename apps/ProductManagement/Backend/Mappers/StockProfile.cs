@@ -40,6 +40,11 @@ public class StockProfile : Profile
             .ForMember(dst => dst.Code, opt => opt.MapFrom(src => src.Item1.Code))
             .ForMember(dst => dst.Quantity, opt => opt.MapFrom(src => src.Item1.Quantity))
             .ForMember(dst => dst.SubsidiaryId, opt => opt.MapFrom(src => src.Item1.SubsidiaryId));
-
+        CreateMap<(StockDTO, Guid), Stock>()
+            .ForMember(dest => dest.StockId, opt => opt.MapFrom(src => src.Item2))
+            .ForMember(dest => dest.ProductId, opt => opt.MapFrom(src => src.Item1.ProductId))
+            .ForMember(dest => dest.Code, opt => opt.MapFrom(src => src.Item1.Code))
+            .ForMember(dest => dest.Quantity, opt => opt.MapFrom(src => src.Item1.Quantity))
+            .ForMember(dest => dest.SubsidiaryId, opt => opt.MapFrom(src => src.Item1.SubsidiaryId));
     }
 }

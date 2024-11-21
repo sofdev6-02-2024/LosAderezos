@@ -66,4 +66,12 @@ public class StockController : ControllerBase
         var result = _stockService.UpdateStock(stock, stockId);
         return Ok(result);
     }
+    
+    [HttpPut("update-multiple")]
+    public ActionResult<List<StockDTO>> UpdateStocks([FromBody] List<StockDTO> stocks)
+    {
+        var result = _stockService.UpdateStocks(stocks);
+        return Ok(result);
+    }
+
 }
