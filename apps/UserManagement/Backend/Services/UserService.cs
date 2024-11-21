@@ -113,5 +113,27 @@ public class UserService : IUserService
 
         return updatedUsers;
     }
+    
 
+    public bool? IsUserAdminOrHigher(Guid userId)
+    {
+        var user = _userDao.Read(userId);
+        if (user != null)
+        {
+            return user.Rol == "Administrador de sucursal" || user.Rol == "Propietario";
+        }
+
+        return null;
+    }
+
+    public bool? IsUserOwnerOrHigher(Guid userId)
+    {
+        var user = _userDao.Read(userId);
+        if (user != null)
+        {
+            return user.Rol == "Propietario";
+        }
+
+        return null;
+    }
 }

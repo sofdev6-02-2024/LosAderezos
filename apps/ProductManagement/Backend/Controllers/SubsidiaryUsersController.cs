@@ -9,10 +9,13 @@ namespace Backend.Controllers;
 public class SubsidiaryUsersController : ControllerBase
 {
     private readonly ISubsidiaryUsersService _subsidiaryUsersService;
+    private readonly IUserAPIService _userApiService;
 
-    public SubsidiaryUsersController(ISubsidiaryUsersService subsidiaryUsersService)
+
+    public SubsidiaryUsersController(ISubsidiaryUsersService subsidiaryUsersService, IUserAPIService userApiService)
     {
         _subsidiaryUsersService = subsidiaryUsersService;
+        _userApiService = userApiService;
     }
 
     [HttpGet("subsidiary/{subsidiaryId}")]
@@ -47,6 +50,30 @@ public class SubsidiaryUsersController : ControllerBase
     [HttpPost("/create/list")]
     public ActionResult<List<SubsidiaryUsersDTO>> CreateSubsidiaryUsersList(UserSubsidiaryCreateListDTO subsidiaryUsers)
     {
+        
+        if (!Request.Headers.ContainsKey("userId") || !Request.Headers.ContainsKey("token"))
+        {
+            return BadRequest("no header provided");
+        }
+
+        if (!Guid.TryParse(Request.Headers["userId"], out Guid headerUserId))
+        {
+            return Unauthorized("Invalid userId");
+        }
+        var toVerify = new ValidateTokenDTO()
+        {
+            UserId = headerUserId,
+            Token = Request.Headers["token"]
+        };
+        if (!_userApiService.IsTokenValid(toVerify).Result)
+        {
+            return Unauthorized("Invalid token");
+        }
+
+        if (_userApiService.IsUserAdminOrHigher(toVerify.UserId).Result == true)
+        {
+            return Unauthorized("you are not an admin nor owner");
+        }
         var results = new List<SubsidiaryUsersDTO>();
         foreach (Guid userId in subsidiaryUsers.UserIds)
         {

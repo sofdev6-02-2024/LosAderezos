@@ -13,4 +13,6 @@ public interface IUserService
     public Task<UserDTO?> GetUserBySubsidiaryAndEmail(UserBySubsidiaryDTO user);
     public UserDTO? GetUserByEmail(EmailDTO email);
     public List<UserDTO> UpdateUsers(List<UserDTO> users);
+    public bool? IsUserAdminOrHigher(Guid userId);
+    public bool? IsUserOwnerOrHigher(Guid userId);
 }
