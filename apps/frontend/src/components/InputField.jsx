@@ -1,14 +1,14 @@
 import { Field } from 'formik';
 import PropTypes from 'prop-types';
 
-function InputField ({ id, label, name, placeholder, type, isCorrect, isDisabled, icon, iconPosition = 'right', onIconClick }) {
+function InputField ({ id, label, name, placeholder, type, isCorrect, isDisabled, icon, iconPosition = 'right', onIconClick, isRequired }) {
   return (
     <label htmlFor={id} className='block mb-2'>
       <span className='text-[14px] text-neutral-950 font-roboto font-regular'>
         {label}
-        <span className='text-red-700'> *</span>
+        {isRequired && <span className='text-red-700'> *</span>}
       </span>
-      <div className='relative'>
+      <div>
         {icon && iconPosition === 'left' && (
           <span
             className="absolute inset-y-0 left-0 flex items-center pl-3 cursor-pointer"
@@ -54,6 +54,7 @@ InputField.propTypes = {
     icon: PropTypes.element,
     iconPosition: PropTypes.oneOf(['left', 'right']),
     onIconClick: PropTypes.func,
+    isRequired: PropTypes.bool,
 };
 
 export default InputField;
