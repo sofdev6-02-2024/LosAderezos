@@ -207,20 +207,27 @@ public class StockService : IStockService
     
     public StockDTO? GetStocksBySubsidiaryAndProductCode(Guid subsidiaryId, int productCode)
     {
-        var stock = _stockDao.ReadAll().FirstOrDefault(s => s.SubsidiaryId == subsidiaryId && s.Code == productCode);
-        var product = _productDao.Read(stock.ProductId);
-        List<Category> categories = new List<Category>();
-        if (stock != null)
+        var product = _productDao.ReadAll().FirstOrDefault(p => p.Code == productCode);
+        if (product == null)
         {
-            var matches = _productCategoriesDao.GetProductCategoriesByProductId(stock.ProductId);
-            foreach (ProductCategories match in matches)
-            {
-                var category = _categoryDao.Read(match.CategoryId);
-                if(category != null)
-                    categories.Add(category);
-            }
-            return _mapper.Map<StockDTO>((stock, product, categories));
+            return null; 
         }
-        return null;
+        var stock = _stockDao.ReadAll().FirstOrDefault(s => s.SubsidiaryId == subsidiaryId && s.ProductId == product.ProductId);
+        if (stock == null)
+        {
+            return null;
+        }
+        List<Category> categories = new List<Category>();
+        var matches = _productCategoriesDao.GetProductCategoriesByProductId(product.ProductId);
+        foreach (ProductCategories match in matches)
+        {
+            var category = _categoryDao.Read(match.CategoryId);
+            if (category != null)
+            {
+                categories.Add(category);
+            }
+        }
+        return _mapper.Map<StockDTO>((stock, product, categories));
     }
+    
 }
