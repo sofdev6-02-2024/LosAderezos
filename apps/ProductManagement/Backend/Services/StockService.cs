@@ -204,5 +204,23 @@ public class StockService : IStockService
         }
         return updatedStocks;
     }
-
+    
+    public StockDTO? GetStocksBySubsidiaryAndProductCode(Guid subsidiaryId, int productCode)
+    {
+        var stock = _stockDao.ReadAll().FirstOrDefault(s => s.SubsidiaryId == subsidiaryId && s.Code == productCode);
+        var product = _productDao.Read(stock.ProductId);
+        List<Category> categories = new List<Category>();
+        if (stock != null)
+        {
+            var matches = _productCategoriesDao.GetProductCategoriesByProductId(stock.ProductId);
+            foreach (ProductCategories match in matches)
+            {
+                var category = _categoryDao.Read(match.CategoryId);
+                if(category != null)
+                    categories.Add(category);
+            }
+            return _mapper.Map<StockDTO>((stock, product, categories));
+        }
+        return null;
+    }
 }

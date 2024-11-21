@@ -53,6 +53,17 @@ public class StockController : ControllerBase
         return Ok(result);
     }
     
+    [HttpGet("subsidiary/{subsidiaryId}/product-code/{productCode}")]
+    public ActionResult<StockDTO> GetStocksBySubsidiaryAndProductCode(Guid subsidiaryId, int productCode)
+    {
+        var result = _stockService.GetStocksBySubsidiaryAndProductCode(subsidiaryId, productCode);
+        if (result == null)
+        {
+            return NotFound($"No stock found for subsidiaryId: {subsidiaryId} and productCode: {productCode}");
+        }
+        return Ok(result);
+    }
+    
     [HttpPost]
     public ActionResult<StockDTO> PostStock(StockWithoutIDDTO stock)
     {
