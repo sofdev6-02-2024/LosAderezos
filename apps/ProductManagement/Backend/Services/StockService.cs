@@ -131,7 +131,7 @@ public class StockService : IStockService
         foreach (SubsidiaryDTO subsidiary in companySubsidiaries)
         {
             var stock = GetStocksBySubsidiaryAndProductId(subsidiary.SubsidiaryId, productId);
-            if (stock != null)
+            if (stock != null && stock.Quantity > 0)
             {
                 result.Add(_mapper.Map<OtherSubsidiariesProductsDTO>((subsidiary, stock)));    
             }
