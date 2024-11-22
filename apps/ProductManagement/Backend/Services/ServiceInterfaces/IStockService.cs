@@ -5,14 +5,16 @@ namespace Backend.Services.ServiceInterfaces;
 
 public interface IStockService
 {
-    public List<StockDTO> GetStocks();
-    public StockDTO? GetStockById(Guid stockId);
-    public List<StockDTO> GetStocksBySubsidiaryId(Guid subsidiaryId);
-    public List<StockDTO> GetStocksByProductId(Guid productId);
-    public StockDTO? GetStocksBySubsidiaryAndProductId(Guid subsidiaryId, Guid productId);
+    public List<StockFullInfoDTO> GetStocks();
+    public StockFullInfoDTO? GetStockById(Guid stockId);
+    public List<StockFullInfoDTO> GetStocksBySubsidiaryId(Guid subsidiaryId);
+    public List<StockFullInfoDTO> GetStocksByProductId(Guid productId);
+    public StockFullInfoDTO? GetStocksBySubsidiaryAndProductId(Guid subsidiaryId, Guid productId);
     public List<OtherSubsidiariesProductsDTO> GetOtherSubsidiariesProducts(Guid companyId, Guid productId);
 
-    public StockDTO CreateStock(StockWithoutIDDTO stock);
-    public StockDTO UpdateStock(StockWithoutIDDTO stock, Guid stockId);
-    
+    public StockFullInfoDTO CreateStock(StockWithoutIDDTO stock);
+    public StockFullInfoDTO UpdateStock(StockWithoutIDDTO stock, Guid stockId);
+    public List<StockFullInfoDTO> UpdateStocks(List<StockDTO> stocks);
+    public StockFullInfoDTO? GetStocksBySubsidiaryAndProductCode(Guid subsidiaryId, int productCode);
+
 }

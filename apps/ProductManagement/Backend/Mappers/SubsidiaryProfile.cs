@@ -32,7 +32,7 @@ public class SubsidiaryProfile: Profile
             .ForMember(dst => dst.CompanyId, opt => opt.MapFrom(src => src.CompanyId))
             .ForMember(dst => dst.Location, opt => opt.MapFrom(src => src.Location))
             .ForMember(dst => dst.Type, opt => opt.MapFrom(src => src.Type));
-        CreateMap< (SubsidiaryDTO, StockDTO), OtherSubsidiariesProductsDTO>()
+        CreateMap< (SubsidiaryDTO, StockFullInfoDTO), OtherSubsidiariesProductsDTO>()
             .ForMember(dst => dst.ProductId, opt => opt.MapFrom(src => src.Item2.ProductId))
             .ForMember(dst => dst.Quantity, opt => opt.MapFrom(src => src.Item2.Quantity))
             .ForMember(dst => dst.SubsidiaryLocation, opt => opt.MapFrom(src => src.Item1.Location))

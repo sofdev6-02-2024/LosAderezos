@@ -17,21 +17,21 @@ public class StockController : ControllerBase
     }
 
     [HttpGet]
-    public ActionResult<List<StockDTO>> GetStocks()
+    public ActionResult<List<StockFullInfoDTO>> GetStocks()
     {
         var result = _stockService.GetStocks();
         return Ok(result);
     }
 
     [HttpGet("stock/{stockId}")]
-    public ActionResult<StockDTO> GetStockById(Guid stockId)
+    public ActionResult<StockFullInfoDTO> GetStockById(Guid stockId)
     {
         var result = _stockService.GetStockById(stockId);
         return Ok(result);
     }
     
     [HttpGet("subsidiary/{subsidiaryId}")]
-    public ActionResult<List<StockDTO>> GetStocksBySubsidiaryId(Guid subsidiaryId)
+    public ActionResult<List<StockFullInfoDTO>> GetStocksBySubsidiaryId(Guid subsidiaryId)
     {
         var result = _stockService.GetStocksBySubsidiaryId(subsidiaryId);
         return Ok(result);
@@ -39,7 +39,7 @@ public class StockController : ControllerBase
     
     
     [HttpGet("subsidiary/{subsidiaryId}/product/{productId}")]
-    public ActionResult<StockDTO> GetStocksBySubsidiaryAndProductId(Guid subsidiaryId, Guid productId)
+    public ActionResult<StockFullInfoDTO> GetStocksBySubsidiaryAndProductId(Guid subsidiaryId, Guid productId)
     {
         var result = _stockService.GetStocksBySubsidiaryAndProductId(subsidiaryId, productId);
         return Ok(result);
@@ -53,17 +53,36 @@ public class StockController : ControllerBase
         return Ok(result);
     }
     
+    [HttpGet("subsidiary/{subsidiaryId}/product-code/{productCode}")]
+    public ActionResult<StockFullInfoDTO> GetStocksBySubsidiaryAndProductCode(Guid subsidiaryId, int productCode)
+    {
+        var result = _stockService.GetStocksBySubsidiaryAndProductCode(subsidiaryId, productCode);
+        if (result == null)
+        {
+            return NotFound($"No stock found for subsidiaryId: {subsidiaryId} and productCode: {productCode}");
+        }
+        return Ok(result);
+    }
+    
     [HttpPost]
-    public ActionResult<StockDTO> PostStock(StockWithoutIDDTO stock)
+    public ActionResult<StockFullInfoDTO> PostStock(StockWithoutIDDTO stock)
     {
         var result = _stockService.CreateStock(stock);
         return Ok(result);
     }
 
     [HttpPut("{stockId}")]
-    public ActionResult<StockDTO> PutStock(Guid stockId, StockWithoutIDDTO stock)
+    public ActionResult<StockFullInfoDTO> PutStock(Guid stockId, StockWithoutIDDTO stock)
     {
         var result = _stockService.UpdateStock(stock, stockId);
         return Ok(result);
     }
+    
+    [HttpPut("Update/List")]
+    public ActionResult<List<StockFullInfoDTO>> UpdateStocks([FromBody] List<StockDTO> stocks)
+    {
+        var result = _stockService.UpdateStocks(stocks);
+        return Ok(result);
+    }
+
 }
