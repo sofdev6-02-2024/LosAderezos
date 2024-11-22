@@ -112,7 +112,7 @@ export default function InProductPage() {
             <InOutProduct
               name={p.name}
               barcode={p.productCode}
-              price={p.sellPrice}
+              price={p.incomingPrice}
               quantity={p.inQuantity}
               setQuantity={(q) => {
                 manageQuantity(q, index);
