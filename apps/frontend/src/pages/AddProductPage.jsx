@@ -7,6 +7,8 @@ import GenericList from "../components/GenericList";
 import { MdAdd, MdOutlineCancel } from "react-icons/md";
 import { FaMinus } from "react-icons/fa";
 import { createCategory, getAllCategories } from "../services/CategoryService";
+import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 
 const AddProductSchema = Yup.object().shape({
   name: Yup.string().required("El nombre del producto es obligatorio"),
@@ -22,11 +24,13 @@ const AddProductSchema = Yup.object().shape({
 });
 
 function AddProductPage() {
+  const navigate = useNavigate();
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [lowStockEnabled, setLowStockEnabled] = useState(false);
   const [availableCategories, setAvailableCategories] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredCategories, setFilteredCategories] = useState([]);
+  const [highlightedIndex, setHighlightedIndex] = useState(-1);
 
   useEffect(() => {
     async function fetchCategories() {
@@ -50,6 +54,11 @@ function AddProductPage() {
 
   const handleAddCategory = async (categoryName) => {
     if (categoryName.trim() !== "") {
+      if (selectedCategories.some((cat) => cat.toLowerCase() === categoryName.toLowerCase())) {
+        toast.warning("La categoría ya está seleccionada");
+        return;
+      }
+
       const existingCategory = availableCategories.find(
         (cat) => cat.name.toLowerCase() === categoryName.toLowerCase()
       );
@@ -61,19 +70,27 @@ function AddProductPage() {
           const newCategory = await createCategory({ name: categoryName });
           setAvailableCategories([...availableCategories, newCategory]);
           setSelectedCategories([...selectedCategories, newCategory.name]);
+          toast.success("Nueva categoría creada y añadida");
         } catch (err) {
           console.error("Error al crear categoría:", err);
+          toast.error("Hubo un error al crear la categoría. Por favor, inténtelo de nuevo.");
         }
       }
     }
   };
 
   const handleRemoveCategory = (index) => {
-    setSelectedCategories(selectedCategories.filter((_, i) => i !== index));
+    const updatedCategories = selectedCategories.filter((_, i) => i !== index);
+    setSelectedCategories(updatedCategories);
   };
 
   const handleSubmit = (values) => {
+    if (selectedCategories.length === 0) {
+      toast.error("Debe seleccionar al menos una categoría antes de continuar");
+      return;
+    }
     console.log("Datos enviados:", values, "Categorías seleccionadas:", selectedCategories);
+    toast.success("Producto agregado correctamente");
   };
 
   return (
@@ -102,7 +119,9 @@ function AddProductPage() {
                 isCorrect={!(errors.name && touched.name)}
                 isRequired={true}
               />
-
+              {touched.name && errors.name && (
+                <div className="text-red-500 text-sm">{errors.name}</div>
+              )}
               <InputField
                 id="buyPrice"
                 label="Costo de compra"
@@ -112,7 +131,9 @@ function AddProductPage() {
                 isCorrect={!(errors.buyPrice && touched.buyPrice)}
                 isRequired={true}
               />
-
+              {touched.buyPrice && errors.buyPrice && (
+                <div className="text-red-500 text-sm">{errors.buyPrice}</div>
+              )}
               <InputField
                 id="sellPrice"
                 label="Costo de venta"
@@ -122,6 +143,9 @@ function AddProductPage() {
                 isCorrect={!(errors.sellPrice && touched.sellPrice)}
                 isRequired={true}
               />
+              {touched.sellPrice && errors.sellPrice && (
+                <div className="text-red-500 text-sm">{errors.sellPrice}</div>
+              )}
             </div>
 
             <div className="flex flex-col gap-4">
@@ -168,7 +192,7 @@ function AddProductPage() {
                     <MdAdd size={19} />
                   </Button>
                 </div>
-                <div className="flex items-center gap-2 mb-2">
+                <div className="relative">
                   <input
                     type="text"
                     placeholder="Ingrese una categoría"
@@ -183,13 +207,25 @@ function AddProductPage() {
                       }
                     }}
                   />
-                  <ul>
-                    {filteredCategories.map((cat) => (
-                      <li key={cat.categoryId} onClick={() => handleAddCategory(cat.name)}>
-                        {cat.name}
-                      </li>
-                    ))}
-                  </ul>
+                  {searchTerm.trim() && filteredCategories.length > 0 && (
+                    <ul className="absolute top-full left-0 w-full bg-white border border-neutral-200 rounded-lg shadow-md max-h-40 overflow-y-auto z-10">
+                      {filteredCategories.map((cat, index) => (
+                        <li
+                          key={cat.categoryId}
+                          className={`px-4 py-2 cursor-pointer ${
+                            highlightedIndex === index ? "bg-neutral-200" : "hover:bg-neutral-100"
+                          }`}
+                          onClick={() => {
+                            handleAddCategory(cat.name);
+                            setSearchTerm("");
+                          }}
+                          onMouseEnter={() => setHighlightedIndex(index)}
+                        >
+                          {cat.name}
+                        </li>
+                      ))}
+                    </ul>
+                  )}
                 </div>
                 <GenericList
                   items={selectedCategories}
@@ -221,6 +257,9 @@ function AddProductPage() {
               <Button
                 type="common"
                 className="bg-red-600 font-roboto font-medium text-xl text-white rounded-xl px-6 py-2 flex items-center gap-2"
+                onClick={() => {
+                  navigate("/products");
+                }}
               >
                 Cancelar
                 <MdOutlineCancel size={19} />
