@@ -26,7 +26,7 @@ public class StockService : IStockService
         _subsidiaryService = subsidiaryService;
     }
 
-    public  List<StockDTO> GetStocks()
+    public  List<StockFullInfoDTO> GetStocks()
     {
         return _stockDao.ReadAll().Select(stock =>
         {
@@ -41,11 +41,11 @@ public class StockService : IStockService
                     categories.Add(category);    
                 }
             }
-            return _mapper.Map<StockDTO>((stock, product, categories));
+            return _mapper.Map<StockFullInfoDTO>((stock, product, categories));
         }).ToList();
     }
 
-    public StockDTO? GetStockById(Guid stockId)
+    public StockFullInfoDTO? GetStockById(Guid stockId)
     {
         var stock = _stockDao.Read(stockId);
         List<Category> categories = new List<Category>();
@@ -62,10 +62,10 @@ public class StockService : IStockService
                 categories.Add(category);    
             }
         }
-        return _mapper.Map<StockDTO>((stock, _productDao.Read(stock.ProductId), categories));
+        return _mapper.Map<StockFullInfoDTO>((stock, _productDao.Read(stock.ProductId), categories));
     }
 
-    public List<StockDTO> GetStocksBySubsidiaryId(Guid subsidiaryId)
+    public List<StockFullInfoDTO> GetStocksBySubsidiaryId(Guid subsidiaryId)
     {
         return _stockDao.ReadAll().Where(s => s.SubsidiaryId == subsidiaryId).Select(s => {
             List<Category> categories = new List<Category>();
@@ -79,11 +79,11 @@ public class StockService : IStockService
                 }
             }
             var product = _productDao.Read(s.ProductId);
-            return _mapper.Map<StockDTO>((s, product, categories));
+            return _mapper.Map<StockFullInfoDTO>((s, product, categories));
         }).ToList();
     }
 
-    public List<StockDTO> GetStocksByProductId(Guid productId)
+    public List<StockFullInfoDTO> GetStocksByProductId(Guid productId)
     {
         
         return _stockDao.ReadAll().Where(s => s.ProductId == productId).Select(s => {
@@ -98,11 +98,11 @@ public class StockService : IStockService
                 }
             }
             var product = _productDao.Read(s.ProductId);
-            return _mapper.Map<StockDTO>((s, product, categories));
+            return _mapper.Map<StockFullInfoDTO>((s, product, categories));
         }).ToList();
     }
 
-    public StockDTO? GetStocksBySubsidiaryAndProductId(Guid subsidiaryId, Guid productId)
+    public StockFullInfoDTO? GetStocksBySubsidiaryAndProductId(Guid subsidiaryId, Guid productId)
     {
         var stock = _stockDao.ReadAll().FirstOrDefault(s => s.SubsidiaryId == subsidiaryId && s.ProductId == productId);
         var product = _productDao.Read(productId);
@@ -118,7 +118,7 @@ public class StockService : IStockService
                     categories.Add(category);    
                 }
             }
-            return _mapper.Map<StockDTO>((stock, product, categories));
+            return _mapper.Map<StockFullInfoDTO>((stock, product, categories));
         }
 
         return null;
@@ -140,7 +140,7 @@ public class StockService : IStockService
         return result;
     }
 
-    public StockDTO CreateStock(StockWithoutIDDTO stock)
+    public StockFullInfoDTO CreateStock(StockWithoutIDDTO stock)
     {
         Guid guid = Guid.NewGuid();
         _stockDao.Create(_mapper.Map<Stock>((stock, guid)));
@@ -156,10 +156,10 @@ public class StockService : IStockService
             }
         }
 
-        return _mapper.Map<StockDTO>((createdStock, _productDao.Read(stock.ProductId), categories));
+        return _mapper.Map<StockFullInfoDTO>((createdStock, _productDao.Read(stock.ProductId), categories));
     }
 
-    public StockDTO UpdateStock(StockWithoutIDDTO stock, Guid stockId)
+    public StockFullInfoDTO UpdateStock(StockWithoutIDDTO stock, Guid stockId)
     {
         _stockDao.Update(_mapper.Map<Stock>((stock, stockId)));
         var updatedStock = _stockDao.Read(stockId);
@@ -174,15 +174,15 @@ public class StockService : IStockService
             }
         }
 
-        return _mapper.Map<StockDTO>((updatedStock, _productDao.Read(stock.ProductId), categories));
+        return _mapper.Map<StockFullInfoDTO>((updatedStock, _productDao.Read(stock.ProductId), categories));
     }
     
-    public List<StockDTO> UpdateStocks(List<StockDTO> stocks)
+    public List<StockFullInfoDTO> UpdateStocks(List<StockDTO> stocks)
     {
-        var updatedStocks = new List<StockDTO>();
+        var updatedStocks = new List<StockFullInfoDTO>();
         foreach (var stock in stocks)
         {
-            var updatedStockEntity = _mapper.Map<Stock>((stock, stock.StockId));
+            var updatedStockEntity = _mapper.Map<Stock>(stock);
             _stockDao.Update(updatedStockEntity);
 
             var updatedStock = _stockDao.Read(stock.StockId);
@@ -198,14 +198,14 @@ public class StockService : IStockService
                         categories.Add(category);
                     }
                 }
-                var stockDTO = _mapper.Map<StockDTO>((updatedStock, _productDao.Read(stock.ProductId), categories));
-                updatedStocks.Add(stockDTO);
+                var stockDto = _mapper.Map<StockFullInfoDTO>((updatedStock, _productDao.Read(stock.ProductId), categories));
+                updatedStocks.Add(stockDto);
             }
         }
         return updatedStocks;
     }
     
-    public StockDTO? GetStocksBySubsidiaryAndProductCode(Guid subsidiaryId, int productCode)
+    public StockFullInfoDTO? GetStocksBySubsidiaryAndProductCode(Guid subsidiaryId, int productCode)
     {
         var product = _productDao.ReadAll().FirstOrDefault(p => p.Code == productCode);
         if (product == null)
@@ -227,7 +227,7 @@ public class StockService : IStockService
                 categories.Add(category);
             }
         }
-        return _mapper.Map<StockDTO>((stock, product, categories));
+        return _mapper.Map<StockFullInfoDTO>((stock, product, categories));
     }
     
 }
