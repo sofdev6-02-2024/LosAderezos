@@ -12,10 +12,13 @@ namespace Backend.Controllers;
 public class SubsidiaryController: ControllerBase
 {
     private readonly ISubsidiaryService _subsidiaryService;
+    private readonly IUserAPIService _userApiService;
 
-    public SubsidiaryController(ISubsidiaryService subsidiaryService)
+
+    public SubsidiaryController(ISubsidiaryService subsidiaryService, IUserAPIService userApiService)
     {
         _subsidiaryService = subsidiaryService;
+        _userApiService = userApiService;
     }
 
     [HttpGet]
@@ -28,6 +31,24 @@ public class SubsidiaryController: ControllerBase
     [HttpGet("{subsidiaryId}")]
     public ActionResult<SubsidiaryDTO> GetSubsidiary(Guid subsidiaryId)
     {
+        if (!Request.Headers.ContainsKey("userId") || !Request.Headers.ContainsKey("token"))
+        {
+            return BadRequest("no header provided");
+        }
+
+        if (!Guid.TryParse(Request.Headers["userId"], out Guid headerUserId))
+        {
+            return Unauthorized("Invalid userId");
+        }
+        var toVerify = new ValidateTokenDTO()
+        {
+            UserId = headerUserId,
+            Token = Request.Headers["token"]
+        };
+        if (!_userApiService.IsTokenValid(toVerify).Result)
+        {
+            return Unauthorized("Invalid token");
+        }
         var subsidiary = _subsidiaryService.GetSubsidiaryById(subsidiaryId);
         return Ok(subsidiary);
     }

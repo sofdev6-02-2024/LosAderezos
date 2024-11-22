@@ -10,15 +10,41 @@ namespace Backend.Controllers;
 public class StockController : ControllerBase
 {
     private readonly IStockService _stockService;
+    private readonly IUserAPIService _userApiService;
 
-    public StockController(IStockService stockService)
+    public StockController(IStockService stockService, IUserAPIService userApiService)
     {
         _stockService = stockService;
+        _userApiService = userApiService;
     }
 
     [HttpGet]
     public ActionResult<List<StockFullInfoDTO>> GetStocks()
     {
+        if (!Request.Headers.ContainsKey("userId") || !Request.Headers.ContainsKey("token"))
+        {
+            return BadRequest("no header provided");
+        }
+
+        if (!Guid.TryParse(Request.Headers["userId"], out Guid headerUserId))
+        {
+            return Unauthorized("Invalid userId");
+        }
+        var toVerify = new ValidateTokenDTO()
+        {
+            UserId = headerUserId,
+            Token = Request.Headers["token"]
+        };
+        if (!_userApiService.IsTokenValid(toVerify).Result)
+        {
+            return Unauthorized("Invalid token");
+        }
+
+        if (_userApiService.IsUserOwnerOrHigher(toVerify.UserId).Result == true)
+        {
+            return Unauthorized("you are not an admin nor owner");
+        }
+
         var result = _stockService.GetStocks();
         return Ok(result);
     }
@@ -33,6 +59,25 @@ public class StockController : ControllerBase
     [HttpGet("subsidiary/{subsidiaryId}")]
     public ActionResult<List<StockFullInfoDTO>> GetStocksBySubsidiaryId(Guid subsidiaryId)
     {
+        
+        if (!Request.Headers.ContainsKey("userId") || !Request.Headers.ContainsKey("token"))
+        {
+            return BadRequest("no header provided");
+        }
+
+        if (!Guid.TryParse(Request.Headers["userId"], out Guid headerUserId))
+        {
+            return Unauthorized("Invalid userId");
+        }
+        var toVerify = new ValidateTokenDTO()
+        {
+            UserId = headerUserId,
+            Token = Request.Headers["token"]
+        };
+        if (!_userApiService.IsTokenValid(toVerify).Result)
+        {
+            return Unauthorized("Invalid token");
+        }
         var result = _stockService.GetStocksBySubsidiaryId(subsidiaryId);
         return Ok(result);
     }
@@ -41,6 +86,25 @@ public class StockController : ControllerBase
     [HttpGet("subsidiary/{subsidiaryId}/product/{productId}")]
     public ActionResult<StockFullInfoDTO> GetStocksBySubsidiaryAndProductId(Guid subsidiaryId, Guid productId)
     {
+        
+        if (!Request.Headers.ContainsKey("userId") || !Request.Headers.ContainsKey("token"))
+        {
+            return BadRequest("no header provided");
+        }
+
+        if (!Guid.TryParse(Request.Headers["userId"], out Guid headerUserId))
+        {
+            return Unauthorized("Invalid userId");
+        }
+        var toVerify = new ValidateTokenDTO()
+        {
+            UserId = headerUserId,
+            Token = Request.Headers["token"]
+        };
+        if (!_userApiService.IsTokenValid(toVerify).Result)
+        {
+            return Unauthorized("Invalid token");
+        }
         var result = _stockService.GetStocksBySubsidiaryAndProductId(subsidiaryId, productId);
         return Ok(result);
     }
@@ -49,6 +113,24 @@ public class StockController : ControllerBase
     [HttpGet("company/{companyId}/product/{productId}")]
     public ActionResult<List<OtherSubsidiariesProductsDTO>> GetOtherSubsidiariesProducts(Guid companyId, Guid productId)
     {
+        if (!Request.Headers.ContainsKey("userId") || !Request.Headers.ContainsKey("token"))
+        {
+            return BadRequest("no header provided");
+        }
+
+        if (!Guid.TryParse(Request.Headers["userId"], out Guid headerUserId))
+        {
+            return Unauthorized("Invalid userId");
+        }
+        var toVerify = new ValidateTokenDTO()
+        {
+            UserId = headerUserId,
+            Token = Request.Headers["token"]
+        };
+        if (!_userApiService.IsTokenValid(toVerify).Result)
+        {
+            return Unauthorized("Invalid token");
+        }
         var result = _stockService.GetOtherSubsidiariesProducts(companyId, productId);
         return Ok(result);
     }

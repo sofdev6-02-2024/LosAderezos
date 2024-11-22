@@ -11,10 +11,13 @@ namespace Backend.Controllers;
 public class CompanyController : ControllerBase
 {
     private readonly ICompanyService _companyService;
+    private readonly IUserAPIService _userApiService;
 
-    public CompanyController(ICompanyService companyService)
+
+    public CompanyController(ICompanyService companyService, IUserAPIService userApiService)
     {
         _companyService = companyService;
+        _userApiService = userApiService;
     }
 
     [HttpGet]
@@ -27,6 +30,25 @@ public class CompanyController : ControllerBase
     [HttpGet("{companyId}")]
     public ActionResult<CompanyDTO> GetCompanyById(Guid companyId)
     {
+        if (!Request.Headers.ContainsKey("userId") || !Request.Headers.ContainsKey("token"))
+        {
+            return BadRequest("no header provided");
+        }
+
+        if (!Guid.TryParse(Request.Headers["userId"], out Guid headerUserId))
+        {
+            return Unauthorized("Invalid userId");
+        }
+        var toVerify = new ValidateTokenDTO()
+        {
+            UserId = headerUserId,
+            Token = Request.Headers["token"]
+        };
+        if (!_userApiService.IsTokenValid(toVerify).Result)
+        {
+            return Unauthorized("Invalid token");
+        }
+
         var result = _companyService.GetCompanyById(companyId);
         return Ok(result);
     }

@@ -35,6 +35,7 @@ builder.Services.Scan(scan => scan
     .WithScopedLifetime());
 builder.Services.AddControllers();
 
+builder.Services.AddHttpClient<UserAPIService>();
 
 builder.Services.AddCors(policyBuilder =>
 {

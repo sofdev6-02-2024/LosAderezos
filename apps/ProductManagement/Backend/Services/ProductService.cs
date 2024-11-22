@@ -9,12 +9,16 @@ namespace Backend.Services;
 public class ProductService: IProductService
 {
     private readonly IProductDAO _productDao;
+    private readonly IStockDAO _stockDao;
+    private readonly ISubsidiaryDAO _subsidiaryDao;
     private readonly IMapper _mapper;
 
-    public ProductService(IProductDAO productDao, IMapper mapper)
+    public ProductService(IProductDAO productDao, IMapper mapper, IStockDAO stockDao, ISubsidiaryDAO subsidiaryDao)
     {
         _productDao = productDao;
         _mapper = mapper;
+        _stockDao = stockDao;
+        _subsidiaryDao = subsidiaryDao;
     }
 
     public List<ProductDTO> GetProducts()
@@ -31,6 +35,17 @@ public class ProductService: IProductService
     {
         Guid guid = Guid.NewGuid();
         _productDao.Create(_mapper.Map<Product>((product, guid)));
+        foreach (Subsidiary subsidiary in _subsidiaryDao.ReadAll())
+        {
+            _stockDao.Create(new Stock()
+            {
+                ProductId = guid,
+                Code = 0,
+                Quantity = 0,
+                StockId = Guid.NewGuid(),
+                SubsidiaryId = subsidiary.SubsidiaryId
+            });
+        }
         return _mapper.Map<ProductDTO>(_productDao.Read(guid));
     }
 
