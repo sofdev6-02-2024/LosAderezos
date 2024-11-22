@@ -2,20 +2,24 @@ import PropTypes from "prop-types";
 import { FaPlus, FaMinus } from "react-icons/fa";
 import Button from "./Button";
 
-export default function QuantityInput({ value, setValue }) {
+export default function QuantityInput({ value, setValue, maxValue }) {
   const onClickAdd = () => {
-    setValue(value + 1);
+    if (!maxValue) setValue(value + 1);
+    if (maxValue >= value + 1) setValue(value + 1);
   };
 
   const onClickMinus = () => {
-    setValue(value - 1);
+    if (value > 0) setValue(value - 1);
   };
 
   const onChangeValue = (e) => {
     const val = parseInt(e.target.value);
-    if (!isNaN(val)) {
-      setValue(val);
+
+    if (isNaN(val)) {
+      return;
     }
+    if (!maxValue) setValue(val);
+    if (maxValue >= val) setValue(val);
   };
 
   return (
@@ -41,4 +45,5 @@ export default function QuantityInput({ value, setValue }) {
 QuantityInput.propTypes = {
   value: PropTypes.number,
   setValue: PropTypes.func,
+  maxValue: PropTypes.number,
 };

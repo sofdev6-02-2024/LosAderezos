@@ -6,36 +6,52 @@ import InOutProduct from "../components/InOutProduct";
 import { IoMdAdd } from "react-icons/io";
 import { MdOutlineCancel } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
+import { getProductByCode, updateStocks } from "../services/ProductService";
+import { useUser } from "../hooks/UserUser";
 
 export default function InProductPage() {
   const [products, setProducts] = useState([]);
   const navigate = useNavigate();
+  const user = useUser();
 
-  const onSearch = (text) => {
+  const onSearch = async (text) => {
     if (!text) return;
 
-    const code = parseInt(text)
-    const existingProduct = products.find((p) => p.code === code);
+    const code = parseInt(text);
+    const existingProduct = products.find((p) => p.productCode === code);
 
     if (existingProduct) {
-      const updatedProducts = products.map((p) =>
-        p.code === code ? { ...p, quantity: p.quantity + 1 } : p
-      );
+      const updatedProducts = products.map((p) => {
+        return p.productCode === code && p.quantity > 0
+          ? {
+              ...p,
+              inQuantity: p.inQuantity + 1,
+              quantity: p.quantity - 1,
+            }
+          : p;
+      });
       setProducts(updatedProducts);
     } else {
-      const newProduct = {
-        name: "New Product",
-        code,
-        sellPrice: 20,
-        quantity: 1,
-      };
-      setProducts([...products, newProduct]);
+      try {
+        const newProduct = await getProductByCode(code, user.subsidiaryId);
+        if (newProduct.quantity > 0) {
+          const productWithQuantity = {
+            ...newProduct,
+            inQuantity: 1,
+            quantity: newProduct.quantity - 1,
+            maxQuantiy: newProduct.quantity,
+          };
+          setProducts([...products, productWithQuantity]);
+        }
+      } catch (error) {
+        console.error("No se pudo conseguir el producto", error);
+      }
     }
   };
 
-  const manageQuantity = (quantity, index) => {
+  const manageQuantity = (q, index) => {
     const updatedProducts = products.map((p, i) =>
-      i === index ? { ...p, quantity: quantity } : p
+      i === index ? { ...p, inQuantity: q, quantity: p.maxQuantiy - q } : p
     );
     setProducts(updatedProducts);
   };
@@ -46,7 +62,20 @@ export default function InProductPage() {
   };
 
   const submit = async () => {
-    console.log(products)
+    const stocks = products.map((p) => {
+      return {
+        stockId: p.stockId,
+        code: p.code,
+        quantity: p.quantity,
+        productId: p.productId,
+        subsidiaryId: p.subsidiaryId,
+      };
+    });
+    try {
+      await updateStocks(stocks);
+    } catch (error) {
+      console.error("Eror al intentar actualizar stock", error);
+    }
     navigate("/store_menu");
   };
 
@@ -79,16 +108,17 @@ export default function InProductPage() {
       </div>
       <div className="w-full flex flex-col space-y-7 flex-1 overflow-y-scroll items-center">
         {products.map((p, index) => (
-          <div key={p.code} className="w-4/5">
+          <div key={index} className="w-4/5">
             <InOutProduct
               name={p.name}
-              barcode={p.code}
+              barcode={p.productCode}
               price={p.sellPrice}
-              quantity={p.quantity}
+              quantity={p.inQuantity}
               setQuantity={(q) => {
                 manageQuantity(q, index);
               }}
               onDelete={() => handleDel(index)}
+              maxValue={p.maxQuantiy}
             />
           </div>
         ))}
