@@ -83,3 +83,25 @@ export async function getCompanyById(id) {
     );
   }
 }
+
+export async function getProductByCode(code, subsidiaryId) {
+  try {
+    const response = await productAPI.get(`/Stock/subsidiary/${subsidiaryId}/product-code/${code}`);
+    return response.data;
+  } catch (error) {
+    throw new Error(
+      error.response?.data?.message || "Error al conseguir compañia"
+    );
+  }
+}
+
+export async function updateStocks(stocks) {
+  try {
+    const response = await productAPI.put(`/Stock/Update/List`, stocks);
+    return response.data;
+  } catch (error) {
+    throw new Error(
+      error.response?.data?.message || "Error al conseguir compañia"
+    );
+  }
+}

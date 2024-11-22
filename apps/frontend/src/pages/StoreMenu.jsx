@@ -33,12 +33,12 @@ function StoreMenu() {
           <CardButton 
             icon={FaPlus} 
             label="Nueva entrada" 
-            onClick={() => handleButtonClick("Nueva entrada")}
+            onClick={() => navigate('/in-products')}
           />
           <CardButton 
             icon={FaMinus} 
             label="Nueva salida" 
-            onClick={() => handleButtonClick("Nueva salida")}
+            onClick={() => navigate('/out-products')}
           />
           <CardButton 
             icon={FaRegUser} 
