@@ -6,7 +6,7 @@ function GenericList({ items, renderItem, className }) {
     <List unstyled className={className}>
       {items.map((item, index) => (
         <List.Item key={index} className="py-1">
-          {renderItem(item)}
+          {renderItem(item, index)}
         </List.Item>
       ))}
     </List>

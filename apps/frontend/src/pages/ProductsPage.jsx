@@ -7,11 +7,13 @@ import { getProducts } from "../services/ProductService";
 import SearchBar from "../components/SearchBar";
 import { Link } from "react-router-dom";
 import { useUser } from "../hooks/UserUser";
+import { useNavigate } from "react-router-dom";
 
 export default function ProductsPage()
 {
   const user = useUser();
   const [products, setProducts] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     async function fetchProducts() {
@@ -37,7 +39,14 @@ export default function ProductsPage()
           <Button>
               <IoMdBarcode size={40}/>
             </Button>
-            <Button text={'Añadir'} className={'bg-[#E5E5E5] hover:bg-[#A3A3A3] w-[92px] h-[32px] text-[14px]'} type={'common'}>
+            <Button 
+              text={'Añadir'} 
+              className={'bg-[#E5E5E5] hover:bg-[#A3A3A3] w-[92px] h-[32px] text-[14px]'} 
+              type={'common'}
+              onClick={() => {
+                navigate("/add-product");
+              }}
+            >
               <FaPlus />
           </Button>
         </div>
@@ -45,7 +54,14 @@ export default function ProductsPage()
           <IoMdBarcode size={40}/>
         </Button>
         <div className="hidden md:block">
-          <Button text={'Añadir'} className={'bg-[#E5E5E5] justify-center hover:bg-[#A3A3A3] w-[92px] h-[32px] text-[14px]'} type={'common'}>
+          <Button 
+            text={'Añadir'} 
+            className={'bg-[#E5E5E5] justify-center hover:bg-[#A3A3A3] w-[92px] h-[32px] text-[14px]'} 
+            type={'common'}
+            onClick={() => {
+              navigate("/add-product");
+            }}
+          >
             <FaPlus />
           </Button>
         </div>

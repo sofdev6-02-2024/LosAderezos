@@ -9,6 +9,7 @@ import AppLayout from "./layouts/AppLayout";
 import UserPage from "./pages/UserPage";
 import InProductPage from "./pages/InProductsPage";
 import OutProductPage from "./pages/OutProductPage";
+import AddProductPage from "./pages/AddProductPage";
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
         <Route path="/store_menu" element={<StoreMenu />} />
         <Route path="/products" element={<ProductsPage />} />
         <Route path="/products/:id" element={<SingleProductPage />} />
+        <Route path="/add-product" element={<AddProductPage />} />
         <Route path="/branches" element={<NotFound />} />
         <Route path="/notifications" element={<NotFound />} />
         <Route path="/addUsers" element={<AddUser />} />

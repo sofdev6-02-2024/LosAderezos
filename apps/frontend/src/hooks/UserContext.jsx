@@ -9,8 +9,8 @@ export function UserProvider({ children }) {
 
   useEffect(() => {
     const decodedUser = getDecodedToken();
-    const subIds = decodedUser.subsidiaryId.split(',')
     if (decodedUser) {
+      const subIds = decodedUser.subsidiaryId.split(',')
       setUser({
         userId: decodedUser.userId,
         UserEmail: decodedUser.UserEmail,
