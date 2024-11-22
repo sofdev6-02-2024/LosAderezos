@@ -4,7 +4,6 @@ public class StockDTO
 {
     
     public Guid StockId { get; set; }
-    public int Code { get; set; }
     public int Quantity { get; set; }
     
     //Forign Key

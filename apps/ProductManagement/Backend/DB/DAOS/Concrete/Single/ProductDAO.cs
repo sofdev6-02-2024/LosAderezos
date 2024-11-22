@@ -93,7 +93,7 @@ public sealed class ProductDAO : SingleDAO<Product>, IProductDAO
             .Append(" IncomePrice = ").Append(productIncomingPriceC).Append(", ")
             .Append(" Code = '").Append(productCodeC).Append("', ")
             .Append(" SellPrice = ").Append(productSellPriceC).Append(", ")
-            .Append(" CompanyId = ").Append(productCompanyIdC).Append(", ")
+            .Append(" CompanyId = '").Append(productCompanyIdC).Append("', ")
             .Append(" LowExistence = ").Append(productLowExistenceC).Append(", ")
             .Append(" Notify = ").Append(productNotifyC)
             .Append(" WHERE Id = '").Append(productIdC).Append("';");

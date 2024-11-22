@@ -16,10 +16,9 @@ public sealed class StockDAO : SingleDAO<Stock>, IStockDAO
         _entity = new Stock 
                     {
                         StockId = _mySqlReader!.GetGuid(0),
-                        Code = _mySqlReader!.GetInt32(1),
-                        Quantity = _mySqlReader!.GetInt32(2),
-                        ProductId = _mySqlReader!.GetGuid(3),
-                        SubsidiaryId = _mySqlReader!.GetGuid(4),
+                        Quantity = _mySqlReader!.GetInt32(1),
+                        ProductId = _mySqlReader!.GetGuid(2),
+                        SubsidiaryId = _mySqlReader!.GetGuid(3),
                     };
         _mySqlReader.Close();
         return _entity;
@@ -33,10 +32,9 @@ public sealed class StockDAO : SingleDAO<Stock>, IStockDAO
             _entity = new Stock 
                     {
                         StockId = _mySqlReader.GetGuid(0),
-                        Code = _mySqlReader.GetInt32(1),
-                        Quantity = _mySqlReader.GetInt32(2),
-                        ProductId = _mySqlReader.GetGuid(3),
-                        SubsidiaryId = _mySqlReader.GetGuid(4)
+                        Quantity = _mySqlReader.GetInt32(1),
+                        ProductId = _mySqlReader.GetGuid(2),
+                        SubsidiaryId = _mySqlReader.GetGuid(3)
                     };
             _entitiesList.Add(_entity);
         }
@@ -47,15 +45,13 @@ public sealed class StockDAO : SingleDAO<Stock>, IStockDAO
     private protected override StringBuilder CreateCommandIntoStringBuilder(Stock stock)
     {
         string stockIdC = stock.StockId.ToString();
-        string stockCodeC = stock.Code.ToString();
         string stockQuantityC = stock.Quantity.ToString();
         string stockProductIdC = stock.ProductId.ToString();
         string stockSubsidiaryIdC = stock.SubsidiaryId.ToString();
 
         _sb = new StringBuilder();
-        _sb.Append("INSERT INTO ").Append(_tableName).Append(" (Id, Code, Quantity, ProductId, SubsidiaryId)")
+        _sb.Append("INSERT INTO ").Append(_tableName).Append(" (Id, Quantity, ProductId, SubsidiaryId)")
             .Append("VALUES ('").Append(stockIdC).Append("',")
-                                .Append(stockCodeC).Append(",")
                                 .Append(stockQuantityC).Append(",'")
                                 .Append(stockProductIdC).Append("','")
                                 .Append(stockSubsidiaryIdC).Append("');");
@@ -66,15 +62,13 @@ public sealed class StockDAO : SingleDAO<Stock>, IStockDAO
     private protected override StringBuilder UpdateCommandIntoStringBuilder(Stock stock)
     {
         string stockIdC = stock.StockId.ToString();
-        string stockCodeC = stock.Code.ToString();
         string stockQuantityC = stock.Quantity.ToString();
         string stockProductIdC = stock.ProductId.ToString();
         string stockSubsidiaryIdC = stock.SubsidiaryId.ToString();
 
         _sb = new StringBuilder();
         _sb.Append("UPDATE ").Append(_tableName)
-            .Append(" Set Code = ").Append(stockCodeC).Append(", ")
-            .Append(" Quantity = ").Append(stockQuantityC).Append(", ")
+            .Append(" Set Quantity = ").Append(stockQuantityC).Append(", ")
             .Append(" ProductId = '").Append(stockProductIdC).Append("',")
             .Append(" SubsidiaryId = '").Append(stockSubsidiaryIdC).Append("' ")
             .Append(" WHERE Id = '").Append(stockIdC).Append("';");

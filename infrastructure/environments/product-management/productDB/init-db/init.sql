@@ -73,7 +73,6 @@ DELIMITER ;
 -- STOCK
 CREATE TABLE IF NOT EXISTS Stock(
     Id              VARCHAR(36) PRIMARY KEY NOT NULL,
-    Code            INT,
     Quantity        INT,
     ProductId       VARCHAR(36),
     SubsidiaryId    VARCHAR(36),
@@ -86,7 +85,6 @@ CREATE PROCEDURE GetStocksBySubsidiaryId(IN subsidiaryId CHAR(36))
 BEGIN
   SELECT
     s.Id,
-    s.Code,
     s.Quantity,
     s.ProductId
   FROM

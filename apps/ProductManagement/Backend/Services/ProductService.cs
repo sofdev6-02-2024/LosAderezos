@@ -30,13 +30,21 @@ public class ProductService: IProductService
     public ProductDTO CreateProduct(ProductWithoutIDDTO product)
     {
         Guid guid = Guid.NewGuid();
-        _productDao.Create(_mapper.Map<Product>((product, guid)));
+        string code = CreateCodeFromGuid(guid);
+        _productDao.Create(_mapper.Map<Product>((product, guid, code)));
         return _mapper.Map<ProductDTO>(_productDao.Read(guid));
     }
 
-    public ProductDTO UpdateProduct(ProductDTO product)
+    public ProductDTO? UpdateProduct(Guid productId, ProductWithoutIDDTO product)
     {
-        _productDao.Update(_mapper.Map<Product>(product));
-        return _mapper.Map<ProductDTO>(_productDao.Read(product.ProductId));
+        string code = CreateCodeFromGuid(productId);
+        _productDao.Update(_mapper.Map<Product>((product, productId, code)));
+        var resultProduct = _productDao.Read(productId);
+        return _mapper.Map<ProductDTO>(resultProduct);
+    }
+
+    private string CreateCodeFromGuid(Guid guid)
+    {
+        return guid.ToString("N");   
     }
 }
