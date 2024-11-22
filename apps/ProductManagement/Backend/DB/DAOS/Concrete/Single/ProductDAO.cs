@@ -19,7 +19,7 @@ public sealed class ProductDAO : SingleDAO<Product>, IProductDAO
                         ProductId = _mySqlReader!.GetGuid(0),
                         Name = _mySqlReader!.GetString(1),
                         IncomingPrice = _mySqlReader!.GetDecimal(2),
-                        Code = _mySqlReader!.GetInt32(3),
+                        Code = _mySqlReader!.GetString(3),
                         SellPrice = _mySqlReader!.GetDecimal(4),
                         CompanyId = _mySqlReader!.GetGuid(5),
                         LowExistence = _mySqlReader!.GetInt32(6),
@@ -39,7 +39,7 @@ public sealed class ProductDAO : SingleDAO<Product>, IProductDAO
                         ProductId = _mySqlReader.GetGuid(0),
                         Name = _mySqlReader.GetString(1),
                         IncomingPrice = _mySqlReader.GetDecimal(2),
-                        Code = _mySqlReader.GetInt32(3),
+                        Code = _mySqlReader.GetString(3),
                         SellPrice = _mySqlReader.GetDecimal(4),
                         CompanyId = _mySqlReader.GetGuid(5),
                         LowExistence = _mySqlReader!.GetInt32(6),
@@ -56,7 +56,7 @@ public sealed class ProductDAO : SingleDAO<Product>, IProductDAO
         string productIdC = product.ProductId.ToString();
         string productNameC = product.Name;
         string productIncomingPriceC = product.IncomingPrice.ToString();
-        string productCodeC = product.Code.ToString();
+        string productCodeC = product.Code;
         string productSellPriceC = product.SellPrice.ToString();
         string productCompanyIdC = product.CompanyId.ToString();
         string productLowExistenceC = product.LowExistence.ToString();
@@ -66,8 +66,8 @@ public sealed class ProductDAO : SingleDAO<Product>, IProductDAO
         _sb.Append("INSERT INTO ").Append(_tableName).Append(" (Id, Name, IncomePrice, Code, SellPrice, CompanyId, LowExistence, Notify) ")
             .Append("VALUES ('").Append(productIdC).Append("','")
                                 .Append(productNameC).Append("',")
-                                .Append(productIncomingPriceC).Append(",")
-                                .Append(productCodeC).Append(",")
+                                .Append(productIncomingPriceC).Append(",'")
+                                .Append(productCodeC).Append("',")
                                 .Append(productSellPriceC).Append(",'")
                                 .Append(productCompanyIdC).Append("',")
                                 .Append(productLowExistenceC).Append(", ")
@@ -81,7 +81,7 @@ public sealed class ProductDAO : SingleDAO<Product>, IProductDAO
         string productIdC = product.ProductId.ToString();
         string productNameC = product.Name;
         string productIncomingPriceC = product.IncomingPrice.ToString();
-        string productCodeC = product.Code.ToString();
+        string productCodeC = product.Code;
         string productSellPriceC = product.SellPrice.ToString();
         string productCompanyIdC = product.CompanyId.ToString();
         string productLowExistenceC = product.LowExistence.ToString();
@@ -91,7 +91,7 @@ public sealed class ProductDAO : SingleDAO<Product>, IProductDAO
         _sb.Append("UPDATE ").Append(_tableName)
             .Append(" Set Name = '").Append(productNameC).Append("', ")
             .Append(" IncomePrice = ").Append(productIncomingPriceC).Append(", ")
-            .Append(" Code = ").Append(productCodeC).Append(", ")
+            .Append(" Code = '").Append(productCodeC).Append("', ")
             .Append(" SellPrice = ").Append(productSellPriceC).Append(", ")
             .Append(" CompanyId = ").Append(productCompanyIdC).Append(", ")
             .Append(" LowExistence = ").Append(productLowExistenceC).Append(", ")

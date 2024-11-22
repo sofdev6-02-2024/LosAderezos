@@ -15,6 +15,6 @@ public interface IStockService
     public StockFullInfoDTO CreateStock(StockWithoutIDDTO stock);
     public StockFullInfoDTO UpdateStock(StockWithoutIDDTO stock, Guid stockId);
     public List<StockFullInfoDTO> UpdateStocks(List<StockDTO> stocks);
-    public StockFullInfoDTO? GetStocksBySubsidiaryAndProductCode(Guid subsidiaryId, int productCode);
+    public StockFullInfoDTO? GetStocksBySubsidiaryAndProductCode(Guid subsidiaryId, string productCode);
 
 }

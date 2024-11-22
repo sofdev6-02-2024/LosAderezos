@@ -44,7 +44,7 @@ CREATE TABLE IF NOT EXISTS Product(
     Id          VARCHAR(36) PRIMARY KEY NOT NULL,
     Name        VARCHAR(80),
     IncomePrice DECIMAL(7,2),
-    Code        INT,
+    Code        VARCHAR(36),
     SellPrice   DECIMAL(7,2),
     CompanyId   VARCHAR(36),
     LowExistence INT,

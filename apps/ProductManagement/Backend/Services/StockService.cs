@@ -205,7 +205,7 @@ public class StockService : IStockService
         return updatedStocks;
     }
     
-    public StockFullInfoDTO? GetStocksBySubsidiaryAndProductCode(Guid subsidiaryId, int productCode)
+    public StockFullInfoDTO? GetStocksBySubsidiaryAndProductCode(Guid subsidiaryId, string productCode)
     {
         var product = _productDao.ReadAll().FirstOrDefault(p => p.Code == productCode);
         if (product == null)
