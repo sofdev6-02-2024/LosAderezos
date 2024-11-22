@@ -105,3 +105,25 @@ export async function updateStocks(stocks) {
     );
   }
 }
+
+export async function createProduct(productData) {
+  try {
+    const response = await productAPI.post("/Product", productData);
+    return response.data;
+  } catch (error) {
+    throw new Error(
+      error.response?.data?.message || "Error al crear el producto"
+    );
+  }
+}
+
+export async function assignCategoriesToProduct(categoryIds, productId) {
+  try {
+    const response = await productAPI.post("/ProductCategories/List", {categoryIds, productId});
+    return response.data;
+  } catch (error) {
+    throw new Error(
+      error.response?.data?.message || "Error al asignar categorías al producto"
+    );
+  }
+}

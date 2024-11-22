@@ -9,6 +9,8 @@ import { FaMinus } from "react-icons/fa";
 import { createCategory, getAllCategories } from "../services/CategoryService";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
+import { assignCategoriesToProduct, createProduct } from "../services/ProductService";
+import { useUser } from "../hooks/UserUser";
 
 const AddProductSchema = Yup.object().shape({
   name: Yup.string().required("El nombre del producto es obligatorio"),
@@ -24,6 +26,7 @@ const AddProductSchema = Yup.object().shape({
 });
 
 function AddProductPage() {
+  const user = useUser();
   const navigate = useNavigate();
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [lowStockEnabled, setLowStockEnabled] = useState(false);
@@ -84,13 +87,35 @@ function AddProductPage() {
     setSelectedCategories(updatedCategories);
   };
 
-  const handleSubmit = (values) => {
+  const handleSubmit = async (values) => {
     if (selectedCategories.length === 0) {
       toast.error("Debe seleccionar al menos una categoría antes de continuar");
       return;
     }
-    console.log("Datos enviados:", values, "Categorías seleccionadas:", selectedCategories);
-    toast.success("Producto agregado correctamente");
+    try {
+      const productData = {
+        name: values.name,
+        incomingPrice: values.buyPrice,
+        sellPrice: values.sellPrice,
+        companyId: user.companyId,
+        lowExistence: lowStockEnabled ? values.lowStock : null,
+        notify: lowStockEnabled,
+      };
+  
+      const createdProduct = await createProduct(productData);
+  
+      const selectedCategoryIds = availableCategories
+        .filter((category) => selectedCategories.includes(category.name))
+        .map((category) => category.categoryId);
+  
+      await assignCategoriesToProduct(selectedCategoryIds, createdProduct.productId);
+  
+      toast.success("Producto creado y categorías asignadas correctamente");
+      navigate("/products");
+    } catch (error) {
+      console.error("Error al crear producto o asignar categorías:", error);
+      toast.error("Hubo un error al procesar su solicitud. Por favor, inténtelo de nuevo.");
+    }
   };
 
   return (
@@ -109,7 +134,7 @@ function AddProductPage() {
       >
         {({ errors, touched }) => (
           <Form className="grid grid-cols-1 gap-6 lg:grid-cols-2">
-            <div className="flex flex-col gap-4">
+            <div className="flex flex-col gap-2">
               <InputField
                 id="name"
                 label="Nombre"
