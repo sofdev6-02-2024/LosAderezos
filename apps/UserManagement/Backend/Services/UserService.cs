@@ -58,10 +58,11 @@ public class UserService : IUserService
         return _mapper.Map<UserDTO>(_userDao.Read(id));
     }
 
-    public UserDTO? UpdateUser(UserDTO user)
+    public UserDTO? UpdateUser(Guid userId, UpdateUserDTO user)
     {
-        _userDao.Update(_mapper.Map<User>(user));
-        return _mapper.Map<UserDTO>(_userDao.Read(user.UserId));
+        var oldUser = _userDao.Read(userId);
+        _userDao.Update(_mapper.Map<User>((oldUser, user )));
+        return _mapper.Map<UserDTO>(_userDao.Read(userId));
     }
 
     public async Task<UserDTO?> GetUserBySubsidiaryAndEmail(UserBySubsidiaryDTO user)

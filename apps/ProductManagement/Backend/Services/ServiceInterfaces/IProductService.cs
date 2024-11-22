@@ -9,4 +9,5 @@ public interface IProductService
     public ProductDTO? GetProductById(Guid id);
     public ProductDTO CreateProduct(ProductWithoutIDDTO product);
     public ProductDTO? UpdateProduct(Guid productId, ProductWithoutIDDTO product);
+    public bool? DeleteProductById(Guid id);
 }

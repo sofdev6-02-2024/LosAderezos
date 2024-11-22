@@ -24,6 +24,15 @@ public class UserProfile : Profile
             .ForMember(dest => dest.BirthDate, opt => opt.MapFrom(src => src.Item1.BirthDate))
             .ForMember(dest => dest.PhoneNumber, opt => opt.MapFrom(src => src.Item1.PhoneNumber));;
         CreateMap<User, UserWithoutIdDTO>();
-        
+        CreateMap<(User, UpdateUserDTO), User>()
+            .ForMember(dest => dest.UserId, expression => expression.MapFrom(src => src.Item1.UserId))
+            .ForMember(dest => dest.Email, expression => expression.MapFrom(src => src.Item1.Email))
+            .ForMember(dest => dest.Rol, expression => expression.MapFrom(src => src.Item1.Rol))
+            .ForMember(dest => dest.Name, expression => expression.MapFrom(src => src.Item2.Name))
+            .ForMember(dest => dest.PhoneNumber, expression => expression.MapFrom(src => src.Item2.PhoneNumber))
+            .ForMember(dest => dest.BirthDate, expression => expression.MapFrom(src => src.Item2.BirthDate));
+
+
+
     }
 }
