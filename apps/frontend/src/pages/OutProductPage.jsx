@@ -9,7 +9,7 @@ import { useNavigate } from "react-router-dom";
 import { getProductByCode, updateStocks } from "../services/ProductService";
 import { useUser } from "../hooks/UserUser";
 
-export default function InProductPage() {
+export default function OutProductPage() {
   const [products, setProducts] = useState([]);
   const navigate = useNavigate();
   const user = useUser();
@@ -22,11 +22,11 @@ export default function InProductPage() {
 
     if (existingProduct) {
       const updatedProducts = products.map((p) => {
-        return p.productCode === code
+        return p.productCode === code && p.quantity > 0
           ? {
               ...p,
               inQuantity: p.inQuantity + 1,
-              quantity: p.quantity + 1,
+              quantity: p.quantity - 1,
             }
           : p;
       });
@@ -34,13 +34,15 @@ export default function InProductPage() {
     } else {
       try {
         const newProduct = await getProductByCode(code, user.subsidiaryId);
-        const productWithQuantity = {
-          ...newProduct,
-          inQuantity: 1,
-          actualQuantity: newProduct.quantity,
-          quantity: newProduct.quantity + 1,
-        };
-        setProducts([...products, productWithQuantity]);
+        if (newProduct.quantity > 0) {
+          const productWithQuantity = {
+            ...newProduct,
+            inQuantity: 1,
+            quantity: newProduct.quantity - 1,
+            maxQuantiy: newProduct.quantity,
+          };
+          setProducts([...products, productWithQuantity]);
+        }
       } catch (error) {
         console.error("No se pudo conseguir el producto", error);
       }
@@ -49,7 +51,7 @@ export default function InProductPage() {
 
   const manageQuantity = (q, index) => {
     const updatedProducts = products.map((p, i) =>
-      i === index ? { ...p, inQuantity: q, quantity: p.actualQuantity + q } : p
+      i === index ? { ...p, inQuantity: q, quantity: p.maxQuantiy - q } : p
     );
     setProducts(updatedProducts);
   };
@@ -116,6 +118,7 @@ export default function InProductPage() {
                 manageQuantity(q, index);
               }}
               onDelete={() => handleDel(index)}
+              maxValue={p.maxQuantiy}
             />
           </div>
         ))}
