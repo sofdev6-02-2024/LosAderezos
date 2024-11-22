@@ -40,7 +40,7 @@ export default function ProductItem({name, barcode, price, quantity, admin})
 
 ProductItem.propTypes = {
   name: PropTypes.string,
-  barcode: PropTypes.number,
+  barcode: PropTypes.string,
   price: PropTypes.number,
   quantity: PropTypes.number,
   admin: PropTypes.bool,
