@@ -1,5 +1,6 @@
 using AutoMapper;
 using Backend.DTOs.WithID;
+using Backend.DTOs.WithoutID;
 using Backend.Entities;
 using Backend.Services.ServiceInterfaces;
 using DB;
@@ -41,5 +42,25 @@ public class ProductCategoriesService : IProductCategoriesService
     public bool DeleteProductCategory(ProductCategoriesDTO productCategory)
     {
         return _productCategoriesDao.Delete(productCategory.ProductId, productCategory.CategoryId);
+    }
+
+    public List<ProductCategoriesDTO> CreateProductCategories(ProductCategoryListPostDTO productCategoryList)
+    {
+        List<ProductCategoriesDTO> productCategories = new List<ProductCategoriesDTO>();
+        foreach (Guid categoryId in productCategoryList.CategoryIds)
+        {
+            _productCategoriesDao.Create(new ProductCategories()
+            {
+                CategoryId = categoryId,
+                ProductId = productCategoryList.ProductId
+            });
+            var newProductCategory = _productCategoriesDao.Read(productCategoryList.ProductId, categoryId);
+            if (newProductCategory != null)
+            {
+                productCategories.Add(_mapper.Map<ProductCategoriesDTO>(newProductCategory));    
+            }
+            
+        }
+        return productCategories;
     }
 }

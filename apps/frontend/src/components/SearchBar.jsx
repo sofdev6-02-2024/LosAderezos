@@ -3,7 +3,7 @@ import { CiSearch } from "react-icons/ci";
 import Button from "./Button";
 import { useState } from "react";
 
-export default function SearchBar({ onSearch }) {
+export default function SearchBar({ onSearch, placeholder }) {
   const [text, setText] = useState("");
 
   const handleKeyPress = (event) => {
@@ -22,7 +22,7 @@ export default function SearchBar({ onSearch }) {
     <div className="flex justify-between items-center border-2 border-[#E5E5E5] bg-white rounded-[10px] w-full p-2">
       <input
         type="text"
-        placeholder="Search..."
+        placeholder={placeholder ? placeholder : "Buscar..."}
         value={text}
         onChange={(e) => {
           setText(e.target.value);
@@ -39,4 +39,5 @@ export default function SearchBar({ onSearch }) {
 
 SearchBar.propTypes = {
   onSearch: PropTypes.func,
+  placeholder: PropTypes.string
 };

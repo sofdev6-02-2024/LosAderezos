@@ -56,7 +56,7 @@ export default function ProductsPage()
             <ProductItem
               key = {index} 
               name={item.name || 'Unkown product'} 
-              barcode={item.code || 'Unkown code'} 
+              barcode={item.productCode || 'Unkown code'} 
               price={item.sellPrice || 0}
               quantity={item.quantity || 0}
               admin

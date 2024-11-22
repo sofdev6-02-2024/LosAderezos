@@ -36,10 +36,10 @@ public class ProductController : ControllerBase
         return Ok(result);
     }
 
-    [HttpPut]
-    public ActionResult<ProductDTO> UpdateProduct(ProductDTO product)
+    [HttpPut("{productId}")]
+    public ActionResult<ProductDTO> UpdateProduct(Guid productId, ProductWithoutIDDTO product)
     {
-        var result = _productService.UpdateProduct(product);
+        var result = _productService.UpdateProduct(productId, product);
         return Ok(result);
     }
 }

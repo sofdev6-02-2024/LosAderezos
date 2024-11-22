@@ -14,10 +14,9 @@ export default function InProductPage() {
   const navigate = useNavigate();
   const user = useUser();
 
-  const onSearch = async (text) => {
-    if (!text) return;
+  const onSearch = async (code) => {
+    if (!code) return;
 
-    const code = parseInt(text);
     const existingProduct = products.find((p) => p.productCode === code);
 
     if (existingProduct) {
@@ -94,7 +93,10 @@ export default function InProductPage() {
         </Button>
       </div>
       <div className="flex flex-row w-4/5 justify-between md:justify-center py-10 space-x-7 items-center font-roboto">
-        <SearchBar onSearch={onSearch} />
+        <SearchBar
+          placeholder={"Buscar por codigo de barras..."}
+          onSearch={onSearch}
+        />
         <Button
           className={
             "bg-[#E5E5E5] md:inline-flex hidden justify-center hover:bg-[#A3A3A3] w-[92px] h-[32px] text-[14px]"
@@ -110,7 +112,7 @@ export default function InProductPage() {
             <InOutProduct
               name={p.name}
               barcode={p.productCode}
-              price={p.sellPrice}
+              price={p.incomingPrice}
               quantity={p.inQuantity}
               setQuantity={(q) => {
                 manageQuantity(q, index);

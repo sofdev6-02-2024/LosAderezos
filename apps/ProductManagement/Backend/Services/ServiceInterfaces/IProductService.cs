@@ -8,5 +8,5 @@ public interface IProductService
     public List<ProductDTO> GetProducts();
     public ProductDTO? GetProductById(Guid id);
     public ProductDTO CreateProduct(ProductWithoutIDDTO product);
-    public ProductDTO UpdateProduct(ProductDTO product);
+    public ProductDTO? UpdateProduct(Guid productId, ProductWithoutIDDTO product);
 }

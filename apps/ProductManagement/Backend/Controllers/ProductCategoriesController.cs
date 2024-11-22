@@ -1,4 +1,5 @@
 using Backend.DTOs.WithID;
+using Backend.DTOs.WithoutID;
 using Backend.Services.ServiceInterfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -33,6 +34,13 @@ public class ProductCategoriesController : ControllerBase
     public ActionResult<ProductCategoriesDTO> GetProductCategoryByBothIds(ProductCategoriesDTO productCategoriesDto)
     {
         var result = _productCategoriesService.GetProductCategoryByBothIds(productCategoriesDto);
+        return Ok(result);
+    }
+
+    [HttpPost("List")]
+    public ActionResult<List<ProductCategoriesDTO>> CreateListProductCategories(ProductCategoryListPostDTO productCategoryList)
+    {
+        var result = _productCategoriesService.CreateProductCategories(productCategoryList);
         return Ok(result);
     }
     

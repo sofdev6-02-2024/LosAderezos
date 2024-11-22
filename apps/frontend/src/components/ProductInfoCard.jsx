@@ -21,7 +21,7 @@ function ProductInfoCard ({ productData, productCategories, onOtherBranchesClick
       <div className="flex items-center justify-between py-1">
         <div>
           <p className="text-neutral-950 text-base font-bold font-roboto">Código de barras</p>
-          <p className="text-neutral-950 text-base font-roboto font-normal">{productData.code}</p>
+          <p className="text-neutral-950 text-base font-roboto font-normal">{productData.productCode}</p>
         </div>
         <AiOutlineDownload className="text-3xl lg:text-6xl mb-2 text-neutral-950 cursor-pointer hover:text-blue-800" />
       </div>
@@ -76,7 +76,7 @@ function ProductInfoCard ({ productData, productCategories, onOtherBranchesClick
 ProductInfoCard.propTypes = {
   productData: PropTypes.shape({
     name: PropTypes.string.isRequired,
-    code: PropTypes.number.isRequired,
+    productCode: PropTypes.string.isRequired,
     lowExistence: PropTypes.number.isRequired,
     incomingPrice: PropTypes.number.isRequired,
     sellPrice: PropTypes.number.isRequired,

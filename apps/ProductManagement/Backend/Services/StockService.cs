@@ -131,7 +131,7 @@ public class StockService : IStockService
         foreach (SubsidiaryDTO subsidiary in companySubsidiaries)
         {
             var stock = GetStocksBySubsidiaryAndProductId(subsidiary.SubsidiaryId, productId);
-            if (stock != null)
+            if (stock != null && stock.Quantity > 0)
             {
                 result.Add(_mapper.Map<OtherSubsidiariesProductsDTO>((subsidiary, stock)));    
             }
@@ -205,7 +205,7 @@ public class StockService : IStockService
         return updatedStocks;
     }
     
-    public StockFullInfoDTO? GetStocksBySubsidiaryAndProductCode(Guid subsidiaryId, int productCode)
+    public StockFullInfoDTO? GetStocksBySubsidiaryAndProductCode(Guid subsidiaryId, string productCode)
     {
         var product = _productDao.ReadAll().FirstOrDefault(p => p.Code == productCode);
         if (product == null)

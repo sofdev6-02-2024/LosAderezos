@@ -14,10 +14,9 @@ export default function OutProductPage() {
   const navigate = useNavigate();
   const user = useUser();
 
-  const onSearch = async (text) => {
-    if (!text) return;
+  const onSearch = async (code) => {
+    if (!code) return;
 
-    const code = parseInt(text);
     const existingProduct = products.find((p) => p.productCode === code);
 
     if (existingProduct) {
@@ -85,7 +84,7 @@ export default function OutProductPage() {
       style={{ height: "calc(100vh - 150px)" }}
     >
       <div className="flex w-4/5 flex-row justify-between md:justify-center items-center font-roboto">
-        <p className="font-roboto font-bold text-[24px]">Nueva entrada</p>
+        <p className="font-roboto font-bold text-[24px]">Nueva salida</p>
         <Button
           className={
             "bg-[#E5E5E5] block md:hidden justify-center hover:bg-[#A3A3A3] w-[92px] h-[32px] text-[14px]"
@@ -96,7 +95,10 @@ export default function OutProductPage() {
         </Button>
       </div>
       <div className="flex flex-row w-4/5 justify-between md:justify-center py-10 space-x-7 items-center font-roboto">
-        <SearchBar onSearch={onSearch} />
+        <SearchBar
+          placeholder={"Buscar por codigo de barras..."}
+          onSearch={onSearch}
+        />
         <Button
           className={
             "bg-[#E5E5E5] md:inline-flex hidden justify-center hover:bg-[#A3A3A3] w-[92px] h-[32px] text-[14px]"

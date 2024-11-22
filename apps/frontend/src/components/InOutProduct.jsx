@@ -41,7 +41,7 @@ export default function InOutProduct({
 
 InOutProduct.propTypes = {
   name: PropTypes.string,
-  barcode: PropTypes.number,
+  barcode: PropTypes.string,
   price: PropTypes.number,
   quantity: PropTypes.number,
   setQuantity: PropTypes.func,

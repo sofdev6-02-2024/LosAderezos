@@ -1,4 +1,5 @@
 using Backend.DTOs.WithID;
+using Backend.DTOs.WithoutID;
 
 namespace Backend.Services.ServiceInterfaces;
 
@@ -9,6 +10,6 @@ public interface IProductCategoriesService
     public ProductCategoriesDTO GetProductCategoryByBothIds(ProductCategoriesDTO productCategory);
     public ProductCategoriesDTO CreateProductCategory(ProductCategoriesDTO productCategory);
     public bool DeleteProductCategory(ProductCategoriesDTO productCategory);
-    
-    
+
+    public List<ProductCategoriesDTO> CreateProductCategories(ProductCategoryListPostDTO productCategoryList);
 }

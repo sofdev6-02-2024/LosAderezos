@@ -54,7 +54,7 @@ public class StockController : ControllerBase
     }
     
     [HttpGet("subsidiary/{subsidiaryId}/product-code/{productCode}")]
-    public ActionResult<StockFullInfoDTO> GetStocksBySubsidiaryAndProductCode(Guid subsidiaryId, int productCode)
+    public ActionResult<StockFullInfoDTO> GetStocksBySubsidiaryAndProductCode(Guid subsidiaryId, string productCode)
     {
         var result = _stockService.GetStocksBySubsidiaryAndProductCode(subsidiaryId, productCode);
         if (result == null)
