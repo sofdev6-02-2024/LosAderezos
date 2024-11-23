@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import Modal from './Modal';
 import Button from './Button';
 
-function BarcodeModal({ productId, showModal, onClose }) {
+function BarcodeModal({ productId, productName, showModal, onClose }) {
   const barcodeRef = useRef(null);
 
   useEffect(() => {
@@ -38,6 +38,7 @@ function BarcodeModal({ productId, showModal, onClose }) {
     const img = new Image();
     const svgBlob = new Blob([svgString], { type: 'image/svg+xml;charset=utf-8' });
     const url = URL.createObjectURL(svgBlob);
+    const formattedProductName = productName.replace(/\s+/g, '_');
 
     img.onload = () => {
       canvas.width = img.width;
@@ -46,7 +47,7 @@ function BarcodeModal({ productId, showModal, onClose }) {
       const imageUrl = canvas.toDataURL('image/jpeg');
       const link = document.createElement('a');
       link.href = imageUrl;
-      link.download = `${productId}-barcode.jpg`;
+      link.download = `${formattedProductName}.jpg`;
       link.click();
       URL.revokeObjectURL(url);
     };
@@ -76,6 +77,7 @@ function BarcodeModal({ productId, showModal, onClose }) {
 
 BarcodeModal.propTypes = {
   productId: PropTypes.string.isRequired,
+  productName: PropTypes.string.isRequired,
   showModal: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
 };

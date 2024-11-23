@@ -87,6 +87,7 @@ function ProductInfoCard ({ productData, productCategories, onOtherBranchesClick
       {showBarcodeModal && ReactDOM.createPortal(
         <BarcodeModal
           productId={productData.productCode}
+          productName={productData.name}
           showModal={showBarcodeModal}
           onClose={closeBarcodeModal}
         />,
