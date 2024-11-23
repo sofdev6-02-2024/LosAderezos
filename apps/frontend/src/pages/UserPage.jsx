@@ -70,6 +70,21 @@ export default function UserPage() {
     }
   };
 
+  const selectUserSearch = (text) => {
+    if (text.trim()) {
+      const lowerCaseText = text.toLowerCase();
+
+      const filtered = users.filter(
+        (u) =>
+          lowerCaseText.includes(u.name.toLowerCase()) ||
+          lowerCaseText.includes(u.email.toLowerCase())
+      );
+      setFilteredUsers(filtered);
+    } else {
+      setFilteredUsers(users);
+    }
+  };
+
   return (
     <div
       className="flex flex-col space-y-5 py-10 w-full items-center font-roboto"
@@ -92,7 +107,11 @@ export default function UserPage() {
       </div>
       <div className="flex flex-row w-4/5 justify-between py-2 space-x-4 items-center font-roboto">
         <div className="flex-1">
-          <SearchBar items={usersSeachrList} onSearch={searchUsers} />
+          <SearchBar
+            items={usersSeachrList}
+            onSearch={searchUsers}
+            onItemClicked={selectUserSearch}
+          />
         </div>
         <Button
           onClick={() => {

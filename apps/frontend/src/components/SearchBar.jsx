@@ -3,7 +3,12 @@ import { CiSearch } from "react-icons/ci";
 import Button from "./Button";
 import { useEffect, useState } from "react";
 
-export default function SearchBar({ onSearch, placeholder, items }) {
+export default function SearchBar({
+  onSearch,
+  placeholder,
+  items,
+  onItemClicked,
+}) {
   const [text, setText] = useState("");
   const [itemsList, setItemsList] = useState([]);
   const [highlightedIndex, setHighlightedIndex] = useState(-1);
@@ -15,6 +20,7 @@ export default function SearchBar({ onSearch, placeholder, items }) {
       setItemsList(items);
     }
   }, [items]);
+
   const handleKeyPress = (event) => {
     if (event.key === "Enter") {
       onSearch(text);
@@ -24,6 +30,11 @@ export default function SearchBar({ onSearch, placeholder, items }) {
 
   const handleClick = () => {
     onSearch(text);
+    setText("");
+  };
+
+  const handleItemClick = (value) => {
+    onItemClicked(value);
     setText("");
   };
 
@@ -38,7 +49,7 @@ export default function SearchBar({ onSearch, placeholder, items }) {
   };
 
   return (
-    <div className="relative">
+    <div className="relative inline-block w-full">
       <div className="flex justify-between items-center border-2 border-[#E5E5E5] bg-white rounded-[10px] w-full p-2">
         <input
           type="text"
@@ -65,8 +76,7 @@ export default function SearchBar({ onSearch, placeholder, items }) {
                   : "hover:bg-neutral-100"
               }`}
               onClick={() => {
-                setText(item);
-                handleClick();
+                handleItemClick(item);
               }}
               onMouseEnter={() => setHighlightedIndex(index)}
             >
@@ -83,4 +93,5 @@ SearchBar.propTypes = {
   onSearch: PropTypes.func,
   placeholder: PropTypes.string,
   items: PropTypes.array,
+  onItemClicked: PropTypes.func,
 };

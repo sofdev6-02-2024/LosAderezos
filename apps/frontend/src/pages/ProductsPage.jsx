@@ -49,12 +49,31 @@ export default function ProductsPage() {
     }
   };
 
+  const selectProductSearch = (text) => {
+    if (text.trim()) {
+      const lowerCaseText = text.toLowerCase();
+
+      const filtered = products.filter(
+        (p) =>
+          lowerCaseText.includes(p.name.toLowerCase()) ||
+          lowerCaseText.includes(p.productCode.toLowerCase())
+      );
+      setFilteredProducts(filtered);
+    } else {
+      setFilteredProducts(products);
+    }
+  };
+
   return (
     <div className="flex flex-col space-y-5 py-10 w-full items-center font-roboto">
       <p className="font-roboto font-bold text-[24px]">Productos</p>
       <div className="flex md:flex-row flex-col space-y-5 justify-between w-4/5">
         <div className="md:w-2/3">
-          <SearchBar items={productsSeachrList} onSearch={searchProduct} />
+          <SearchBar
+            items={productsSeachrList}
+            onSearch={searchProduct}
+            onItemClicked={selectProductSearch}
+          />
         </div>
         <div className="md:hidden flex flex-row justify-between w-full">
           <Button>
