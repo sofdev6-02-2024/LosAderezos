@@ -1,11 +1,23 @@
+import ReactDOM from 'react-dom';
+import { useState } from 'react';
 import { Card } from 'flowbite-react';
 import PropTypes from 'prop-types';
 import { RiEditLine } from "react-icons/ri";
 import { AiOutlineDownload } from "react-icons/ai";
 import Button from './Button';
 import Line from './Line';
+import BarcodeModal from './BarcodeModal';
 
 function ProductInfoCard ({ productData, productCategories, onOtherBranchesClick = () => {}, showButton = true }) {
+  const [showBarcodeModal, setShowBarcodeModal] = useState(false);
+
+  const openBarcodeModal = () => {
+    setShowBarcodeModal(true); 
+  };
+
+  const closeBarcodeModal = () => {
+    setShowBarcodeModal(false); 
+  };
 
   return (
     <Card className="w-full max-w-sm h-fit lg:max-w-lg shadow-lg rounded-3xl border-neutral-950">
@@ -23,7 +35,9 @@ function ProductInfoCard ({ productData, productCategories, onOtherBranchesClick
           <p className="text-neutral-950 text-base font-bold font-roboto">Código de barras</p>
           <p className="text-neutral-950 text-base font-roboto font-normal">{productData.productCode}</p>
         </div>
-        <AiOutlineDownload className="text-3xl lg:text-6xl mb-2 text-neutral-950 cursor-pointer hover:text-blue-800" />
+        <AiOutlineDownload 
+          className="text-3xl lg:text-6xl mb-2 text-neutral-950 cursor-pointer hover:text-blue-800"
+          onClick={openBarcodeModal} />
       </div>
 
       <Line />
@@ -68,6 +82,15 @@ function ProductInfoCard ({ productData, productCategories, onOtherBranchesClick
             text="Otras sucursales"
           />
         </div>
+      )}
+
+      {showBarcodeModal && ReactDOM.createPortal(
+        <BarcodeModal
+          productId={productData.productCode}
+          showModal={showBarcodeModal}
+          onClose={closeBarcodeModal}
+        />,
+        document.body 
       )}
     </Card>
   );
