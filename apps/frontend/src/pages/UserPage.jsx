@@ -10,7 +10,9 @@ import { getUsersBySubsidiaryId, updateUser } from "../services/UserService";
 export default function UserPage() {
   const myUser = useUser();
   const [users, setUsers] = useState([]);
+  const [filteredUsers, setFilteredUsers] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [usersSeachrList, setUsersSeachrList] = useState([]);
   const data = ["Administrador de sucursal", "Operador"];
   const navigate = useNavigate();
 
@@ -18,8 +20,12 @@ export default function UserPage() {
     async function fetchProducts() {
       try {
         const fetchedUsers = await getUsersBySubsidiaryId(myUser.subsidiaryId);
-
+        const filteredList = fetchedUsers.map(
+          (u) => `${u.name} - (${u.email})`
+        );
         setUsers(fetchedUsers);
+        setFilteredUsers(fetchedUsers);
+        setUsersSeachrList(filteredList);
       } catch (error) {
         console.error("Error fetching users:", error);
       } finally {
@@ -49,6 +55,21 @@ export default function UserPage() {
     return <p>Cargando usuarios...</p>;
   }
 
+  const searchUsers = (text) => {
+    if (text.trim()) {
+      const lowerCaseText = text.toLowerCase();
+
+      const filtered = users.filter(
+        (u) =>
+          u.name.toLowerCase().includes(lowerCaseText) ||
+          u.email.toLowerCase().includes(lowerCaseText)
+      );
+      setFilteredUsers(filtered);
+    } else {
+      setFilteredUsers(users);
+    }
+  };
+
   return (
     <div
       className="flex flex-col space-y-5 py-10 w-full items-center font-roboto"
@@ -69,8 +90,10 @@ export default function UserPage() {
           <FaPlus />
         </Button>
       </div>
-      <div className="flex flex-row w-4/5 justify-between md:justify-center py-10 space-x-7 items-center font-roboto">
-        <SearchBar />
+      <div className="flex flex-row w-4/5 justify-between py-2 space-x-4 items-center font-roboto">
+        <div className="flex-1">
+          <SearchBar items={usersSeachrList} onSearch={searchUsers} />
+        </div>
         <Button
           onClick={() => {
             navigate("/addUsers");
@@ -82,10 +105,10 @@ export default function UserPage() {
           type={"common"}
         >
           <FaPlus />
-        </Button>{" "}
+        </Button>
       </div>
       <div className="w-full flex-1 space-y-5 overflow-y-scroll flex flex-col items-center">
-        {users.map((user, index) => (
+        {filteredUsers.map((user, index) => (
           <div key={index} className="w-4/5">
             <UserItem
               className="w-4/5"
