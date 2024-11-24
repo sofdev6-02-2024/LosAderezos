@@ -42,4 +42,12 @@ public class ProductController : ControllerBase
         var result = _productService.UpdateProduct(productId, product);
         return Ok(result);
     }
+    
+    
+    [HttpDelete("{productId}")]
+    public ActionResult<ProductDTO> DeleteProduct(Guid productId)
+    {
+        var result = _productService.DeleteProductById(productId);
+        return Ok(result);
+    }
 }

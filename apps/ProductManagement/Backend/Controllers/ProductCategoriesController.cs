@@ -44,6 +44,13 @@ public class ProductCategoriesController : ControllerBase
         return Ok(result);
     }
     
+    [HttpPut]
+    public ActionResult<List<ProductCategoriesDTO>> UpdateProductCategories(ProductCategoryListPostDTO productCategoryListPost)
+    {
+        var result = _productCategoriesService.UpdateProductCategories(productCategoryListPost);
+        return Ok(result);
+    }
+    
     [HttpDelete]
     public ActionResult<bool> DeleteProductCategoryByBothIds(ProductCategoriesDTO productCategoriesDto)
     {

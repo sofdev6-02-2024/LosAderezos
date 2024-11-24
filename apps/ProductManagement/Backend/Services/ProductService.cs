@@ -9,16 +9,18 @@ namespace Backend.Services;
 public class ProductService: IProductService
 {
     private readonly IProductDAO _productDao;
+    private readonly IProductCategoriesDAO _productCategoriesDao;
     private readonly ISubsidiaryDAO _subsidiaryDao;
     private readonly IStockDAO _stockDao;
     private readonly IMapper _mapper;
 
-    public ProductService(IProductDAO productDao, IMapper mapper, ISubsidiaryDAO subsidiaryDao, IStockDAO stockDao)
+    public ProductService(IProductDAO productDao, IMapper mapper, ISubsidiaryDAO subsidiaryDao, IStockDAO stockDao, IProductCategoriesDAO productCategoriesDao)
     {
         _productDao = productDao;
         _mapper = mapper;
         _subsidiaryDao = subsidiaryDao;
         _stockDao = stockDao;
+        _productCategoriesDao = productCategoriesDao;
     }
 
     public List<ProductDTO> GetProducts()
@@ -55,6 +57,29 @@ public class ProductService: IProductService
         _productDao.Update(_mapper.Map<Product>((product, productId, code)));
         var resultProduct = _productDao.Read(productId);
         return _mapper.Map<ProductDTO>(resultProduct);
+    }
+
+    public bool? DeleteProductById(Guid id)
+    {
+        var existingProduct = _productDao.Read(id);
+        if (existingProduct == null)
+        {
+            return null;
+        }
+        foreach (Stock stock in _stockDao.ReadAll())
+        {
+            if (stock.ProductId == existingProduct.ProductId)
+            {
+                _stockDao.Delete(stock.StockId);    
+            }
+        }
+        foreach (ProductCategories productCategories in _productCategoriesDao.GetProductCategoriesByProductId(existingProduct.ProductId))
+        {
+            _productCategoriesDao.Delete(productCategories.ProductId, productCategories.CategoryId);
+        }
+        
+        _productDao.Delete(existingProduct.ProductId);
+        return true;
     }
 
     private string CreateCodeFromGuid(Guid guid)

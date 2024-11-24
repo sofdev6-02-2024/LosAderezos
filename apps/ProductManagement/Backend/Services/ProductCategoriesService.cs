@@ -63,4 +63,24 @@ public class ProductCategoriesService : IProductCategoriesService
         }
         return productCategories;
     }
+
+    public List<ProductCategoriesDTO> UpdateProductCategories(ProductCategoryListPostDTO productCategoryListPost)
+    {
+        foreach (ProductCategories productCategory in _productCategoriesDao.GetProductCategoriesByProductId(productCategoryListPost.ProductId))
+        {
+            _productCategoriesDao.Delete(productCategory.ProductId, productCategory.CategoryId);
+        }
+        List<ProductCategoriesDTO> updatedProductCategories = new List<ProductCategoriesDTO>();
+        foreach (Guid category in productCategoryListPost.CategoryIds)
+        {
+            _productCategoriesDao.Create(new ProductCategories()
+            {
+                CategoryId = category,
+                ProductId = productCategoryListPost.ProductId
+            });
+            updatedProductCategories.Add(_mapper.Map<ProductCategoriesDTO>(_productCategoriesDao.Read(productCategoryListPost.ProductId, category)));
+        }
+
+        return updatedProductCategories;
+    }
 }
