@@ -70,13 +70,15 @@ export default function AddUser() {
 
     addUsers();
     updateRoles();
-    navigate("/store_menu");
+    navigate("/store-menu");
   };
 
   const data = ["Administrador de sucursal", "Operador"];
 
   return (
-    <div className="flex flex-col items-center h-screen w-full space-y-10 py-10">
+    <div className="flex flex-col items-center h-screen w-full space-y-10 py-10"
+      style={{ height: "calc(100vh - 150px)" }}
+    >
       <p className="font-roboto font-bold text-[24px]">Agregar Usuarios</p>
       <div className="w-4/5 md:w-1/2">
         <SearchBar onSearch={handleAdd} />
@@ -98,7 +100,7 @@ export default function AddUser() {
         <Button
           onClick={submit}
           className={
-            "bg-[#16A34A] w-2/5 py-2 items-start justify-center text-white font-medium text-[20px] rounded-[12px]"
+            "bg-[#16a34a] font-roboto font-medium text-xl text-white rounded-xl px-6 py-2 flex items-center gap-2"
           }
         >
           Aceptar
@@ -106,7 +108,7 @@ export default function AddUser() {
         </Button>
         <Button
           className={
-            "bg-red-600 w-2/5 py-2 items-start justify-center text-white font-medium text-[20px] rounded-[12px]"
+            "bg-red-600 font-roboto font-medium text-xl text-white rounded-xl px-6 py-2 flex items-center gap-2"
           }
           onClick={() => {
             navigate("/users");

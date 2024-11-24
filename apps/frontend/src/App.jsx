@@ -17,7 +17,7 @@ function App() {
       <Route path="*" element={<NotFound />} />
       <Route path='/' element={<Login />} />
       <Route element={<AppLayout />}>
-        <Route path="/store_menu" element={<StoreMenu />} />
+        <Route path="/store-menu" element={<StoreMenu />} />
         <Route path="/products" element={<ProductsPage />} />
         <Route path="/products/:id" element={<SingleProductPage />} />
         <Route path="/add-product" element={<AddProductPage />} />

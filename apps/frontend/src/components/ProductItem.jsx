@@ -21,10 +21,10 @@ export default function ProductItem({name, barcode, price, quantity, admin})
           {admin?
             <div className='flex flex-row space-x-2 md:space-x-10'>
               <Button>
-                <FaRegTrashAlt className='text-[20px] md:text-[40px]'/>
+                <AiOutlineEdit className='text-[20px] md:text-[40px]'/>
               </Button>
               <Button>
-                <AiOutlineEdit className='text-[20px] md:text-[40px]'/>
+                <FaRegTrashAlt className='text-[20px] md:text-[40px]'/>
               </Button>
             </div>
             :

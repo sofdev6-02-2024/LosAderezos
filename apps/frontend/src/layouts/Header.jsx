@@ -45,7 +45,7 @@ export default function Header() {
   }
 
   return (
-    <div className="sticky top-0">
+    <div className="sticky top-0 z-50">
       {subsidiary && company ? (
         <HeaderBussines branch={subsidiary} bussines={company} />
       ) : (

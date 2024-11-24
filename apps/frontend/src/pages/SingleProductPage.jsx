@@ -41,7 +41,10 @@ function SingleProductPage() {
   }
 
   return (
-    <div className="flex flex-col lg:flex-row items-center justify-center lg:h-screen lg:py-0 px-6 pt-32 pb-10 space-y-4 lg:space-x-16">
+    <div 
+      className="flex flex-col lg:flex-row items-center justify-center px-4 py-6 space-y-6 lg:space-x-16 lg:space-y-0"
+      style={{ minHeight: "calc(100vh - 150px)" }}
+    >
       <ProductInfoCard
         productData={productData}
         productCategories={productData.categories}
@@ -50,17 +53,22 @@ function SingleProductPage() {
       />
       {branches && (
         <div className="w-full max-w-xl">
-        {branches.length > 0 ? (
-            <div className="lg:h-[650px] overflow-y-scroll">
+          {branches.length > 0 ? (
+            <div
+              className="overflow-y-scroll"
+              style={{ maxHeight: "calc(100vh - 300px)" }}
+            >
               <GenericList
                 items={branches}
                 renderItem={(branch) => <BranchItem branch={branch} />}
               />
             </div>
           ) : (
-            <p className="text-center text-neutral-700">No se encontró el producto en otras sucursales.</p>
+            <p className="text-center text-neutral-700">
+              No se encontró el producto en otras sucursales.
+            </p>
           )}
-      </div>
+        </div>
       )}
     </div>
   );
