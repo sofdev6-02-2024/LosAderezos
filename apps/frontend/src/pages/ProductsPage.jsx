@@ -8,11 +8,13 @@ import SearchBar from "../components/SearchBar";
 import { Link } from "react-router-dom";
 import { useUser } from "../hooks/UserUser";
 import { useNavigate } from "react-router-dom";
+import BarcodeScannerModal from "../components/BarcodeScannerModal";
 
 export default function ProductsPage()
 {
   const user = useUser();
   const [products, setProducts] = useState([]);
+  const [isScannerModalOpen, setIsScannerModalOpen] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -28,6 +30,32 @@ export default function ProductsPage()
     fetchProducts();
   }, [user])
 
+  function transformToGuid(code) {
+    if (code.length !== 32) {
+      console.warn("Código no tiene el tamaño esperado para un GUID:", code);
+      return code; 
+    }
+  
+    return `${code.slice(0, 8)}-${code.slice(8, 12)}-${code.slice(12, 16)}-${code.slice(16, 20)}-${code.slice(20)}`;
+  }
+  
+
+  const handleScan = (scannedCode) => {
+    console.log("Código escaneado:", scannedCode);
+  
+    const formattedCode = transformToGuid(scannedCode);
+    console.log("Código formateado como GUID:", formattedCode);
+
+    if (formattedCode) {
+      navigate(`/products/${formattedCode}`);
+    } else {
+      alert("Producto no encontrado. URL llamada:", `/products/${formattedCode}`);
+    }
+  
+    setIsScannerModalOpen(false); 
+  };
+  
+
   return(
     <div className="flex flex-col space-y-5 py-10 w-full items-center font-roboto">
       <p className="font-roboto font-bold text-[24px]">Productos</p>
@@ -36,7 +64,7 @@ export default function ProductsPage()
           <SearchBar />
         </div>
         <div className="md:hidden flex flex-row justify-between w-full">
-          <Button>
+          <Button onClick={() => setIsScannerModalOpen(true)}>
               <IoMdBarcode size={40}/>
             </Button>
             <Button 
@@ -50,7 +78,7 @@ export default function ProductsPage()
               <FaPlus />
           </Button>
         </div>
-        <Button className={'hidden md:block'}>
+        <Button className={'hidden md:block'} onClick={() => setIsScannerModalOpen(true)}>
           <IoMdBarcode size={40}/>
         </Button>
         <div className="hidden md:block">
@@ -80,6 +108,11 @@ export default function ProductsPage()
           </Link>
         ))}
       </div>
+      <BarcodeScannerModal
+        isVisible={isScannerModalOpen}
+        onClose={() => setIsScannerModalOpen(false)}
+        onScan={handleScan}
+      />
     </div>
   )
 }
