@@ -12,4 +12,5 @@ public interface IProductCategoriesService
     public bool DeleteProductCategory(ProductCategoriesDTO productCategory);
 
     public List<ProductCategoriesDTO> CreateProductCategories(ProductCategoryListPostDTO productCategoryList);
+    public List<ProductCategoriesDTO> UpdateProductCategories(ProductCategoryListPostDTO productCategoryListPost);
 }

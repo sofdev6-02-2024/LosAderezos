@@ -42,10 +42,10 @@ public class UserController: ControllerBase
         return Ok(await _userService.GetUsersBySubsidiaryId(subsidiaryId));
     }
 
-    [HttpPut]
-    public ActionResult<UserDTO> UpdateUser(UserDTO user)
+    [HttpPut("{userId}")]
+    public ActionResult<UserDTO> UpdateUser(Guid userId, UpdateUserDTO user)
     {
-        var result = _userService.UpdateUser(user);
+        var result = _userService.UpdateUser(userId, user);
         return Ok(result);
     }
 
