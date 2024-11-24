@@ -14,7 +14,7 @@ function StoreMenu() {
   const navigate = useNavigate();
 
   return (
-    <div className="flex items-center justify-center min-h-screen w-full p-40">
+    <div className="flex items-center justify-center w-full p-10 lg:p-36">
       <div className="flex flex-col items-center justify-center w-full max-w-5xl space-y-8 sm:space-y-36">
         <div className="flex flex-col sm:flex-row justify-center space-x-0 sm:space-x-48 space-y-8 sm:space-y-0">
           <CardButton 

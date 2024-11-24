@@ -204,7 +204,7 @@ function AddProductPage() {
                   <label className="block mb-2 font-roboto font-normal text-sm ">Categorías</label>
                   <Button
                     type="common"
-                    className="bg-neutral-200 font-roboto font-bold text-sm text-neutral-950 rounded-xl pl-4 pr-4 py-2 flex items-center gap-2"
+                    className="bg-neutral-200 hover:bg-neutral-300 font-roboto font-bold text-sm text-neutral-950 rounded-xl pl-4 pr-4 py-2 flex items-center gap-2"
                     onClick={() => {
                       const input = document.querySelector("[placeholder='Ingrese una categoría']");
                       if (input.value.trim() !== "") {

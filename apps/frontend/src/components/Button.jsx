@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 function Button ({ children, className, onClick, isSubmit, type, text }) {
   const baseStyles = {
     common:
-      'font-bold py-2 px-4 rounded-[8px] transition duration-300'
+      'font-roboto font-bold py-2 px-4 rounded-[8px] transition duration-300'
   };
 
   const buttonClass = `${baseStyles[type]} ${className}`;

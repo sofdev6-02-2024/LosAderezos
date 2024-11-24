@@ -75,7 +75,7 @@ export default function OutProductPage() {
     } catch (error) {
       console.error("Eror al intentar actualizar stock", error);
     }
-    navigate("/store_menu");
+    navigate("/store-menu");
   };
 
   return (
@@ -87,7 +87,7 @@ export default function OutProductPage() {
         <p className="font-roboto font-bold text-[24px]">Nueva salida</p>
         <Button
           className={
-            "bg-[#E5E5E5] block md:hidden justify-center hover:bg-[#A3A3A3] w-[92px] h-[32px] text-[14px]"
+            "bg-neutral-200 block md:hidden justify-center hover:bg-neutral-300 w-[92px] h-[32px] text-[20px]"
           }
           type={"common"}
         >
@@ -101,7 +101,7 @@ export default function OutProductPage() {
         />
         <Button
           className={
-            "bg-[#E5E5E5] md:inline-flex hidden justify-center hover:bg-[#A3A3A3] w-[92px] h-[32px] text-[14px]"
+            "bg-neutral-200 md:inline-flex hidden justify-center hover:bg-neutral-300 w-[92px] h-[32px] text-[20px]"
           }
           type={"common"}
         >
@@ -129,7 +129,7 @@ export default function OutProductPage() {
         <Button
           onClick={submit}
           className={
-            "bg-[#16A34A] w-2/5 py-2 items-start justify-center text-white font-medium text-[20px] rounded-[12px]"
+            "bg-[#16a34a] font-roboto font-medium text-xl text-white rounded-xl px-6 py-2 flex items-center gap-2"
           }
         >
           Aceptar
@@ -137,10 +137,10 @@ export default function OutProductPage() {
         </Button>
         <Button
           className={
-            "bg-red-600 w-2/5 py-2 items-start justify-center text-white font-medium text-[20px] rounded-[12px]"
+            "bg-red-600 font-roboto font-medium text-xl text-white rounded-xl px-6 py-2 flex items-center gap-2"
           }
           onClick={() => {
-            navigate("/store_menu");
+            navigate("/store-menu");
           }}
         >
           Cancelar

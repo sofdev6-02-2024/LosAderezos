@@ -98,7 +98,7 @@ export default function UserPage() {
           }}
           text={"Añadir"}
           className={
-            "bg-[#E5E5E5] block md:hidden justify-center hover:bg-[#A3A3A3] w-[92px] h-[32px] text-[14px]"
+            'bg-neutral-200 hover:bg-neutral-300 block md:hidden justify-center font-roboto font-bold text-sm text-neutral-950 rounded-xl pl-4 pr-4 py-2 items-center gap-2'
           }
           type={"common"}
         >
@@ -119,7 +119,7 @@ export default function UserPage() {
           }}
           text={"Añadir"}
           className={
-            "bg-[#E5E5E5] md:inline-flex hidden justify-center hover:bg-[#A3A3A3] w-[92px] h-[32px] text-[14px]"
+            'bg-neutral-200 hover:bg-neutral-300 md:inline-flex hidden justify-center font-roboto font-bold text-sm text-neutral-950 rounded-xl pl-4 pr-4 py-2 items-center gap-2'
           }
           type={"common"}
         >
