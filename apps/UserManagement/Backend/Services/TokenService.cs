@@ -79,7 +79,7 @@ public class TokenService: ITokenservice
             new Claim("userId", user.UserId.ToString()),
             new Claim("UserEmail", user.Email),
             new Claim("UserRol", user.Rol),
-            new Claim("UserBirthDate", user.BirthDate.ToString("dd-MM-yyyy")),
+            new Claim("UserBirthDate", user.BirthDate.ToString("yyyy-MM-dd")),
             new Claim("UserPhoneNumber", user.PhoneNumber),
             new Claim("UserName", user.Name),
             new Claim("Token", session.Token),
