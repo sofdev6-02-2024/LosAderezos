@@ -127,3 +127,36 @@ export async function assignCategoriesToProduct(categoryIds, productId) {
     );
   }
 }
+
+export async function updateProduct(productId, productData) {
+  try {
+    const response = await productAPI.put(`/Product/${productId}`, productData);
+    return response.data;
+  } catch (error) {
+    throw new Error(
+      error.response?.data?.message || "Error al actualizar el producto"
+    );
+  }
+}
+
+export async function updateProductCategories(categoryIds, productId) {
+  try {
+    const response = await productAPI.put("/ProductCategories", {categoryIds, productId});
+    return response.data;
+  } catch (error) {
+    throw new Error(
+      error.response?.data?.message || "Error al actualizar categorías del producto"
+    );
+  }
+}
+
+export async function deleteProduct(productId) {
+  try {
+    const response = await productAPI.delete(`/Product/${productId}`);
+    return response.data;
+  } catch (error) {
+    throw new Error(
+      error.response?.data?.message || "Error al eliminar el producto"
+    );
+  }
+}
