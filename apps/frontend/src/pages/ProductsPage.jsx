@@ -3,17 +3,20 @@ import { MdAdd } from "react-icons/md";
 import ProductItem from "../components/ProductItem";
 import Button from "../components/Button";
 import { useEffect, useState } from "react";
-import { getProducts } from "../services/ProductService";
+import { deleteProduct, getProducts } from "../services/ProductService";
 import SearchBar from "../components/SearchBar";
-import { Link } from "react-router-dom";
 import { useUser } from "../hooks/UserUser";
 import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
+import Modal from "../components/Modal";
 
 export default function ProductsPage() {
   const { user } = useUser();
   const [products, setProducts] = useState([]);
-  const [productsSeachrList, setProductsSeachrList] = useState([]);
+  const [productsSearchList, setProductsSearchList] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [productToDelete, setProductToDelete] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -25,7 +28,7 @@ export default function ProductsPage() {
         );
         setProducts(fetchedProducts);
         setFilteredProducts(fetchedProducts);
-        setProductsSeachrList(filteredList);
+        setProductsSearchList(filteredList);
       } catch (error) {
         console.error("Error fetching products", error);
       }
@@ -64,6 +67,30 @@ export default function ProductsPage() {
     }
   };
 
+  const handleEdit = (productId) => {
+    navigate(`/edit-product/${productId}`);
+  };
+  
+  const handleDeleteClick = (productId) => {
+    setProductToDelete(productId);
+    setIsModalVisible(true);
+  };
+
+  const handleConfirmDelete = async () => {
+    try {
+      await deleteProduct(productToDelete);
+      const updatedProducts = products.filter((product) => product.productId !== productToDelete);
+      setProducts(updatedProducts);
+      setFilteredProducts(updatedProducts);
+      setProductsSearchList(updatedProducts.map((p) => `${p.name} - (${p.productCode})`));
+      setIsModalVisible(false);
+      toast.success("Producto eliminado correctamente");
+    } catch (error) {
+      console.error("Error deleting product", error);
+      toast.error("Hubo un error al eliminar el producto");
+    }
+  };
+
   return (
     <div 
       className="flex flex-col space-y-5 py-10 w-full items-center font-roboto"
@@ -73,7 +100,7 @@ export default function ProductsPage() {
       <div className="flex md:flex-row flex-col space-y-5 justify-between w-4/5">
         <div className="md:w-2/3">
           <SearchBar
-            items={productsSeachrList}
+            items={productsSearchList}
             onSearch={searchProduct}
             onItemClicked={selectProductSearch}
           />
@@ -117,18 +144,38 @@ export default function ProductsPage() {
       </div>
       <div className="flex flex-col space-y-5 overflow-y-scroll w-4/5">
         {filteredProducts.map((item, index) => (
-          <Link key={index} to={`/products/${item.productId}`}>
-            <ProductItem
-              key={index}
-              name={item.name || "Unknown product"}
-              barcode={item.productCode || "Unknown code"}
-              price={item.sellPrice || 0}
-              quantity={item.quantity || 0}
-              admin
-            />
-          </Link>
+          <ProductItem
+            key={index}
+            name={item.name || "Unknown product"}
+            barcode={item.productCode || "Unknown code"}
+            price={item.sellPrice || 0}
+            quantity={item.quantity || 0}
+            admin
+            onEdit={() => handleEdit(item.productId)}
+            onDelete={() => handleDeleteClick(item.productId)}
+            link={`/products/${item.productId}`}
+          />
         ))}
       </div>
+      <Modal
+        isVisible={isModalVisible}
+        onClose={() => setIsModalVisible(false)}
+        width="max-w-sm"
+        height="h-auto"
+      >
+        <div className="p-6">
+          <p className="font-roboto font-medium text-lg">¿Estás seguro de que quieres eliminar este producto?</p>
+          <div className="flex justify-center mt-5">
+            <Button
+            type="common"
+              className="bg-blue-800 text-white hover:bg-blue-950 px-4 py-2"
+              onClick={handleConfirmDelete}
+            >
+              Confirmar
+            </Button>
+          </div>
+        </div>
+      </Modal>
     </div>
   );
 }

@@ -10,6 +10,7 @@ import UserPage from "./pages/UserPage";
 import InProductPage from "./pages/InProductsPage";
 import OutProductPage from "./pages/OutProductPage";
 import AddProductPage from "./pages/AddProductPage";
+import EditProductPage from "./pages/EditProductPage";
 import EditUserPage from "./pages/EditUserPage";
 
 function App() {
@@ -22,6 +23,7 @@ function App() {
         <Route path="/products" element={<ProductsPage />} />
         <Route path="/products/:id" element={<SingleProductPage />} />
         <Route path="/add-product" element={<AddProductPage />} />
+        <Route path="/edit-product/:id" element={<EditProductPage />} />
         <Route path="/branches" element={<NotFound />} />
         <Route path="/notifications" element={<NotFound />} />
         <Route path="/addUsers" element={<AddUser />} />

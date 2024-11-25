@@ -7,9 +7,11 @@ import { AiOutlineDownload } from "react-icons/ai";
 import Button from './Button';
 import Line from './Line';
 import BarcodeModal from './BarcodeModal';
+import { useNavigate } from 'react-router-dom';
 
-function ProductInfoCard ({ productData, productCategories, onOtherBranchesClick = () => {}, showButton = true }) {
+function ProductInfoCard ({ productData, productCategories, onOtherBranchesClick = () => {}, showButton = true, editPath }) {
   const [showBarcodeModal, setShowBarcodeModal] = useState(false);
+  const navigate = useNavigate();
 
   const openBarcodeModal = () => {
     setShowBarcodeModal(true); 
@@ -19,13 +21,20 @@ function ProductInfoCard ({ productData, productCategories, onOtherBranchesClick
     setShowBarcodeModal(false); 
   };
 
+  const handleEditClick = () => {
+    navigate(editPath);
+  };
+
   return (
     <Card className="w-full max-w-sm h-fit lg:max-w-lg shadow-lg rounded-3xl border-neutral-950">
       <div className="flex items-center justify-between pb-1">
         <h5 className="text-xl font-roboto font-medium tracking-tight text-neutral-950 dark:text-white">
           {productData.name}
         </h5>
-        <RiEditLine className="text-3xl lg:text-6xl text-neutral-950 cursor-pointer hover:text-blue-800" />
+        <RiEditLine 
+          className="text-3xl lg:text-6xl text-neutral-950 cursor-pointer hover:text-blue-800"
+          onClick={handleEditClick}
+        />
       </div>
 
       <Line />     
@@ -112,6 +121,7 @@ ProductInfoCard.propTypes = {
   ).isRequired,
   onOtherBranchesClick: PropTypes.func,
   showButton: PropTypes.bool,
+  editPath: PropTypes.string.isRequired,
 };
 
 export default ProductInfoCard;

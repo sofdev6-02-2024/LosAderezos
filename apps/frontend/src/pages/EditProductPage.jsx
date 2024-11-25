@@ -4,15 +4,15 @@ import * as Yup from "yup";
 import InputField from "../components/InputField";
 import Button from "../components/Button";
 import GenericList from "../components/GenericList";
-import { MdAdd, MdOutlineCancel } from "react-icons/md";
+import { MdAdd, MdOutlineCancel, MdSave } from "react-icons/md";
 import { FaMinus } from "react-icons/fa";
+import { getProductById, updateProduct, updateProductCategories } from "../services/ProductService";
 import { createCategory, getAllCategories } from "../services/CategoryService";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "sonner";
-import { assignCategoriesToProduct, createProduct } from "../services/ProductService";
 import { useUser } from "../hooks/UserUser";
 
-const AddProductSchema = Yup.object().shape({
+const EditProductSchema = Yup.object().shape({
   name: Yup.string().required("El nombre del producto es obligatorio"),
   buyPrice: Yup.number()
     .required("El precio de compra es obligatorio")
@@ -26,27 +26,36 @@ const AddProductSchema = Yup.object().shape({
   lowStockEnabled: Yup.boolean(),
 });
 
-function AddProductPage() {
-  const { user } = useUser();
+function EditProductPage() {
+  const { id } = useParams();
+  const user = useUser();
   const navigate = useNavigate();
+  const [productData, setProductData] = useState(null);
   const [selectedCategories, setSelectedCategories] = useState([]);
+  const [lowStockEnabled, setLowStockEnabled] = useState(false);
   const [availableCategories, setAvailableCategories] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredCategories, setFilteredCategories] = useState([]);
   const [highlightedIndex, setHighlightedIndex] = useState(-1);
 
   useEffect(() => {
-    async function fetchCategories() {
+    async function fetchData() {
       try {
+        const fetchedProduct = await getProductById(user.subsidiaryId, id);
+        setProductData(fetchedProduct);
+        setLowStockEnabled(!!fetchedProduct.lowExistence);
+
         const fetchedCategories = await getAllCategories();
         setAvailableCategories(fetchedCategories);
+
+        setSelectedCategories(fetchedProduct.categories.map(cat => cat.name));
       } catch (error) {
-        console.error('Error fetching categories', error)
+        console.error('Error fetching product data', error);
       }
     }
 
-    fetchCategories();
-  }, [])
+    fetchData();
+  }, [id, user.subsidiaryId]);
 
   useEffect(() => {
     const filtered = availableCategories.filter((category) =>
@@ -92,45 +101,48 @@ function AddProductPage() {
       toast.error("Debe seleccionar al menos una categoría antes de continuar");
       return;
     }
+
     try {
-      const productData = {
+      const updatedProduct = {
         name: values.name,
         incomingPrice: values.buyPrice,
         sellPrice: values.sellPrice,
         companyId: user.companyId,
-        lowExistence: values.lowStockEnabled ? values.lowStock : 0,
+        lowExistence: lowStockEnabled ? values.lowStock : 0,
         notify: values.lowStockEnabled,
       };
-  
-      const createdProduct = await createProduct(productData);
-  
+
+      await updateProduct(id, updatedProduct);
+
       const selectedCategoryIds = availableCategories
         .filter((category) => selectedCategories.includes(category.name))
         .map((category) => category.categoryId);
-  
-      await assignCategoriesToProduct(selectedCategoryIds, createdProduct.productId);
-  
-      toast.success("Producto creado y categorías asignadas correctamente");
+
+      await updateProductCategories(selectedCategoryIds, id);
+
+      toast.success("Producto actualizado correctamente");
       navigate("/products");
     } catch (error) {
-      console.error("Error al crear producto o asignar categorías:", error);
-      toast.error("Hubo un error al procesar su solicitud. Por favor, inténtelo de nuevo.");
+      console.error("Error updating product:", error);
+      toast.error("Hubo un error al actualizar el producto.");
     }
   };
 
+  if (!productData) return <div>Cargando...</div>;
+
   return (
     <div className="p-14 max-w-screen-lg mx-auto space-y-16">
-      <h2 className="text-xl font-roboto font-bold text-center mb-6">Nuevo Producto</h2>
+      <h2 className="text-xl font-roboto font-bold text-center mb-6">Editar Producto</h2>
 
       <Formik
         initialValues={{
-          name: "",
-          buyPrice: "",
-          sellPrice: "",
-          lowStock: 0,
-          lowStockEnabled: false,
+          name: productData.name,
+          buyPrice: productData.incomingPrice,
+          sellPrice: productData.sellPrice,
+          lowStock: productData.lowExistence || 0,
+          lowStockEnabled: productData.notify || false,
         }}
-        validationSchema={AddProductSchema}
+        validationSchema={EditProductSchema}
         onSubmit={handleSubmit}
       >
         {({ values, setFieldValue, errors, touched }) => (
@@ -200,7 +212,7 @@ function AddProductPage() {
               )}
 
               <div>
-                <div className='flex flex-row items-center justify-between pb-2'>
+              <div className='flex flex-row items-center justify-between pb-2'>
                   <label className="block mb-2 font-roboto font-normal text-sm ">Categorías</label>
                   <Button
                     type="common"
@@ -257,7 +269,7 @@ function AddProductPage() {
                   renderItem={(category, index) => (
                     <div className="flex justify-between items-center bg-white w-full h-12 pl-5 py-3 border-2 border-neutral-200 rounded-[10px]">
                       <span>{category}</span>
-                      <Button
+                      <Button 
                         type="common"
                         className="text-neutral-950"
                         onClick={() => handleRemoveCategory(index)}
@@ -271,22 +283,19 @@ function AddProductPage() {
             </div>
 
             <div className="col-span-1 lg:col-span-2 flex justify-center gap-4 mt-4">
-              <Button
-                isSubmit
+              <Button 
+                isSubmit 
                 type="common"
-                className="bg-[#16a34a] font-roboto font-medium text-xl text-white rounded-xl px-6 py-2 flex items-center gap-2"
+                className="bg-blue-800 font-roboto font-medium text-xl text-white rounded-xl px-6 py-2 flex items-center gap-2"
               >
-                Agregar
-                <MdAdd size={19} />
+                Guardar 
+                <MdSave size={19} />
               </Button>
-              <Button
+              <Button 
                 type="common"
-                className="bg-red-600 font-roboto font-medium text-xl text-white rounded-xl px-6 py-2 flex items-center gap-2"
-                onClick={() => {
-                  navigate("/products");
-                }}
-              >
-                Cancelar
+                className="bg-red-600 font-roboto font-medium text-xl text-white rounded-xl px-6 py-2 flex items-center gap-2" 
+                onClick={() => navigate("/products")}>
+                Cancelar 
                 <MdOutlineCancel size={19} />
               </Button>
             </div>
@@ -297,4 +306,4 @@ function AddProductPage() {
   );
 }
 
-export default AddProductPage;
+export default EditProductPage;

@@ -50,6 +50,7 @@ function SingleProductPage() {
         productCategories={productData.categories}
         onOtherBranchesClick={fetchProductBranches}
         showButton={!branchesLoaded}
+        editPath={`/edit-product/${id}`}
       />
       {branches && (
         <div className="w-full max-w-xl">
