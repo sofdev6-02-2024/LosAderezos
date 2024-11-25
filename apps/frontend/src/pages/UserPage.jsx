@@ -5,7 +5,7 @@ import UserItem from "../components/UserItem";
 import { FaPlus } from "react-icons/fa6";
 import { useNavigate } from "react-router-dom";
 import { useUser } from "../hooks/UserUser";
-import { getUsersBySubsidiaryId, updateUser } from "../services/UserService";
+import { getUsersBySubsidiaryId, updateUserList } from "../services/UserService";
 
 export default function UserPage() {
   const myUser = useUser();
@@ -19,7 +19,9 @@ export default function UserPage() {
   useEffect(() => {
     async function fetchProducts() {
       try {
-        const fetchedUsers = await getUsersBySubsidiaryId(myUser.user.subsidiaryId);
+        const fetchedUsers = await getUsersBySubsidiaryId(
+          myUser.user.subsidiaryId
+        );
         const filteredList = fetchedUsers.map(
           (u) => `${u.name} - (${u.email})`
         );
@@ -44,7 +46,7 @@ export default function UserPage() {
     setUsers(updatedUsers);
 
     try {
-      await updateUser(updatedUsers[index]);
+      await updateUserList([updatedUsers[index]]);
     } catch (error) {
       console.error(error.response?.data?.message || "Error al actualizar rol");
       setUsers(previousUsers);
@@ -98,7 +100,7 @@ export default function UserPage() {
           }}
           text={"Añadir"}
           className={
-            'bg-neutral-200 hover:bg-neutral-300 block md:hidden justify-center font-roboto font-bold text-sm text-neutral-950 rounded-xl pl-4 pr-4 py-2 items-center gap-2'
+            "bg-neutral-200 hover:bg-neutral-300 block md:hidden justify-center font-roboto font-bold text-sm text-neutral-950 rounded-xl pl-4 pr-4 py-2 items-center gap-2"
           }
           type={"common"}
         >
@@ -119,7 +121,7 @@ export default function UserPage() {
           }}
           text={"Añadir"}
           className={
-            'bg-neutral-200 hover:bg-neutral-300 md:inline-flex hidden justify-center font-roboto font-bold text-sm text-neutral-950 rounded-xl pl-4 pr-4 py-2 items-center gap-2'
+            "bg-neutral-200 hover:bg-neutral-300 md:inline-flex hidden justify-center font-roboto font-bold text-sm text-neutral-950 rounded-xl pl-4 pr-4 py-2 items-center gap-2"
           }
           type={"common"}
         >
