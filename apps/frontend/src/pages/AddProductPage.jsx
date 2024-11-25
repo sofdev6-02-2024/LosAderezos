@@ -21,15 +21,15 @@ const AddProductSchema = Yup.object().shape({
     .required("El precio de venta es obligatorio")
     .min(1, "Debe ser mayor o igual a 1"),
   lowStock: Yup.number()
-    .min(1, "Debe ser mayor o igual a 1")
+    .min(0, "Debe ser mayor o igual a 0")
     .notRequired(),
+  lowStockEnabled: Yup.boolean(),
 });
 
 function AddProductPage() {
   const user = useUser();
   const navigate = useNavigate();
   const [selectedCategories, setSelectedCategories] = useState([]);
-  const [lowStockEnabled, setLowStockEnabled] = useState(false);
   const [availableCategories, setAvailableCategories] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredCategories, setFilteredCategories] = useState([]);
@@ -98,8 +98,8 @@ function AddProductPage() {
         incomingPrice: values.buyPrice,
         sellPrice: values.sellPrice,
         companyId: user.companyId,
-        lowExistence: lowStockEnabled ? values.lowStock : null,
-        notify: lowStockEnabled,
+        lowExistence: values.lowStockEnabled ? values.lowStock : 0,
+        notify: values.lowStockEnabled,
       };
   
       const createdProduct = await createProduct(productData);
@@ -127,12 +127,13 @@ function AddProductPage() {
           name: "",
           buyPrice: "",
           sellPrice: "",
-          lowStock: "",
+          lowStock: 0,
+          lowStockEnabled: false,
         }}
         validationSchema={AddProductSchema}
         onSubmit={handleSubmit}
       >
-        {({ errors, touched }) => (
+        {({ values, setFieldValue, errors, touched }) => (
           <Form className="grid grid-cols-1 gap-6 lg:grid-cols-2">
             <div className="flex flex-col gap-2">
               <InputField
@@ -181,14 +182,13 @@ function AddProductPage() {
                 <input
                   id="lowStockCheckbox"
                   type="checkbox"
-                  checked={lowStockEnabled}
-                  onChange={() => setLowStockEnabled(!lowStockEnabled)}
+                  checked={values.lowStockEnabled}
+                  onChange={() => setFieldValue('lowStockEnabled', !values.lowStockEnabled)}
                   className="w-5 h-5 border-2 border-neutral-200 rounded-md checked:bg-neutral-950 focus:outline-neutral-950"
                 />
               </div>
 
-
-              {lowStockEnabled && (
+              {values.lowStockEnabled && (
                 <InputField
                   id="lowStock"
                   label="Notificar cuando el stock esté debajo de:"
