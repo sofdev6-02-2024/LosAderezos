@@ -93,3 +93,4 @@ services:
     depends_on:
       user-management-service:
         condition: service_started
+        
