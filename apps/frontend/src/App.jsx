@@ -11,6 +11,7 @@ import InProductPage from "./pages/InProductsPage";
 import OutProductPage from "./pages/OutProductPage";
 import AddProductPage from "./pages/AddProductPage";
 import EditProductPage from "./pages/EditProductPage";
+import EditUserPage from "./pages/EditUserPage";
 
 function App() {
   return (
@@ -29,6 +30,7 @@ function App() {
         <Route path="/users" element={<UserPage />} />
         <Route path="/in-products" element={<InProductPage />} />
         <Route path="/out-products" element={<OutProductPage />} />
+        <Route path="/my-user" element={<EditUserPage />} />
       </Route>
     </Routes>
   );

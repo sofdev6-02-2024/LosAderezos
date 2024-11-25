@@ -11,7 +11,7 @@ import { toast } from "sonner";
 import Modal from "../components/Modal";
 
 export default function ProductsPage() {
-  const user = useUser();
+  const { user } = useUser();
   const [products, setProducts] = useState([]);
   const [productsSearchList, setProductsSearchList] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
