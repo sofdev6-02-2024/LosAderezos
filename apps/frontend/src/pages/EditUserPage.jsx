@@ -8,19 +8,42 @@ import Button from "../components/Button";
 import { updateUser } from "../services/UserService";
 
 const validationSchema = Yup.object().shape({
-  name: Yup.string().required("Este campo no puede estar vacío"),
+  name: Yup.string()
+    .matches(/^[a-zA-Z\s]+$/, "El nombre solo puede contener letras y espacios")
+    .required("Este campo no puede estar vacío"),
+  birthDate: Yup.date().test(
+    "isOldEnough",
+    "Debes tener al menos 13 años",
+    (value) => {
+      if (!value) return false;
+      const today = new Date();
+      const birthDate = new Date(value);
+      const age = today.getFullYear() - birthDate.getFullYear();
+      return age >= 13;
+    }
+  ),
   phoneNumber: Yup.string()
     .test(
-      "isValidPhone",
-      "Número de teléfono no válido, debe incluir el código de área",
-      (value) => validatePhoneNumber(value)
+      "hasAreaCode",
+      "Debe incluir un código de área (ej. +52, +1, +591, etc)",
+      (value) => {
+        if (!value) return true;
+        return value.startsWith("+");
+      }
+    )
+    .test("isValidPhone", "Número de teléfono no válido", (value) =>
+      validatePhoneNumber(value)
     )
     .nullable(),
 });
 
 const validatePhoneNumber = (phone) => {
-  if (typeof phone !== "string" || phone.trim() === "") {
+  if (typeof phone !== "string") {
     return false;
+  }
+
+  if (phone.trim() === "") {
+    return true;
   }
   const phoneNumber = parsePhoneNumberFromString(phone);
   return phoneNumber ? phoneNumber.isValid() : false;
@@ -28,25 +51,21 @@ const validatePhoneNumber = (phone) => {
 
 export default function EditUserPage() {
   const { user, editUser } = useUser();
-  const [day, month, year] = user.UserBirthDate.split("-");
-  const date = `${year}-${month}-${day}`;
   const initialValues = {
     name: user.UserName || "",
     phoneNumber: user.UserPhoneNumber || "",
-    birthDate: date || "",
+    birthDate: user.UserBirthDate || "",
   };
 
   const submit = async (values, { resetForm }) => {
     try {
       await updateUser(user.userId, values);
-      const [newDay, newMonth, newYear] = values.birthDate.split("-");
-      const newDate = `${newYear}-${newMonth}-${newDay}`;
 
       editUser({
         ...user,
         UserName: values.name,
         UserPhoneNumber: values.phoneNumber,
-        UserBirthDate: newDate,
+        UserBirthDate: values.birthDate,
       });
       resetForm({ values });
     } catch (error) {
@@ -71,38 +90,46 @@ export default function EditUserPage() {
               <span className="text-sm text-neutral-950 font-bold">Email:</span>
               <p>{user.UserEmail}</p>
             </div>
-            <InputField
-              id="name"
-              label="Nombre"
-              name="name"
-              placeholder="Nombre de usuario"
-              type="text"
-              isCorrect={!(errors.name && touched.name)}
-            />
-            {touched.name && errors.name && (
-              <div className="text-red-500 text-sm">{errors.name}</div>
-            )}
+            <div>
+              <InputField
+                id="name"
+                label="Nombre"
+                name="name"
+                placeholder="Nombre de usuario"
+                type="text"
+                isCorrect={!(errors.name && touched.name)}
+              />
+              {touched.name && errors.name && (
+                <div className="text-red-500 text-sm">{errors.name}</div>
+              )}
+            </div>
+            <div>
+              <InputField
+                id="phoneNumber"
+                label="Número de celular"
+                name="phoneNumber"
+                placeholder="Ej. +521234567890"
+                type="text"
+                isCorrect={!(errors.phoneNumber && touched.phoneNumber)}
+              />
+              {touched.phoneNumber && errors.phoneNumber && (
+                <div className="text-red-500 text-sm">{errors.phoneNumber}</div>
+              )}
+            </div>
 
-            <InputField
-              id="phoneNumber"
-              label="Número de celular"
-              name="phoneNumber"
-              placeholder="Ej. +521234567890"
-              type="text"
-              isCorrect={!(errors.phoneNumber && touched.phoneNumber)}
-            />
-            {touched.phoneNumber && errors.phoneNumber && (
-              <div className="text-red-500 text-sm">{errors.phoneNumber}</div>
-            )}
-
-            <InputField
-              id="birthDate"
-              label="Fecha de nacimiento"
-              name="birthDate"
-              placeholder=""
-              type="date"
-              isCorrect={true}
-            />
+            <div>
+              <InputField
+                id="birthDate"
+                label="Fecha de nacimiento"
+                name="birthDate"
+                placeholder=""
+                type="date"
+                isCorrect={!(errors.birthDate && touched.birthDate)}
+              />
+              {touched.birthDate && errors.birthDate && (
+                <div className="text-red-500 text-sm">{errors.birthDate}</div>
+              )}
+            </div>
 
             {touched.birthDate || touched.name || touched.phoneNumber ? (
               <div className="flex flex-col md:flex-row justify-center gap-4 mt-4">
