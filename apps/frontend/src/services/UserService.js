@@ -15,9 +15,9 @@ export const getUserByGmail = async (gmail) => {
   }
 };
 
-export async function updateUser(user) {
+export async function updateUser(id, user) {
   try {
-    const response = await userAPI.put(`/User`, user);
+    const response = await userAPI.put(`/User/${id}`, user);
     return response.data;
   } catch (error) {
     throw new Error(

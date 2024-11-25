@@ -26,7 +26,7 @@ const AddProductSchema = Yup.object().shape({
 });
 
 function AddProductPage() {
-  const user = useUser();
+  const { user } = useUser();
   const navigate = useNavigate();
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [lowStockEnabled, setLowStockEnabled] = useState(false);

@@ -12,7 +12,7 @@ import { useUser } from "../hooks/UserUser";
 export default function OutProductPage() {
   const [products, setProducts] = useState([]);
   const navigate = useNavigate();
-  const user = useUser();
+  const { user } = useUser();
 
   const onSearch = async (code) => {
     if (!code) return;

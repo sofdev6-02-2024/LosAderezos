@@ -4,12 +4,12 @@ import * as Yup from "yup";
 import InputField from "../components/InputField";
 import { parsePhoneNumberFromString } from "libphonenumber-js";
 import { MdAdd, MdOutlineCancel } from "react-icons/md";
-import { useState } from "react";
 import Button from "../components/Button";
+import { updateUser } from "../services/UserService";
 
 const validationSchema = Yup.object().shape({
   name: Yup.string().required("Este campo no puede estar vacío"),
-  phone: Yup.string()
+  phoneNumber: Yup.string()
     .test(
       "isValidPhone",
       "Número de teléfono no válido, debe incluir el código de área",
@@ -27,25 +27,31 @@ const validatePhoneNumber = (phone) => {
 };
 
 export default function EditUserPage() {
-  const user = useUser();
+  const { user, editUser } = useUser();
   const [day, month, year] = user.UserBirthDate.split("-");
   const date = `${year}-${month}-${day}`;
-  const [initialValues, setInitialValues] = useState({
+  const initialValues = {
     name: user.UserName || "",
+    phoneNumber: user.UserPhoneNumber || "",
     birthDate: date || "",
-    phone: user.UserPhoneNumber || "",
-  });
-
-  const cancel = () => {
-    setInitialValues({
-      name: user.UserName,
-      birthDate: user.UserBirthDate,
-      phone: user.UserPhoneNumber,
-    });
   };
 
-  const submit = (values) => {
-    console.log("Submitted values:", values);
+  const submit = async (values, { resetForm }) => {
+    try {
+      await updateUser(user.userId, values);
+      const [newDay, newMonth, newYear] = values.birthDate.split("-");
+      const newDate = `${newYear}-${newMonth}-${newDay}`;
+
+      editUser({
+        ...user,
+        UserName: values.name,
+        UserPhoneNumber: values.phoneNumber,
+        UserBirthDate: newDate,
+      });
+      resetForm({ values });
+    } catch (error) {
+      console.error("Error al acualizar datos de usuario", error);
+    }
   };
 
   return (
@@ -55,7 +61,7 @@ export default function EditUserPage() {
         validationSchema={validationSchema}
         onSubmit={submit}
       >
-        {({ errors, touched, isSubmitting }) => (
+        {({ errors, touched, isSubmitting, resetForm }) => (
           <Form className="w-4/5 md:w-1/2 lg:w-1/3 space-y-10 justify-center items-center">
             <p className="font-bold text-2xl w-full text-center">
               {user.UserRol}
@@ -78,6 +84,18 @@ export default function EditUserPage() {
             )}
 
             <InputField
+              id="phoneNumber"
+              label="Número de celular"
+              name="phoneNumber"
+              placeholder="Ej. +521234567890"
+              type="text"
+              isCorrect={!(errors.phoneNumber && touched.phoneNumber)}
+            />
+            {touched.phoneNumber && errors.phoneNumber && (
+              <div className="text-red-500 text-sm">{errors.phoneNumber}</div>
+            )}
+
+            <InputField
               id="birthDate"
               label="Fecha de nacimiento"
               name="birthDate"
@@ -85,39 +103,32 @@ export default function EditUserPage() {
               type="date"
               isCorrect={true}
             />
-            
 
-            <InputField
-              id="phone"
-              label="Número de celular"
-              name="phone"
-              placeholder="Ej. +521234567890"
-              type="text"
-              isCorrect={!(errors.phone && touched.phone)}
-            />
-            {touched.phone && errors.phone && (
-              <div className="text-red-500 text-sm">{errors.phone}</div>
+            {touched.birthDate || touched.name || touched.phoneNumber ? (
+              <div className="flex flex-col md:flex-row justify-center gap-4 mt-4">
+                <Button
+                  type="common"
+                  isSubmit
+                  className="bg-green-600 font-roboto font-medium text-lg text-white rounded-xl px-6 py-2 flex items-center gap-2"
+                  disabled={isSubmitting}
+                >
+                  Aceptar
+                  <MdAdd size={19} />
+                </Button>
+                <Button
+                  type="common"
+                  className="bg-red-600 font-roboto font-medium text-lg text-white rounded-xl px-6 py-2 flex items-center gap-2"
+                  onClick={() => {
+                    resetForm({ values: initialValues });
+                  }}
+                >
+                  Cancelar
+                  <MdOutlineCancel size={19} />
+                </Button>
+              </div>
+            ) : (
+              <></>
             )}
-
-            <div className="flex flex-col md:flex-row justify-center gap-4 mt-4">
-              <Button
-                type="common"
-                isSubmit
-                className="bg-green-600 font-roboto font-medium text-lg text-white rounded-xl px-6 py-2 flex items-center gap-2"
-                disabled={isSubmitting}
-              >
-                Aceptar
-                <MdAdd size={19} />
-              </Button>
-              <Button
-                type="common"
-                className="bg-red-600 font-roboto font-medium text-lg text-white rounded-xl px-6 py-2 flex items-center gap-2"
-                onClick={() => cancel()}
-              >
-                Cancelar
-                <MdOutlineCancel size={19} />
-              </Button>
-            </div>
           </Form>
         )}
       </Formik>

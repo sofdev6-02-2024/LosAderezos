@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { useUser } from "../hooks/UserUser";
 
 export default function Header() {
-  const user = useUser();
+  const { user } = useUser();
   const [subsidiary, setSubsidiary] = useState(null);
   const [company, setCompany] = useState(null);
   const [loading, setLoading] = useState(true);

@@ -19,7 +19,7 @@ export default function UserPage() {
   useEffect(() => {
     async function fetchProducts() {
       try {
-        const fetchedUsers = await getUsersBySubsidiaryId(myUser.subsidiaryId);
+        const fetchedUsers = await getUsersBySubsidiaryId(myUser.user.subsidiaryId);
         const filteredList = fetchedUsers.map(
           (u) => `${u.name} - (${u.email})`
         );
@@ -34,7 +34,7 @@ export default function UserPage() {
     }
 
     fetchProducts();
-  }, [myUser.subsidiaryId]);
+  }, [myUser.user.subsidiaryId]);
 
   const updateRol = async (newRole, index) => {
     const previousUsers = [...users];

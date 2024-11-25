@@ -11,7 +11,7 @@ function SingleProductPage() {
   const [productData, setProductData] = useState(null);
   const [branches, setBranches] = useState(null);
   const [branchesLoaded, setBranchesLoaded] = useState(false);
-  const user = useUser();
+  const { user } = useUser();
 
   useEffect(() => {
     async function fetchProduct() {

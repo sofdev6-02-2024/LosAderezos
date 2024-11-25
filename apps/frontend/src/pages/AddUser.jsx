@@ -39,7 +39,7 @@ export default function AddUser() {
 
     const request = {
       UserIds,
-      SubsidiaryId: myUser.subsidiaryId,
+      SubsidiaryId: myUser.user.subsidiaryId,
     };
 
     try {

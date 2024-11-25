@@ -10,7 +10,7 @@ import { useUser } from "../hooks/UserUser";
 import { useNavigate } from "react-router-dom";
 
 export default function ProductsPage() {
-  const user = useUser();
+  const { user } = useUser();
   const [products, setProducts] = useState([]);
   const [productsSeachrList, setProductsSeachrList] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
