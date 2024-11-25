@@ -10,7 +10,7 @@ export function UserProvider({ children }) {
   useEffect(() => {
     const decodedUser = getDecodedToken();
     if (decodedUser) {
-      const subIds = decodedUser.subsidiaryId.split(',')
+      const subIds = decodedUser.subsidiaryId.split(',');
       setUser({
         userId: decodedUser.userId,
         UserEmail: decodedUser.UserEmail,
@@ -25,7 +25,15 @@ export function UserProvider({ children }) {
     }
   }, []);
 
-  return <UserContext.Provider value={user}>{children}</UserContext.Provider>;
+  const editUser = (updatedData) => {
+    setUser(updatedData);
+  };
+
+  return (
+    <UserContext.Provider value={{ user, editUser }}>
+      {children}
+    </UserContext.Provider>
+  );
 }
 
 UserProvider.propTypes = {
