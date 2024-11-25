@@ -60,6 +60,7 @@ public sealed class SubsidiaryDAO : SingleDAO<Subsidiary>, ISubsidiaryDAO
                                 .Append(subsidiaryNameC).Append("', '")
                                 .Append(subsidiaryTypeC).Append("', '")
                                 .Append(subsidiaryCompanyIdC).Append("');");
+        _mySqlReader?.Close();
         return _sb;
     }
 
@@ -78,7 +79,7 @@ public sealed class SubsidiaryDAO : SingleDAO<Subsidiary>, ISubsidiaryDAO
             .Append(" Type = '").Append(subsidiaryTypeC).Append("', ")
             .Append(" CompanyId = '").Append(subsidiaryCompanyIdC).Append("' ")
             .Append(" WHERE Id = '").Append(subsidiaryIdC).Append("';");
-        
+        _mySqlReader?.Close();
         return _sb;
     }
 }
