@@ -9,12 +9,12 @@ function Login() {
   };
 
   return (
-    <div className="flex flex-row items-center justify-between h-screen w-full bg-neutral-200">
-      <div className='flex w-full h-screen justify-center items-center'>
+    <div className="flex flex-col lg:flex-row items-center justify-between h-screen w-full bg-neutral-200">
+      <div className='hidden lg:flex w-1/2 h-screen justify-center items-center'>
         <img src={LoginImage} alt="Inventory image" />
       </div>
-      <div className='flex flex-col items-center justify-center h-screen w-[552px] lg:rounded-l-3xl p-12 bg-white'>
-        <div className='w-[456px] space-y-4'>
+      <div className='flex flex-col items-center justify-center h-screen w-full lg:w-[552px] lg:rounded-l-3xl p-12 bg-white'>
+        <div className='w-full lg:w-[456px] space-y-4'>
           <img src={Logo} alt="Logo image" />
           <p className='font-roboto font-medium text-5xl text-center'> Inicio de Sesión </p>
           <Button 
