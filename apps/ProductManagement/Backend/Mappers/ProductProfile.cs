@@ -34,10 +34,10 @@ public class ProductProfile : Profile
             .ForMember(dest => dest.IncomingPrice, expression => expression.MapFrom(src => src.IncomingPrice))
             .ForMember(dest => dest.SellPrice, expression => expression.MapFrom(src => src.SellPrice))
             .ForMember(dest => dest.LowExistence, expression => expression.MapFrom(src => src.LowExistence));
-        CreateMap<(ProductWithoutIDDTO, Guid, string), Product>()
+        CreateMap<(ProductWithoutIDDTO, Guid), Product>()
             .ForMember(dest => dest.ProductId, expression => expression.MapFrom(src => src.Item2))
             .ForMember(dest => dest.CompanyId, expression => expression.MapFrom(src => src.Item1.CompanyId))
-            .ForMember(dest => dest.Code, expression => expression.MapFrom(src => src.Item3))
+            .ForMember(dest => dest.Code, expression => expression.MapFrom(src => src.Item1.Code))
             .ForMember(dest => dest.Notify, expression => expression.MapFrom(src => src.Item1.Notify))
             .ForMember(dest => dest.Name, expression => expression.MapFrom(src => src.Item1.Name))
             .ForMember(dest => dest.IncomingPrice, expression => expression.MapFrom(src => src.Item1.IncomingPrice))
