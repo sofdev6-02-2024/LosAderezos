@@ -1,7 +1,7 @@
 import Button from "../components/Button";
 import { IoMdBarcode } from "react-icons/io";
 import SearchBar from "../components/SearchBar";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import InOutProduct from "../components/InOutProduct";
 import { IoMdAdd } from "react-icons/io";
 import { MdOutlineCancel } from "react-icons/md";
@@ -11,8 +11,17 @@ import { useUser } from "../hooks/UserUser";
 
 export default function OutProductPage() {
   const [products, setProducts] = useState([]);
+  const [total, setTotal] = useState(0);
   const navigate = useNavigate();
   const { user } = useUser();
+
+  useEffect(() => {
+    const totalAmount = products.reduce(
+      (acc, p) => acc + p.inQuantity * p.sellPrice,
+      0
+    );
+    setTotal(totalAmount);
+  }, [products]);
 
   const onSearch = async (code) => {
     if (!code) return;
@@ -127,27 +136,32 @@ export default function OutProductPage() {
           </div>
         ))}
       </div>
-      <div className=" w-4/5 md:w-1/3 flex flex-row justify-between py-4">
-        <Button
-          onClick={submit}
-          className={
-            "bg-[#16a34a] font-roboto font-medium text-xl text-white rounded-xl px-6 py-2 flex items-center gap-2"
-          }
-        >
-          Aceptar
-          <IoMdAdd />
-        </Button>
-        <Button
-          className={
-            "bg-red-600 font-roboto font-medium text-xl text-white rounded-xl px-6 py-2 flex items-center gap-2"
-          }
-          onClick={() => {
-            navigate("/store-menu");
-          }}
-        >
-          Cancelar
-          <MdOutlineCancel />
-        </Button>
+      <div className=" w-4/5 md:w-1/3 flex flex-col items-center space-y-4">
+        <p className="font-roboto text-2xl font-bold">
+          Total: ${total.toFixed(2)}
+        </p>
+        <div className="flex flex-row justify-between py-4 w-full">
+          <Button
+            onClick={submit}
+            className={
+              "bg-[#16a34a] font-roboto font-medium text-xl text-white rounded-xl px-6 py-2 flex items-center gap-2"
+            }
+          >
+            Aceptar
+            <IoMdAdd />
+          </Button>
+          <Button
+            className={
+              "bg-red-600 font-roboto font-medium text-xl text-white rounded-xl px-6 py-2 flex items-center gap-2"
+            }
+            onClick={() => {
+              navigate("/store-menu");
+            }}
+          >
+            Cancelar
+            <MdOutlineCancel />
+          </Button>
+        </div>
       </div>
     </div>
   );
