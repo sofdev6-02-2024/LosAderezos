@@ -70,7 +70,7 @@ export default function ProductsPage() {
   const handleEdit = (productId) => {
     navigate(`/edit-product/${productId}`);
   };
-  
+
   const handleDeleteClick = (productId) => {
     setProductToDelete(productId);
     setIsModalVisible(true);
@@ -79,10 +79,14 @@ export default function ProductsPage() {
   const handleConfirmDelete = async () => {
     try {
       await deleteProduct(productToDelete);
-      const updatedProducts = products.filter((product) => product.productId !== productToDelete);
+      const updatedProducts = products.filter(
+        (product) => product.productId !== productToDelete
+      );
       setProducts(updatedProducts);
       setFilteredProducts(updatedProducts);
-      setProductsSearchList(updatedProducts.map((p) => `${p.name} - (${p.productCode})`));
+      setProductsSearchList(
+        updatedProducts.map((p) => `${p.name} - (${p.productCode})`)
+      );
       setIsModalVisible(false);
       toast.success("Producto eliminado correctamente");
     } catch (error) {
@@ -92,12 +96,14 @@ export default function ProductsPage() {
   };
 
   return (
-    <div 
+    <div
       className="flex flex-col space-y-5 py-10 w-full items-center font-roboto"
       style={{ height: "calc(100vh - 150px)" }}
     >
       <p className="font-roboto font-bold text-[24px]">Productos</p>
-      <div className="flex md:flex-row flex-col space-y-5 justify-between w-4/5">
+      <div
+        className={`flex md:flex-row flex-col space-y-5 justify-between w-4/5`}
+      >
         <div className="md:w-2/3">
           <SearchBar
             items={productsSearchList}
@@ -107,39 +113,57 @@ export default function ProductsPage() {
         </div>
         <div className="md:hidden flex flex-row justify-between w-full">
           <Button
-            className={'bg-neutral-200 justify-center hover:bg-neutral-300 rounded-xl items-center w-[92px] h-[32px]'}
+            className={
+              "bg-neutral-200 justify-center hover:bg-neutral-300 rounded-xl items-center w-[92px] h-[32px]"
+            }
           >
             <IoMdBarcode size={20} />
           </Button>
-          <Button
-            text={"Añadir"}
-            className={'bg-neutral-200 hover:bg-neutral-300 font-roboto font-bold text-sm text-neutral-950 rounded-xl pl-4 pr-4 py-2 flex items-center gap-2'} 
-            type={"common"}
-            onClick={() => {
-              navigate("/add-product");
-            }}
-          >
-            <MdAdd size={19}/>
-          </Button>
+          {user.UserRol === "Propietario" ? (
+            <Button
+              text={"Añadir"}
+              className={`bg-neutral-200  ${
+                user.UserRol === "Propietario" ? "" : "hidden"
+              } hover:bg-neutral-300 font-roboto font-bold text-sm text-neutral-950 rounded-xl pl-4 pr-4 py-2 flex items-center gap-2`}
+              type={"common"}
+              onClick={() => {
+                navigate("/add-product");
+              }}
+            >
+              <MdAdd size={19} />
+            </Button>
+          ) : (
+            <div className="w-0 bg-orange-400"></div>
+          )}
         </div>
-        <Button 
+        <Button
           className={
-            'bg-neutral-200 md:flex hidden justify-center items-center hover:bg-neutral-300 rounded-xl w-[92px] h-[32px]'
+            "bg-neutral-200 md:flex hidden justify-center items-center hover:bg-neutral-300 rounded-xl w-[92px] h-[32px]"
           }
         >
           <IoMdBarcode size={20} />
         </Button>
-        <div className="hidden md:block">
-          <Button
-            text={"Añadir"}
-            className={'bg-neutral-200 hover:bg-neutral-300 font-roboto font-bold text-sm text-neutral-950 rounded-xl pl-4 pr-4 py-2 flex items-center gap-2'} 
-            type={"common"}
-            onClick={() => {
-              navigate("/add-product");
-            }}
-          >
-            <MdAdd />
-          </Button>
+        <div
+          className={`hidden ${
+            user.UserRol === "Propietario" ? "md:block" : ""
+          }`}
+        >
+          {user.UserRol === "Propietario" ? (
+            <Button
+              text={"Añadir"}
+              className={
+                "bg-neutral-200 hover:bg-neutral-300 font-roboto font-bold text-sm text-neutral-950 rounded-xl pl-4 pr-4 py-2 flex items-center gap-2"
+              }
+              type={"common"}
+              onClick={() => {
+                navigate("/add-product");
+              }}
+            >
+              <MdAdd size={19} />
+            </Button>
+          ) : (
+            <div className="w-0 bg-orange-400"></div>
+          )}
         </div>
       </div>
       <div className="flex flex-col space-y-5 overflow-y-scroll w-4/5">
@@ -150,7 +174,7 @@ export default function ProductsPage() {
             barcode={item.productCode || "Unknown code"}
             price={item.sellPrice || 0}
             quantity={item.quantity || 0}
-            admin
+            admin={user.UserRol === "Propietario"}
             onEdit={() => handleEdit(item.productId)}
             onDelete={() => handleDeleteClick(item.productId)}
             link={`/products/${item.productId}`}
@@ -164,10 +188,12 @@ export default function ProductsPage() {
         height="h-auto"
       >
         <div className="p-6">
-          <p className="font-roboto font-medium text-lg">¿Estás seguro de que quieres eliminar este producto?</p>
+          <p className="font-roboto font-medium text-lg">
+            ¿Estás seguro de que quieres eliminar este producto?
+          </p>
           <div className="flex justify-center mt-5">
             <Button
-            type="common"
+              type="common"
               className="bg-blue-800 text-white hover:bg-blue-950 px-4 py-2"
               onClick={handleConfirmDelete}
             >

@@ -4,7 +4,14 @@ import { IoIosArrowDropdown } from "react-icons/io";
 import { useState } from "react";
 import Button from "./Button";
 
-export default function DropDown({ onChange, data, option, setOption, isSelected }) {
+export default function DropDown({
+  onChange,
+  data,
+  option,
+  setOption,
+  isSelected,
+  canChange,
+}) {
   const [isOpen, setIsOpen] = useState(false);
   const [selected, setSelected] = useState(isSelected);
 
@@ -24,25 +31,29 @@ export default function DropDown({ onChange, data, option, setOption, isSelected
       <span className="flex justify-between px-[10px]">
         <p
           className={`${
-            selected ? "text-black" : "text-[#737373]"
+            selected || !canChange ? "text-black" : "text-[#737373]"
           } font-medium text-[16ps] truncate `}
         >
           {option}
         </p>
-        <Button
-          onClick={() => {
-            setIsOpen(!isOpen);
-          }}
-        >
-          {isOpen ? (
-            <IoIosArrowDropdown size={20} className="font-bold" />
-          ) : (
-            <IoIosArrowDropleft size={20} className="font-bold" />
-          )}
-        </Button>
+        {canChange ? (
+          <Button
+            onClick={() => {
+              setIsOpen(!isOpen);
+            }}
+          >
+            {isOpen ? (
+              <IoIosArrowDropdown size={20} className="font-bold" />
+            ) : (
+              <IoIosArrowDropleft size={20} className="font-bold" />
+            )}
+          </Button>
+        ) : (
+          <></>
+        )}
       </span>
 
-      {isOpen && (
+      {isOpen && data && (
         <div className="w-full bg-white absolute items-center px-[10px] shadow-lg rounded-b-[8px] pb-[10px]">
           {data.map((option, index) => (
             <Button
@@ -68,5 +79,6 @@ DropDown.propTypes = {
   data: PropTypes.array,
   option: PropTypes.string,
   setOption: PropTypes.func,
-  isSelected: PropTypes.bool
+  isSelected: PropTypes.bool,
+  canChange: PropTypes.bool,
 };
