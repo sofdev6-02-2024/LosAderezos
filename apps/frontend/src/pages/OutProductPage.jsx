@@ -38,7 +38,7 @@ export default function OutProductPage() {
             ...newProduct,
             inQuantity: 1,
             quantity: newProduct.quantity - 1,
-            maxQuantiy: newProduct.quantity,
+            maxQuantity: newProduct.quantity,
           };
           setProducts([...products, productWithQuantity]);
         }
@@ -50,7 +50,7 @@ export default function OutProductPage() {
 
   const manageQuantity = (q, index) => {
     const updatedProducts = products.map((p, i) =>
-      i === index ? { ...p, inQuantity: q, quantity: p.maxQuantiy - q } : p
+      i === index ? { ...p, inQuantity: q, quantity: p.maxQuantity - q } : p
     );
     setProducts(updatedProducts);
   };
@@ -120,7 +120,9 @@ export default function OutProductPage() {
                 manageQuantity(q, index);
               }}
               onDelete={() => handleDel(index)}
-              maxValue={p.maxQuantiy}
+              maxValue={p.maxQuantity}
+              type="out"
+              remainingQuantity={p.maxQuantity - p.inQuantity}
             />
           </div>
         ))}
