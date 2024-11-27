@@ -28,7 +28,7 @@ function InputField ({ id, label, name, placeholder, type, isCorrect, isDisabled
             ${isCorrect ? 'border-2 border-neutral-200' : 'border-2 border-red-500'}`}
           placeholder={placeholder}
           disabled={isDisabled}
-          required
+          required={isRequired}
         />
         {icon && iconPosition === 'right' && (
           <span

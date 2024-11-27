@@ -1,22 +1,58 @@
 import Button from "../components/Button";
 import { IoMdBarcode } from "react-icons/io";
 import SearchBar from "../components/SearchBar";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import InOutProduct from "../components/InOutProduct";
 import { IoMdAdd } from "react-icons/io";
 import { MdOutlineCancel } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
-import { getProductByCode, updateStocks } from "../services/ProductService";
+import { getProductByCode, getProducts, updateStocks } from "../services/ProductService";
 import { useUser } from "../hooks/UserUser";
 
 export default function InProductPage() {
   const [products, setProducts] = useState([]);
+  const [total, setTotal] = useState(0);
+  const [productsSearchList, setProductsSearchList] = useState([]);
   const navigate = useNavigate();
   const { user } = useUser();
 
-  const onSearch = async (code) => {
+  useEffect(() => {
+    const totalAmount = products.reduce(
+      (acc, p) => acc + p.inQuantity * p.incomingPrice,
+      0
+    );
+    setTotal(totalAmount);
+  }, [products]);
+
+  useEffect(() => {
+    async function fetchProducts() {
+      try {
+        const fetchedProducts = await getProducts(user.subsidiaryId);
+        const formattedList = fetchedProducts.map(
+          (p) => `${p.name} - (${p.productCode})`
+        );
+        setProductsSearchList(formattedList);
+      } catch (error) {
+        console.error("Error al obtener productos", error);
+      }
+    }
+    fetchProducts();
+  }, [user]);
+
+  const onSearch = (code) => {
     if (!code) return;
 
+    const product = productsSearchList.find((item) =>
+      item.includes(code)
+    );
+
+    if (product) {
+      const productCode = product.match(/\(([^)]+)\)/)[1];
+      addProductByCode(productCode);
+    }
+  };
+
+  const addProductByCode = async (code) => {
     const existingProduct = products.find((p) => p.productCode === code);
 
     if (existingProduct) {
@@ -95,7 +131,12 @@ export default function InProductPage() {
       <div className="flex flex-row w-4/5 justify-between md:justify-center py-10 space-x-7 items-center font-roboto">
         <SearchBar
           placeholder={"Buscar por codigo de barras..."}
+          items={productsSearchList}
           onSearch={onSearch}
+          onItemClicked={(item) => {
+            const productCode = item.match(/\(([^)]+)\)/)[1];
+            addProductByCode(productCode);
+          }}
         />
         <Button
           className={
@@ -118,31 +159,37 @@ export default function InProductPage() {
                 manageQuantity(q, index);
               }}
               onDelete={() => handleDel(index)}
+              type="in"
             />
           </div>
         ))}
       </div>
-      <div className=" w-4/5 md:w-1/3 flex flex-row justify-between py-4">
-        <Button
-          onClick={submit}
-          className={
-            "bg-[#16a34a] font-roboto font-medium text-xl text-white rounded-xl px-6 py-2 flex items-center gap-2"
-          }
-        >
-          Aceptar
-          <IoMdAdd />
-        </Button>
-        <Button
-          className={
-            "bg-red-600 font-roboto font-medium text-xl text-white rounded-xl px-6 py-2 flex items-center gap-2"
-          }
-          onClick={() => {
-            navigate("/store-menu");
-          }}
-        >
-          Cancelar
-          <MdOutlineCancel />
-        </Button>
+      <div className=" w-4/5 md:w-1/3 flex flex-col items-center space-y-4">
+        <p className="font-roboto text-2xl font-bold">
+          Total: ${total.toFixed(2)}
+        </p>
+        <div className="flex flex-row justify-between py-4 w-full">
+          <Button
+            onClick={submit}
+            className={
+              "bg-[#16a34a] font-roboto font-medium text-xl text-white rounded-xl px-6 py-2 flex items-center gap-2"
+            }
+          >
+            Aceptar
+            <IoMdAdd />
+          </Button>
+          <Button
+            className={
+              "bg-red-600 font-roboto font-medium text-xl text-white rounded-xl px-6 py-2 flex items-center gap-2"
+            }
+            onClick={() => {
+              navigate("/store-menu");
+            }}
+          >
+            Cancelar
+            <MdOutlineCancel />
+          </Button>
+        </div>
       </div>
     </div>
   );
