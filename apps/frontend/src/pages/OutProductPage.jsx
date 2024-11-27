@@ -6,11 +6,12 @@ import InOutProduct from "../components/InOutProduct";
 import { IoMdAdd } from "react-icons/io";
 import { MdOutlineCancel } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
-import { getProductByCode, updateStocks } from "../services/ProductService";
+import { getProductByCode, getProducts, updateStocks } from "../services/ProductService";
 import { useUser } from "../hooks/UserUser";
 
 export default function OutProductPage() {
   const [products, setProducts] = useState([]);
+  const [productsSearchList, setProductsSearchList] = useState([]);
   const [total, setTotal] = useState(0);
   const navigate = useNavigate();
   const { user } = useUser();
@@ -23,9 +24,31 @@ export default function OutProductPage() {
     setTotal(totalAmount);
   }, [products]);
 
-  const onSearch = async (code) => {
-    if (!code) return;
+  useEffect(() => {
+    async function fetchProducts() {
+      try {
+        const fetchedProducts = await getProducts(user.subsidiaryId);
+        const formattedList = fetchedProducts.map(
+          (p) => `${p.name} - (${p.productCode})`
+        );
+        setProductsSearchList(formattedList);
+      } catch (error) {
+        console.error("Error al obtener productos", error);
+      }
+    }
+    fetchProducts();
+  }, [user]);
 
+  const onSearch = (code) => {
+    const product = productsSearchList.find((item) => item.includes(code));
+
+    if (product) {
+      const productCode = product.match(/\(([^)]+)\)/)[1];
+      addProductByCode(productCode);
+    }
+  };
+
+  const addProductByCode = async (code) => {
     const existingProduct = products.find((p) => p.productCode === code);
 
     if (existingProduct) {
@@ -106,7 +129,12 @@ export default function OutProductPage() {
       <div className="flex flex-row w-4/5 justify-between md:justify-center py-10 space-x-7 items-center font-roboto">
         <SearchBar
           placeholder={"Buscar por codigo de barras..."}
+          items={productsSearchList}
           onSearch={onSearch}
+          onItemClicked={(item) => {
+            const productCode = item.match(/\(([^)]+)\)/)[1];
+            addProductByCode(productCode);
+          }}
         />
         <Button
           className={
