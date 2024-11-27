@@ -12,13 +12,24 @@ import { useUser } from "../hooks/UserUser";
 export default function AddUser() {
   const [users, setUsers] = useState([]);
   const navigate = useNavigate();
-  const myUser = useUser();
+  const { user } = useUser();
 
   const handleAdd = async (input) => {
     if (input.trim()) {
-      const user = await getUserByGmail(input);
-      if (!user) return;
-      setUsers([...users, user]);
+      const newUser = await getUserByGmail(input);
+      if (!newUser) return;
+      if (user.UserRol === "Propietario")
+      {
+        setUsers([...users, newUser]);
+      } else {
+        const newOperatorUser = {
+          ...newUser,
+          rol: "Operador"
+        }
+        setUsers([...users, newOperatorUser]);
+      }
+
+      
     }
   };
 
@@ -28,18 +39,18 @@ export default function AddUser() {
   };
 
   const onChange = (index, option) => {
-    const updatedUsers = users.map((user, i) =>
-      i === index ? { ...user, rol: option } : user
+    const updatedUsers = users.map((u, i) =>
+      i === index ? { ...u, rol: option } : u
     );
     setUsers(updatedUsers);
   };
 
   const addUsers = async () => {
-    const UserIds = users.map((user) => user.userId);
+    const UserIds = users.map((u) => u.userId);
 
     const request = {
       UserIds,
-      SubsidiaryId: myUser.user.subsidiaryId,
+      SubsidiaryId: user.subsidiaryId,
     };
 
     try {
@@ -84,15 +95,17 @@ export default function AddUser() {
         <SearchBar onSearch={handleAdd} />
       </div>
       <div className="w-4/5 space-y-7 h-1/2 overflow-y-scroll">
-        {users.map((user, index) => (
+        {users.map((u, index) => (
           <UserItem
             key={index}
-            user={user.name}
+            user={u.name}
             data={data}
             onDelete={() => handleDel(index)}
             onChange={(newRole) => onChange(index, newRole)}
-            rolOption="Select"
+            rolOption={ user.UserRol === "Propietario" ? "Select" : "Operador"}
             hasRol={false}
+            canDelete
+            canChange={user.UserRol === "Propietario"}
           />
         ))}
       </div>

@@ -8,10 +8,12 @@ import Button from './Button';
 import Line from './Line';
 import BarcodeModal from './BarcodeModal';
 import { useNavigate } from 'react-router-dom';
+import { useUser } from '../hooks/UserUser';
 
 function ProductInfoCard ({ productData, productCategories, onOtherBranchesClick = () => {}, showButton = true, editPath }) {
   const [showBarcodeModal, setShowBarcodeModal] = useState(false);
   const navigate = useNavigate();
+  const { user } = useUser()
 
   const openBarcodeModal = () => {
     setShowBarcodeModal(true); 
@@ -31,10 +33,14 @@ function ProductInfoCard ({ productData, productCategories, onOtherBranchesClick
         <h5 className="text-xl font-roboto font-medium tracking-tight text-neutral-950 dark:text-white">
           {productData.name}
         </h5>
-        <RiEditLine 
-          className="text-3xl lg:text-6xl text-neutral-950 cursor-pointer hover:text-blue-800"
-          onClick={handleEditClick}
-        />
+        {user.UserRol === "Propietario" ? (
+          <RiEditLine
+            className="text-3xl lg:text-6xl text-neutral-950 cursor-pointer hover:text-blue-800"
+            onClick={handleEditClick}
+          />
+        ) : (
+          <></>
+        )}
       </div>
 
       <Line />     

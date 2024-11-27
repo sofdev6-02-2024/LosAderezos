@@ -8,7 +8,7 @@ import { useUser } from "../hooks/UserUser";
 import { getUsersBySubsidiaryId, updateUserList } from "../services/UserService";
 
 export default function UserPage() {
-  const myUser = useUser();
+  const { user } = useUser();
   const [users, setUsers] = useState([]);
   const [filteredUsers, setFilteredUsers] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -20,7 +20,7 @@ export default function UserPage() {
     async function fetchProducts() {
       try {
         const fetchedUsers = await getUsersBySubsidiaryId(
-          myUser.user.subsidiaryId
+          user.subsidiaryId
         );
         const filteredList = fetchedUsers.map(
           (u) => `${u.name} - (${u.email})`
@@ -36,12 +36,12 @@ export default function UserPage() {
     }
 
     fetchProducts();
-  }, [myUser.user.subsidiaryId]);
+  }, [user.subsidiaryId]);
 
   const updateRol = async (newRole, index) => {
     const previousUsers = [...users];
-    const updatedUsers = users.map((user, i) =>
-      i === index ? { ...user, rol: newRole } : user
+    const updatedUsers = users.map((u, i) =>
+      i === index ? { ...u, rol: newRole } : u
     );
     setUsers(updatedUsers);
 
@@ -129,17 +129,19 @@ export default function UserPage() {
         </Button>
       </div>
       <div className="w-full flex-1 space-y-5 overflow-y-scroll flex flex-col items-center">
-        {filteredUsers.map((user, index) => (
+        {filteredUsers.map((u, index) => (
           <div key={index} className="w-4/5">
             <UserItem
               className="w-4/5"
-              user={user.name}
+              user={u.name}
               hasRol
-              rolOption={user.rol}
+              rolOption={u.rol}
               onChange={(rol) => {
                 updateRol(rol, index);
               }}
+              canDelete = {user.UserRol === "Propietario"}
               data={data}
+              canChange={user.UserRol === "Propietario"}
             />
           </div>
         ))}
