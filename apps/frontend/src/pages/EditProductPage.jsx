@@ -14,6 +14,7 @@ import { useUser } from "../hooks/UserUser";
 
 const EditProductSchema = Yup.object().shape({
   name: Yup.string().required("El nombre del producto es obligatorio"),
+  code: Yup.string().notRequired(),
   buyPrice: Yup.number()
     .required("El precio de compra es obligatorio")
     .min(1, "Debe ser mayor o igual a 1"),
@@ -105,6 +106,7 @@ function EditProductPage() {
     try {
       const updatedProduct = {
         name: values.name,
+        code: values.code,
         incomingPrice: values.buyPrice,
         sellPrice: values.sellPrice,
         companyId: user.companyId,
@@ -137,6 +139,7 @@ function EditProductPage() {
       <Formik
         initialValues={{
           name: productData.name,
+          code: productData.productCode || "",
           buyPrice: productData.incomingPrice,
           sellPrice: productData.sellPrice,
           lowStock: productData.lowExistence || 0,
@@ -159,6 +162,18 @@ function EditProductPage() {
               />
               {touched.name && errors.name && (
                 <div className="text-red-500 text-sm">{errors.name}</div>
+              )}
+              <InputField
+                id="code"
+                label="Código de Barras"
+                name="code"
+                placeholder="Ingrese el código de barras aquí"
+                type="text"
+                isCorrect={!(errors.code && touched.code)}
+                isRequired={false}
+              />
+              {touched.code && errors.code && (
+                <div className="text-red-500 text-sm">{errors.code}</div>
               )}
               <InputField
                 id="buyPrice"
