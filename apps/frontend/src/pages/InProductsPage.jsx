@@ -40,6 +40,8 @@ export default function InProductPage() {
   }, [user]);
 
   const onSearch = (code) => {
+    if (!code) return;
+
     const product = productsSearchList.find((item) =>
       item.includes(code)
     );
