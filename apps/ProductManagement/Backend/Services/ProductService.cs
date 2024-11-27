@@ -33,11 +33,19 @@ public class ProductService: IProductService
         return _mapper.Map<ProductDTO>(_productDao.Read(id));
     }
 
-    public ProductDTO CreateProduct(ProductWithoutIDDTO product)
+    public ProductDTO? CreateProduct(ProductWithoutIDDTO product)
     {
         Guid guid = Guid.NewGuid();
-        string code = CreateCodeFromGuid(guid);
-        _productDao.Create(_mapper.Map<Product>((product, guid, code)));
+        if (string.IsNullOrEmpty(product.Code))
+        {
+            product.Code = CreateCodeFromGuid(guid);
+        }
+
+        if (_productDao.ReadAll().Any(p => p.Code == product.Code))
+        {
+            return null;
+        }
+        _productDao.Create(_mapper.Map<Product>((product, guid)));
         foreach (Subsidiary subsidiary in _subsidiaryDao.ReadAll())
         {
             _stockDao.Create(new Stock()
@@ -53,8 +61,16 @@ public class ProductService: IProductService
 
     public ProductDTO? UpdateProduct(Guid productId, ProductWithoutIDDTO product)
     {
-        string code = CreateCodeFromGuid(productId);
-        _productDao.Update(_mapper.Map<Product>((product, productId, code)));
+        if (string.IsNullOrEmpty(product.Code))
+        {
+            product.Code = CreateCodeFromGuid(productId);
+        }
+
+        if (_productDao.ReadAll().Any(p => p.Code == product.Code))
+        {
+            return null;
+        }
+        _productDao.Update(_mapper.Map<Product>((product, productId)));
         var resultProduct = _productDao.Read(productId);
         return _mapper.Map<ProductDTO>(resultProduct);
     }
@@ -84,6 +100,6 @@ public class ProductService: IProductService
 
     private string CreateCodeFromGuid(Guid guid)
     {
-        return guid.ToString("N");   
+        return guid.ToString("N").Substring(0, 10);   
     }
 }
