@@ -14,7 +14,7 @@ function getMedianOfCodeErrors(decodedCodes) {
 }
 
 const defaultConstraints = {
-  width: 1280,
+  width: 1200,
   height: 720,
 };
 
@@ -91,8 +91,8 @@ const Scanner = ({
           decoder: { readers: decoders },
           locate: true,
           locator: {
-            patchSize: 'large',
-            halfSample: false,
+            patchSize: 'medium',
+            halfSample: true,
           },
         },
         (err) => {

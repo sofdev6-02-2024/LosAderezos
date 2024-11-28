@@ -31,6 +31,7 @@ function BarcodeModal({ productId, productName, showModal, onClose }) {
       console.error('SVG element not found');
       return;
     }
+
     const serializer = new XMLSerializer();
     const svgString = serializer.serializeToString(svgElement);
     const canvas = document.createElement('canvas');
@@ -59,7 +60,7 @@ function BarcodeModal({ productId, productName, showModal, onClose }) {
     <Modal isVisible={showModal} onClose={onClose} width="max-w-lg" height="h-[400px]">
       <div className="flex-1 flex flex-col justify-center items-center">
         <svg ref={barcodeRef} className="w-full h-auto max-h-[150px]"></svg>
-  
+
         <div className="mt-4 flex justify-center">
           <Button
             onClick={handleDownload}
@@ -72,7 +73,7 @@ function BarcodeModal({ productId, productName, showModal, onClose }) {
         </div>
       </div>
     </Modal>
-  );  
+  );
 }
 
 BarcodeModal.propTypes = {

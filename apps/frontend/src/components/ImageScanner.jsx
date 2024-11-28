@@ -26,14 +26,14 @@ const ImageScanner = ({ onDetected, onError }) => {
         numOfWorkers: 0,
         singleWorker: true, 
         inputStream: {
-          size: 800, 
+          size: 1000, 
         },
         decoder: {
-          readers: ['code_128_reader', 'ean_reader', 'upc_reader'], 
+          readers: ['code_128_reader'], 
         },
         locate: true, 
         locator: {
-          patchSize: 'large',
+          patchSize: 'medium',
           halfSample: true, 
         },
       },

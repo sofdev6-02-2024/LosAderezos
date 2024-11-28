@@ -14,7 +14,7 @@ function BarcodeScannerModal({ isVisible, onClose, onScan }) {
     setTimeout(() => {
       setScanning(false);
       setShowImageScanner(false);
-      onClose();
+      onClose && onClose(); // Validación antes de llamar a onClose
     }, 500);
   };
 
@@ -29,7 +29,12 @@ function BarcodeScannerModal({ isVisible, onClose, onScan }) {
   };
 
   return (
-    <Modal isVisible={isVisible} onClose={onClose} width="max-w-lg" height="h-auto">
+    <Modal
+      isVisible={isVisible}
+      onClose={onClose || (() => console.warn('onClose no está definido'))} // Evitar undefined
+      width="max-w-lg"
+      height="max-h-full"
+    >
       <div>
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-lg font-semibold">Escanear Código de Barras</h2>
@@ -54,7 +59,22 @@ function BarcodeScannerModal({ isVisible, onClose, onScan }) {
               showVisualization={true}
             />
           )}
-          {showImageScanner && <ImageScanner onDetected={handleDetected} />}
+          {showImageScanner && (
+            <div
+              style={{
+                position: 'relative',
+                width: '100%',
+                height: '300px',
+                overflowY: 'auto', 
+                border: '1px solid #ccc',
+                borderRadius: '8px',
+                padding: '1rem',
+                backgroundColor: '#f9f9f9',
+              }}
+            >
+              <ImageScanner onDetected={handleDetected} />
+            </div>
+          )}
         </div>
 
         <div className="mt-4 flex justify-between">
