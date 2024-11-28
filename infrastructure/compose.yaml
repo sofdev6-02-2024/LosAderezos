@@ -94,3 +94,25 @@ services:
       user-management-service:
         condition: service_started
         
+# REPORTS
+
+  reports-service:
+    container_name: ReportsService
+    build:
+      context: ${CONTEXT}
+      dockerfile: ./infrastructure/environments/reports/Dockerfile
+    environment:
+      ASPNETCORE_HTTP_PORTS: 80
+
+  reports-database:
+    container_name: ReportsDatabase
+    image: influxdb:2
+    ports:
+      - 8086:8086
+    environment:
+      DOCKER_INFLUXDB_INIT_MODE: setup
+      DOCKER_INFLUXDB_INIT_USERNAME: ${REPORTS_DB_USERNAME}
+      DOCKER_INFLUXDB_INIT_PASSWORD: ${REPORTS_DB_PASSWORD}
+      DOCKER_INFLUXDB_INIT_ORG: ${REPORTS_DB_ORG}
+      DOCKER_INFLUXDB_INIT_ADMIN_TOKEN: ${REPORTS_DB_ADMIN_TOKEN}
+      DOCKER_INFLUXDB_INIT_BUCKET: ${REPORTS_DB_INITIAL_BUCKET}
