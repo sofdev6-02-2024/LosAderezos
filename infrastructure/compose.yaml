@@ -1,6 +1,75 @@
-services:
+volumes:
+  dashboard-grafana-data:
+    driver: local
 
-# FRONTEND
+services:
+  # Traefik
+  dashboard-traefik:
+    image: 'traefik:v2.9'
+    container_name: 'dashboard-traefik'
+    restart: unless-stopped
+    command:
+      - '--log.level=DEBUG'
+      - '--api.insecure=true'
+      - '--providers.docker=true'
+      - '--providers.docker.exposedbydefault=false'
+      - '--entrypoints.web.address=:80'
+      - '--entrypoints.web.http.redirections.entrypoint.to=websecure'
+      - '--entryPoints.web.http.redirections.entrypoint.scheme=https'
+      - '--entrypoints.websecure.address=:443'
+      - '--certificatesresolvers.myresolver.acme.tlschallenge=true'
+      - '--certificatesresolvers.myresolver.acme.email=myemail@test.com'
+      - '--certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json'
+    ports:
+      - '8080:80'
+      - '443:443'
+      - '8082:8081'
+    volumes:
+      - './letsencrypt:/letsencrypt'
+      - '/var/run/docker.sock:/var/run/docker.sock:ro'
+    networks:
+      - dashboard
+
+  # Grafana
+  dashboard-grafana:
+    image: grafana/grafana-oss:10.4.12-ubuntu
+    container_name: dashboard-grafana
+    restart: unless-stopped
+    ports:
+      - "3005:3000"
+    environment:
+      - GF_LOG_LEVEL=${LOG_LEVEL}
+      - GF_PATHS_CONFIG
+      - GF_RENDERING_SERVER_URL
+      - GF_RENDERING_CALLBACK_URL
+      - GF_LOG_FILTERS
+    volumes:
+      - ./grafana-config/config.ini:/etc/grafana/config.ini
+      - ./grafana-config/provisioning/:/etc/grafana/provisioning/
+      - dashboard-grafana-data:/var/lib/grafana/
+    labels:
+      - 'traefik.enable=true'
+      - 'traefik.http.routers.dashboard-grafana.rule=Host(`${GF_HOST}`)'
+      - 'traefik.http.routers.dashboard-grafana.entrypoints=websecure'
+      - 'traefik.http.routers.dashboard-grafana.tls.certresolver=myresolver'
+      - 'traefik.port=3005'
+      - "traefik.http.middlewares.no-xframe.headers.customresponseheaders.X-Frame-Options="
+      - "traefik.http.middlewares.no-xframe.headers.customresponseheaders.Content-Security-Policy="
+    networks:
+      - dashboard
+
+  # Renderer
+  dashboard-renderer:
+    container_name: dashboard-renderer
+    image: grafana/grafana-image-renderer:latest
+    ports:
+      - 8081:8081
+    depends_on:
+      - dashboard-grafana
+    networks:
+      - dashboard
+
+  # FRONTEND
   frontend:
     container_name: frontend
     build: 
@@ -9,11 +78,12 @@ services:
     ports:
       - "5173:5173"
     depends_on:
-        api-gateway:
-          condition: service_started
+      api-gateway:
+        condition: service_started
+    networks:
+      - dashboard
 
-# API GATEWAY
-
+  # API GATEWAY
   api-gateway:
     container_name: api
     build:
@@ -28,9 +98,10 @@ services:
         condition: service_started
       user-authentication-service:
         condition: service_started
+    networks:
+      - dashboard
 
-# PRODUCT MANAGEMENT
-
+  # PRODUCT MANAGEMENT
   product-management-service:
     container_name: ProductManagementService
     build: 
@@ -41,6 +112,8 @@ services:
     depends_on:
       product-management-database:
         condition: service_healthy
+    networks:
+      - dashboard
   
   product-management-database:
     container_name: ProductManagementDB
@@ -55,9 +128,10 @@ services:
       test: ["CMD-SHELL", "mysql -u root -p${PRODUCT_MANAGEMENT_DB_PASSWORD} --execute 'SELECT @@GLOBAL.version;'"]
       interval: 3s
       retries: 10
+    networks:
+      - dashboard
 
-# USER MANAGEMENT   
-  
+  # USER MANAGEMENT  
   user-management-service:
     container_name: UserManagementService
     build:
@@ -68,6 +142,8 @@ services:
     depends_on:
       user-management-database-MySQL:
         condition: service_healthy
+    networks:
+      - dashboard
 
   user-management-database-MySQL:
     container_name: UserManagementDBMySQL
@@ -82,9 +158,10 @@ services:
       test: ["CMD-SHELL", "mysql -u root -p${USER_MANAGEMENT_DB_MySQL_PASSWORD} --execute 'SELECT @@GLOBAL.version;'"]
       interval: 3s
       retries: 10
+    networks:
+      - dashboard
 
-# USER AUTHENTICATION
-  
+  # USER AUTHENTICATION
   user-authentication-service:
     container_name: AuthenticationService
     build:
@@ -93,4 +170,14 @@ services:
     depends_on:
       user-management-service:
         condition: service_started
-        
+    networks:
+      - dashboard
+
+networks:
+  dashboard:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.1.0.0/16
+    driver_opts:
+      com.docker.network.driver.mtu: 1400
