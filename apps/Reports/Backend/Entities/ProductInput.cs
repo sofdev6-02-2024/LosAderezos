@@ -10,6 +10,7 @@ public class ProductInput
     [Column("IncomePrice")]                         public double   IncomePrice         { get; set; }
     [Column("ProductName", IsTag = true)]           public string   ProductName         { get; set; }   = string.Empty;
     [Column("Code", IsTag = true)]                  public string   Code                { get; set; }   = string.Empty;
+    [Column("CompanyId", IsTag = true)]             public string   CompanyId           { get; set; }   = string.Empty;
     [Column("SubsidiaryId", IsTag = true)]          public string   SubsidiaryId        { get; set; }   = string.Empty;
     [Column("SubsidiaryUbication", IsTag = true)]   public string   SubsidiaryUbication { get; set; }   = string.Empty;
     [Column("UserEmail", IsTag = true)]             public string   UserEmail           { get; set; }   = string.Empty;
