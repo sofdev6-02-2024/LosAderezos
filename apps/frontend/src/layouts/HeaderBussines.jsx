@@ -42,7 +42,7 @@ export default function HeaderBussines({ bussines, branch }) {
           {branch}
         </Button>
       </div>
-      <div className="flex h-full flex-col md:flex-row space-y-4 w-full justify-center md:justify-end items-center">
+      <div className="flex h-full flex-col md:flex-row space-y-4 md:space-y-0 w-full justify-center md:justify-end items-center">
         <Button
           className={"md:m-10"}
           onClick={() => {
@@ -51,7 +51,6 @@ export default function HeaderBussines({ bussines, branch }) {
         >
           <CgBell className="size-[30px] md:size-[40px]" color="white" />
         </Button>
-
         <Button
           className={"md: m-10"}
           onClick={() => {

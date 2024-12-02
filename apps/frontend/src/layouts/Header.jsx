@@ -19,8 +19,8 @@ export default function Header() {
     async function fetchData() {
       try {
         const [fetchedCompany, fetchedSubsidiary] = await Promise.all([
-          getSubsidiaryById(user.subsidiaryId),
           getCompanyById(user.companyId),
+          getSubsidiaryById(user.subsidiaryId),
         ]);
 
         setSubsidiary(fetchedSubsidiary.name);
