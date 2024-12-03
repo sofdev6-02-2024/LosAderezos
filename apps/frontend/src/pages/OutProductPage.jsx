@@ -160,8 +160,7 @@ export default function OutProductPage() {
               }}
               onDelete={() => handleDel(index)}
               maxValue={p.maxQuantity}
-              type="out"
-              remainingQuantity={p.maxQuantity - p.inQuantity}
+              actualQuantity={p.maxQuantity - p.inQuantity}
             />
           </div>
         ))}

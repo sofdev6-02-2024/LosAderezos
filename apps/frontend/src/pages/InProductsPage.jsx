@@ -159,7 +159,7 @@ export default function InProductPage() {
                 manageQuantity(q, index);
               }}
               onDelete={() => handleDel(index)}
-              type="in"
+              actualQuantity={p.actualQuantity + p.inQuantity}
             />
           </div>
         ))}
