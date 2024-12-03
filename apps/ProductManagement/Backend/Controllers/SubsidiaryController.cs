@@ -55,4 +55,11 @@ public class SubsidiaryController: ControllerBase
         return Ok(subsidiary);
     }
     
+    [HttpDelete("{subsidiaryId}")]
+    public ActionResult<SubsidiaryDTO> DeleteSubsidiary(Guid subsidiaryId)
+    {
+        var subsidiary = _subsidiaryService.DeleteSubsidiaryById(subsidiaryId);
+        return Ok(subsidiary);
+    }
+    
 }

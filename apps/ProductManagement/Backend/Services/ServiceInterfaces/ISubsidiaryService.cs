@@ -11,5 +11,6 @@ public interface ISubsidiaryService
     public List<SubsidiaryDTO> GetSubsidiariesByCompanyId(Guid id);
     public SubsidiaryDTO CreateSubsidiary(SubsidiaryWithoutDTO subsidiary);
     public SubsidiaryDTO UpdateSubsidiary(SubsidiaryDTO subsidiary);
+    public bool DeleteSubsidiaryById(Guid subsidiaryId);
     
 }
