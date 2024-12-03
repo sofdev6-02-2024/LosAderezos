@@ -7,6 +7,7 @@ public class OutputReportDTO
     public double   SellingPrice        { get; set; }
     public string   ProductName         { get; set; }   = string.Empty;
     public string   Code                { get; set; }   = string.Empty;
+    public string   CompanyId           { get; set; }   = string.Empty;
     public string   SubsidiaryId        { get; set; }   = string.Empty;
     public string   SubsidiaryUbication { get; set; }   = string.Empty;
     public string   UserEmail           { get; set; }   = string.Empty;
