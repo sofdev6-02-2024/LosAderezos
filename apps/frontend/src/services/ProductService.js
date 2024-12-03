@@ -73,6 +73,29 @@ export async function getSubsidiaryById(id) {
   }
 }
 
+export async function getSubsidiaries() {
+  try {
+    const response = await productAPI.get(`/Subsidiary`);
+    return response.data;
+  } catch (error) {
+    throw new Error(
+      error.response?.data?.message || "Error al conseguir subsidiarias"
+    );
+  }
+}
+
+export async function deleteSubsidiary() {
+  try {
+    const response = await productAPI.delete(`/Subsidiary`);
+    return response.data;
+  } catch (error) {
+    throw new Error(
+      error.response?.data?.message || "Error al eliminar subsidiaria"
+    );
+  }
+}
+
+
 export async function getCompanyById(id) {
   try {
     const response = await productAPI.get(`/Company/${id}`);

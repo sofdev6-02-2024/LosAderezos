@@ -12,6 +12,7 @@ import OutProductPage from "./pages/OutProductPage";
 import AddProductPage from "./pages/AddProductPage";
 import EditProductPage from "./pages/EditProductPage";
 import EditUserPage from "./pages/EditUserPage";
+import SubsidiariesPage from "./pages/SubsidiariesPage";
 
 function App() {
   return (
@@ -24,7 +25,7 @@ function App() {
         <Route path="/products/:id" element={<SingleProductPage />} />
         <Route path="/add-product" element={<AddProductPage />} />
         <Route path="/edit-product/:id" element={<EditProductPage />} />
-        <Route path="/branches" element={<NotFound />} />
+        <Route path="/branches" element={<SubsidiariesPage />} />
         <Route path="/notifications" element={<NotFound />} />
         <Route path="/addUsers" element={<AddUser />} />
         <Route path="/users" element={<UserPage />} />
