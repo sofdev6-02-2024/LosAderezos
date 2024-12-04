@@ -9,14 +9,15 @@ export default function SubsidiaryItem({
   admin,
   onEdit,
   onDelete,
-  type
+  type,
+  onClick
 }) {
   return (
-    <div className="bg-sky-100 w-full rounded-[20px] cursor-pointer border-blue-950 border-2 font-roboto">
+    <div className="bg-sky-100 w-full rounded-[20px] border-blue-950 border-2 font-roboto">
       <div className="flex flex-row h-93 mx-[15px] md:mx-[40px] my-[20px] justify-between items-center">
         <div className="w-[150px] md:w-full">
           {admin ? (
-            <Button>
+            <Button onClick={onClick}>
               <p className="font-bold md:text-[20px] text-[16px] text-start">
                 {name}
               </p>
@@ -60,4 +61,5 @@ SubsidiaryItem.propTypes = {
   admin: PropTypes.bool,
   onEdit: PropTypes.func,
   onDelete: PropTypes.func,
+  onClick: PropTypes.func,
 };

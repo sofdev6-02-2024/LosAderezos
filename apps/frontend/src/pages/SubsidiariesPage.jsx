@@ -7,63 +7,55 @@ import { useUser } from "../hooks/UserUser";
 import { toast } from "sonner";
 import Modal from "../components/Modal";
 import SubsidiaryItem from "../components/SubsidiaryItem";
+import { useNavigate } from "react-router-dom";
 
 export default function SubsidiariesPage() {
-  const { user } = useUser();
+  const { user, editUser } = useUser();
   const [subsidiaries, setSubsidiaries] = useState([]);
   const [subsidiariesSearchList, setSubsidiariesSearchList] = useState([]);
   const [filteredSubsidiaries, setFilteredSubsidiaries] = useState([]);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [subsidiaryToDelete, setSubsidiaryToDelete] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     async function fetchSubsidiaries() {
       try {
-        const fetchedSubsidiaries = await getSubsidiaries();
+        const fetchedSubsidiaries = await getSubsidiaries(user.companyId);
         const filteredList = fetchedSubsidiaries.map(
-          (s) => `${s.name} - (${s.location})`
+          (s) => `${s.name} - ${s.location}`
         );
         setSubsidiaries(fetchedSubsidiaries);
         setFilteredSubsidiaries(fetchedSubsidiaries);
         setSubsidiariesSearchList(filteredList);
       } catch (error) {
         console.error("Error fetching subsidiaries", error);
+        toast.error(
+          "No se pudieron cargar las sucursales. Intente nuevamente más tarde."
+        );
       }
     }
 
-    fetchSubsidiaries();
+    if (user && user.companyId) {
+      fetchSubsidiaries();
+    }
   }, [user]);
 
-  const searchSubsidiary = (text) => {
-    if (text.trim()) {
-      const lowerCaseText = text.toLowerCase();
-
-      const filtered = subsidiaries.filter(
-        (s) =>
-          s.name.toLowerCase().includes(lowerCaseText) ||
-          s.address.toLowerCase().includes(lowerCaseText)
+  const searchSubsidiary = (text, isDropdownSearch = false) => {
+    const lowerCaseText = text.trim().toLowerCase();
+    if (lowerCaseText) {
+      const filtered = subsidiaries.filter((s) =>
+        isDropdownSearch
+          ? lowerCaseText.includes(s.name.toLowerCase()) ||
+            lowerCaseText.includes(s.location.toLowerCase())
+          : s.name.toLowerCase().includes(lowerCaseText) ||
+            s.address.toLowerCase().includes(lowerCaseText)
       );
       setFilteredSubsidiaries(filtered);
     } else {
       setFilteredSubsidiaries(subsidiaries);
     }
   };
-
-  const selectSubsidiarySearch = (text) => {
-    if (text.trim()) {
-      const lowerCaseText = text.toLowerCase();
-
-      const filtered = subsidiaries.filter(
-        (s) =>
-          lowerCaseText.includes(s.name.toLowerCase()) ||
-          lowerCaseText.includes(s.location.toLowerCase())
-      );
-      setFilteredSubsidiaries(filtered);
-    } else {
-      setFilteredSubsidiaries(subsidiaries);
-    }
-  };
-
 
   const handleDeleteClick = (subsidiaryId) => {
     setSubsidiaryToDelete(subsidiaryId);
@@ -74,12 +66,12 @@ export default function SubsidiariesPage() {
     try {
       await deleteSubsidiary(subsidiaryToDelete);
       const updatedSubsidiaries = subsidiaries.filter(
-        (s) => s.Id !== subsidiaryToDelete
+        (s) => s.subsidiaryId !== subsidiaryToDelete
       );
       setSubsidiaries(updatedSubsidiaries);
       setFilteredSubsidiaries(updatedSubsidiaries);
       setSubsidiariesSearchList(
-        updatedSubsidiaries.map((s) => `${s.name} - (${s.location})`)
+        updatedSubsidiaries.map((s) => `${s.name} - ${s.location}`)
       );
       setIsModalVisible(false);
       toast.success("Sucursal eliminada correctamente");
@@ -87,6 +79,15 @@ export default function SubsidiariesPage() {
       console.error("Error deleting subsidiary", error);
       toast.error("Hubo un error al eliminar la sucursal");
     }
+  };
+
+  const setUserSubsidiary = async (subsidiaryId) => {
+    await editUser({
+      ...user,
+      subsidiaryId: subsidiaryId,
+    });
+    
+    navigate("/store-menu");
   };
 
   return (
@@ -102,7 +103,7 @@ export default function SubsidiariesPage() {
           <SearchBar
             items={subsidiariesSearchList}
             onSearch={searchSubsidiary}
-            onItemClicked={selectSubsidiarySearch}
+            onItemClicked={searchSubsidiary}
           />
         </div>
         <div className="md:hidden flex flex-row justify-between w-full">
@@ -148,7 +149,8 @@ export default function SubsidiariesPage() {
             location={sub.location || "Unknown location"}
             admin={user.UserRol === "Propietario"}
             type={sub.type || "Unknown type"}
-            onDelete={() => handleDeleteClick(sub.productId)}
+            onDelete={() => handleDeleteClick(sub.subsidiaryId)}
+            onClick={() => setUserSubsidiary(sub.subsidiaryId)}
           />
         ))}
       </div>

@@ -73,9 +73,9 @@ export async function getSubsidiaryById(id) {
   }
 }
 
-export async function getSubsidiaries() {
+export async function getSubsidiaries(id) {
   try {
-    const response = await productAPI.get(`/Subsidiary`);
+    const response = await productAPI.get(`/Subsidiary/company/${id}`);
     return response.data;
   } catch (error) {
     throw new Error(
@@ -84,9 +84,9 @@ export async function getSubsidiaries() {
   }
 }
 
-export async function deleteSubsidiary() {
+export async function deleteSubsidiary(id) {
   try {
-    const response = await productAPI.delete(`/Subsidiary`);
+    const response = await productAPI.delete(`/Subsidiary/${id}`);
     return response.data;
   } catch (error) {
     throw new Error(
