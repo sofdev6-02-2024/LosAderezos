@@ -13,6 +13,8 @@ import AddProductPage from "./pages/AddProductPage";
 import EditProductPage from "./pages/EditProductPage";
 import EditUserPage from "./pages/EditUserPage";
 import SubsidiariesPage from "./pages/SubsidiariesPage";
+import EditSubsidiaryPage from "./pages/EditSubsidiaryPage";
+import AddSubsidiaryPage from "./pages/AddSubsidiaryPage";
 
 function App() {
   return (
@@ -26,6 +28,8 @@ function App() {
         <Route path="/add-product" element={<AddProductPage />} />
         <Route path="/edit-product/:id" element={<EditProductPage />} />
         <Route path="/branches" element={<SubsidiariesPage />} />
+        <Route path="/add-branch" element={<AddSubsidiaryPage />} />
+        <Route path="/edit-branch" element={<EditSubsidiaryPage />} />
         <Route path="/notifications" element={<NotFound />} />
         <Route path="/addUsers" element={<AddUser />} />
         <Route path="/users" element={<UserPage />} />
