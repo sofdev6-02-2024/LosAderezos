@@ -9,6 +9,7 @@ import { useUser } from "../hooks/UserUser";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import Modal from "../components/Modal";
+import GeneratePDFButton from '../components/GeneratePDFButton';
 
 export default function ProductsPage() {
   const { user } = useUser();
@@ -72,8 +73,8 @@ export default function ProductsPage() {
   };
 
   const handleDeleteClick = (productId) => {
-    setProductToDelete(productId);
     setIsModalVisible(true);
+    setProductToDelete(productId);
   };
 
   const handleConfirmDelete = async () => {
@@ -101,9 +102,7 @@ export default function ProductsPage() {
       style={{ height: "calc(100vh - 150px)" }}
     >
       <p className="font-roboto font-bold text-[24px]">Productos</p>
-      <div
-        className={`flex md:flex-row flex-col space-y-5 justify-between w-4/5`}
-      >
+      <div className="flex md:flex-row flex-col space-y-5 justify-between w-4/5">
         <div className="md:w-2/3">
           <SearchBar
             items={productsSearchList}
@@ -111,20 +110,18 @@ export default function ProductsPage() {
             onItemClicked={selectProductSearch}
           />
         </div>
-        <div className="md:hidden flex flex-row justify-between w-full">
+
+        {/* Botones en vista móvil */}
+        <div className="md:hidden flex flex-row justify-between space-x-4 w-full">
           <Button
-            className={
-              "bg-neutral-200 justify-center hover:bg-neutral-300 rounded-xl items-center w-[92px] h-[32px]"
-            }
+            className="bg-neutral-200 justify-center hover:bg-neutral-300 rounded-xl items-center w-[92px] h-[32px]"
           >
             <IoMdBarcode size={20} />
           </Button>
           {user.UserRol === "Propietario" ? (
             <Button
               text={"Añadir"}
-              className={`bg-neutral-200  ${
-                user.UserRol === "Propietario" ? "" : "hidden"
-              } hover:bg-neutral-300 font-roboto font-bold text-sm text-neutral-950 rounded-xl pl-4 pr-4 py-2 flex items-center gap-2`}
+              className="bg-neutral-200 hover:bg-neutral-300 font-roboto font-bold text-sm text-neutral-950 rounded-xl pl-4 pr-4 py-2 flex items-center gap-2"
               type={"common"}
               onClick={() => {
                 navigate("/add-product");
@@ -135,25 +132,22 @@ export default function ProductsPage() {
           ) : (
             <div className="w-0 bg-orange-400"></div>
           )}
+          <GeneratePDFButton
+            products={filteredProducts}
+            className="bg-neutral-200 hover:bg-neutral-300 font-roboto font-bold text-sm text-neutral-950 rounded-xl pl-4 pr-4 py-2 flex items-center gap-2"
+          />
         </div>
-        <Button
-          className={
-            "bg-neutral-200 md:flex hidden justify-center items-center hover:bg-neutral-300 rounded-xl w-[92px] h-[32px]"
-          }
-        >
-          <IoMdBarcode size={20} />
-        </Button>
-        <div
-          className={`hidden ${
-            user.UserRol === "Propietario" ? "md:block" : ""
-          }`}
-        >
-          {user.UserRol === "Propietario" ? (
+
+        <div className="md:flex hidden justify-end space-x-4">
+          <Button
+            className="bg-neutral-200 md:flex justify-center items-center hover:bg-neutral-300 rounded-xl w-[92px] h-[32px]"
+          >
+            <IoMdBarcode size={20} />
+          </Button>
+          {user.UserRol === "Propietario" && (
             <Button
               text={"Añadir"}
-              className={
-                "bg-neutral-200 hover:bg-neutral-300 font-roboto font-bold text-sm text-neutral-950 rounded-xl pl-4 pr-4 py-2 flex items-center gap-2"
-              }
+              className="bg-neutral-200 hover:bg-neutral-300 font-roboto font-bold text-sm text-neutral-950 rounded-xl pl-4 pr-4 py-2 flex items-center gap-2"
               type={"common"}
               onClick={() => {
                 navigate("/add-product");
@@ -161,9 +155,11 @@ export default function ProductsPage() {
             >
               <MdAdd size={19} />
             </Button>
-          ) : (
-            <div className="w-0 bg-orange-400"></div>
           )}
+          <GeneratePDFButton
+            products={filteredProducts}
+            className="bg-neutral-200 hover:bg-neutral-300 font-roboto font-bold text-sm text-neutral-950 rounded-xl pl-4 pr-4 py-2 flex items-center gap-2"
+          />
         </div>
       </div>
       <div className="flex flex-col space-y-5 overflow-y-scroll w-4/5">
