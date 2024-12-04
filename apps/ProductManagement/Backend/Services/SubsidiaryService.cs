@@ -10,12 +10,16 @@ namespace Backend.Services;
 public class SubsidiaryService : ISubsidiaryService
 {
     private readonly ISubsidiaryDAO _subsidiaryDao;
+    private readonly IStockDAO _stockDao;
+    private readonly ISubsidiaryUsersDAO _subsidiaryUsersDao;
     private readonly IMapper _mapper;
 
-    public SubsidiaryService(ISubsidiaryDAO subsidiaryDao, IMapper mapper)
+    public SubsidiaryService(ISubsidiaryDAO subsidiaryDao, IMapper mapper, IStockDAO stockDao, ISubsidiaryUsersDAO subsidiaryUsersDao)
     {
         _subsidiaryDao = subsidiaryDao;
         _mapper = mapper;
+        _stockDao = stockDao;
+        _subsidiaryUsersDao = subsidiaryUsersDao;
     }
 
     public List<SubsidiaryDTO> GetSubsidiaries()
@@ -47,5 +51,18 @@ public class SubsidiaryService : ISubsidiaryService
     {
         _subsidiaryDao.Update(_mapper.Map<Subsidiary>(subsidiary));
         return _mapper.Map<SubsidiaryDTO>(_subsidiaryDao.Read(subsidiary.SubsidiaryId));
+    }
+
+    public bool DeleteSubsidiaryById(Guid subsidiaryId)
+    {
+        foreach (var stock in _stockDao.ReadAll().Where(st => st.SubsidiaryId == subsidiaryId ))
+        {
+            _stockDao.Delete(stock.StockId);
+        }
+        foreach (var subUser in _subsidiaryUsersDao.ReadAll().Where(subsidiaryUsers => subsidiaryUsers.SubsidiaryId == subsidiaryId ))
+        {
+            _subsidiaryUsersDao.Delete(subUser.UserId, subsidiaryId);
+        }
+        return _subsidiaryDao.Delete(subsidiaryId);
     }
 }

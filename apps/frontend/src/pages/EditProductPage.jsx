@@ -165,9 +165,9 @@ function EditProductPage() {
               )}
               <InputField
                 id="code"
-                label="Código de Barras"
+                label="Código del producto"
                 name="code"
-                placeholder="Ingrese el código de barras aquí"
+                placeholder="Ingrese el código del producto aquí"
                 type="text"
                 isCorrect={!(errors.code && touched.code)}
                 isRequired={false}
