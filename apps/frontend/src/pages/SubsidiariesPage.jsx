@@ -71,6 +71,14 @@ export default function SubsidiariesPage() {
     }
   };
 
+  const handleEdit = (subsidiaryId) => {
+    navigate('/edit-branch', {
+      state: {
+        subsidiaryId: subsidiaryId,
+      }
+    });
+  };
+
   const handleDeleteClick = (subsidiaryId) => {
     setSubsidiaryToDelete(subsidiaryId);
     setIsModalVisible(true);
@@ -128,9 +136,12 @@ export default function SubsidiariesPage() {
                 user.UserRol === "Propietario" ? "" : "hidden"
               } hover:bg-neutral-300 font-roboto font-bold text-sm text-neutral-950 rounded-xl pl-4 pr-4 py-2 flex items-center gap-2`}
               type={"common"}
+              onClick={() => {
+                navigate("/add-branch");
+              }}
             >
-              <MdAdd size={19} />
-            </Button>
+            <MdAdd size={19} />
+          </Button>
           ) : (
             <div className="w-0 bg-orange-400"></div>
           )}
@@ -147,6 +158,9 @@ export default function SubsidiariesPage() {
                 "bg-neutral-200 hover:bg-neutral-300 font-roboto font-bold text-sm text-neutral-950 rounded-xl pl-4 pr-4 py-2 flex items-center gap-2"
               }
               type={"common"}
+              onClick={() => {
+                navigate("/add-branch");
+              }}
             >
               <MdAdd size={19} />
             </Button>
@@ -159,10 +173,11 @@ export default function SubsidiariesPage() {
         {filteredSubsidiaries.map((sub, index) => (
           <SubsidiaryItem
             key={index}
-            name={sub.name || "Unknown subsidiary"}
-            location={sub.location || "Unknown location"}
+            name={sub.name || "Sucursal desconocida"}
+            location={sub.location || "Ubicación desconocida"}
             admin={user.UserRol === "Propietario"}
-            type={sub.type || "Unknown type"}
+            type={sub.type || "Tipo desconocido"}
+            onEdit={() => handleEdit(sub.subsidiaryId)}
             onDelete={() => handleDeleteClick(sub.subsidiaryId)}
             onClick={() => setUserSubsidiary(sub.subsidiaryId)}
           />

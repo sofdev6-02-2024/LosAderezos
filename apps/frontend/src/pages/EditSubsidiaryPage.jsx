@@ -2,54 +2,76 @@ import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import InputField from "../components/InputField";
 import Button from "../components/Button";
-import { MdAdd, MdOutlineCancel } from "react-icons/md";
-import { useNavigate } from "react-router-dom";
+import { MdOutlineCancel, MdSave } from "react-icons/md";
+import { useLocation, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { useUser } from "../hooks/UserUser";
-import { createSubsidiary } from "../services/SubsidiaryService";
+import { useEffect, useState } from "react";
+import { getSubsidiaryById } from "../services/ProductService";
+import { updateSubsidiary } from "../services/SubsidiaryService";
 
-const AddSubsidiarySchema = Yup.object().shape({
+const EditSubsidiarySchema = Yup.object().shape({
   name: Yup.string().required("El nombre de la sucursal es obligatorio"),
   location: Yup.string().required("La dirección es obligatoria"),
   type: Yup.string(),
 });
 
-function AddSubsidiaryPage() {
+function EditSubsidiaryPage() {
   const { user } = useUser();
+  const location = useLocation();
   const navigate = useNavigate();
+  const { subsidiaryId } = location.state;
+  const [subsidiaryData, setSubsidiaryData] = useState(null);
+
+  useEffect(() => {
+    async function fetchSubsidiary() {
+      try {
+        const fetchedSubsidiary = await getSubsidiaryById(subsidiaryId);
+        setSubsidiaryData(fetchedSubsidiary);
+      } catch (error) {
+        console.error("Error al obtener los datos de la sucursal:", error);
+        toast.error("Hubo un error al cargar los datos de la sucursal.");
+      }
+    }
+
+    fetchSubsidiary();
+  }, [subsidiaryId, user.companyId]);
 
   const handleSubmit = async (values) => {
     try {
-      const subsidiaryData = {
+      const updatedSubsidiary = {
+        subsidiaryId: subsidiaryData.subsidiaryId,
         location: values.location,
         name: values.name,
         type: values.type || "",
         companyId: user.companyId,
       };
   
-      await createSubsidiary(subsidiaryData);
+      await updateSubsidiary(updatedSubsidiary);
   
-      toast.success("Sucursal creada correctamente");
+      toast.success("Sucursal actualizada correctamente");
       navigate("/branches");
     } catch (error) {
-      console.error("Error al crear la sucursal:", error);
-      toast.error("Hubo un error al procesar su solicitud. Por favor, inténtelo de nuevo.");
+      console.error("Error al actualizar la sucursal:", error);
+      toast.error("Hubo un error al actualizar la sucursal.");
     }
   };
+
+  if (!subsidiaryData) return <div>Cargando...</div>;
 
   return (
     <div 
       className="flex flex-col items-center w-full p-14 space-y-16"
       style={{ height: "calc(100vh - 150px)" }}
     >
-      <h2 className="text-2xl font-roboto font-bold text-center mb-6">Nueva Sucursal</h2>
+      <h2 className="text-2xl font-roboto font-bold text-center mb-6">Editar Sucursal</h2>
       <Formik
         initialValues={{
-          name: "",
-          location: "",
-          type: "",
+          name: subsidiaryData.name,
+          location: subsidiaryData.location,
+          type: subsidiaryData.type || "",
         }}
-        validationSchema={AddSubsidiarySchema}
+        validationSchema={EditSubsidiarySchema}
         onSubmit={handleSubmit}
       >
         {({ errors, touched }) => (
@@ -92,13 +114,13 @@ function AddSubsidiaryPage() {
             )}
 
             <div className="flex justify-center gap-4 mt-4">
-              <Button
-                isSubmit
+              <Button 
+                isSubmit 
                 type="common"
-                className="bg-[#16a34a] font-roboto font-medium text-xl text-white rounded-xl px-6 py-2 flex items-center gap-2"
+                className="bg-blue-800 font-roboto font-medium text-xl text-white rounded-xl px-6 py-2 flex items-center gap-2"
               >
-                Agregar
-                <MdAdd size={19} />
+                Guardar 
+                <MdSave size={19} />
               </Button>
               <Button
                 type="common"
@@ -118,4 +140,4 @@ function AddSubsidiaryPage() {
   );
 }
 
-export default AddSubsidiaryPage;
+export default EditSubsidiaryPage;
