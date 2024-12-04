@@ -41,15 +41,29 @@ export default function SubsidiariesPage() {
     }
   }, [user]);
 
-  const searchSubsidiary = (text, isDropdownSearch = false) => {
-    const lowerCaseText = text.trim().toLowerCase();
-    if (lowerCaseText) {
-      const filtered = subsidiaries.filter((s) =>
-        isDropdownSearch
-          ? lowerCaseText.includes(s.name.toLowerCase()) ||
-            lowerCaseText.includes(s.location.toLowerCase())
-          : s.name.toLowerCase().includes(lowerCaseText) ||
-            s.address.toLowerCase().includes(lowerCaseText)
+  const searchSubsidiary = (text) => {
+    if (text.trim()) {
+      const lowerCaseText = text.toLowerCase();
+
+      const filtered = subsidiaries.filter(
+        (s) =>
+          s.name.toLowerCase().includes(lowerCaseText) ||
+          s.location.toLowerCase().includes(lowerCaseText)
+      );
+      setFilteredSubsidiaries(filtered);
+    } else {
+      setFilteredSubsidiaries(subsidiaries);
+    }
+  };
+
+  const selectSubsidiarySearch = (text) => {
+    if (text.trim()) {
+      const lowerCaseText = text.toLowerCase();
+
+      const filtered = subsidiaries.filter(
+        (s) =>
+          lowerCaseText.includes(s.name.toLowerCase()) ||
+          lowerCaseText.includes(s.location.toLowerCase())
       );
       setFilteredSubsidiaries(filtered);
     } else {
@@ -103,7 +117,7 @@ export default function SubsidiariesPage() {
           <SearchBar
             items={subsidiariesSearchList}
             onSearch={searchSubsidiary}
-            onItemClicked={searchSubsidiary}
+            onItemClicked={selectSubsidiarySearch}
           />
         </div>
         <div className="md:hidden flex flex-row justify-between w-full">
