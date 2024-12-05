@@ -1,5 +1,0 @@
-compose.env renombrar a .env y meterlo en /infrastructure
-la variable "context" del compose.env debe ser un pwd a la altura del repositorio
-
-dbsettingsProductManagement.json meterlo en /infrastructure/environments/product-management -> renombrar luego el archivo a dbsettings.json
-dbsettingsUserManagement.json meterlo en /infrastructure/environments/user-management  -> renombrar luego el archivo a dbsettings.json

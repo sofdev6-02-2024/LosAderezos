@@ -1,6 +1,9 @@
 # Compose configuration
 .env
 
-# Product Management DB configuration
+# DB configuration
 dbsettings.json
 acme.json
+
+# Grafana configuration
+grafana.ini
