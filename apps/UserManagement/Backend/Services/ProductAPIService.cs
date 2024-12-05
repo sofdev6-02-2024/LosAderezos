@@ -50,7 +50,12 @@ public class ProductAPIService: IProductAPIService
         
         if (jsonContent != null)
         {
-            string companyUrl = $"{_productsApi}Subsidiary/{jsonContent.First().subsidiaryId}";
+            Guid? subId = jsonContent.FirstOrDefault()?.subsidiaryId;
+            if (subId == null)
+            {
+                return null;
+            }
+            string companyUrl = $"{_productsApi}Subsidiary/{subId}";
             HttpResponseMessage companyResponse = await _httpClient.GetAsync(companyUrl);
             companyResponse.EnsureSuccessStatusCode();
             string companyContent = await companyResponse.Content.ReadAsStringAsync();

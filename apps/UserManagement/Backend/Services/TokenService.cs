@@ -36,6 +36,19 @@ public class TokenService: ITokenservice
         var user = _userDao.ReadAll().Where(u => u.Email == sessionPostDto.Email).FirstOrDefault();
         if (user == null)
         {
+            _userDao.Create(new User()
+            {
+                BirthDate = new DateTime(2000, 8, 20),
+                Email = sessionPostDto.Email,
+                Name = string.Empty,
+                PhoneNumber = string.Empty,
+                Rol = string.Empty,
+                UserId = Guid.NewGuid(),
+            });
+        }
+        user = _userDao.ReadAll().Where(u => u.Email == sessionPostDto.Email).FirstOrDefault();
+        if (user == null)
+        {
             return null;
         }
         var token = _mapper.Map<SessionToken>((sessionPostDto.Token, user.UserId, DateTime.Now));
@@ -72,8 +85,8 @@ public class TokenService: ITokenservice
         }
             
 
-        string? companyId = _productApiService.GetCompanyIdByUserId(user.UserId).Result.ToString();
-        
+        string? companyId = _productApiService.GetCompanyIdByUserId(user.UserId).Result?.ToString();
+
         var claims = new[]
         {
             new Claim("userId", user.UserId.ToString()),
@@ -85,8 +98,9 @@ public class TokenService: ITokenservice
             new Claim("Token", session.Token),
             new Claim("subsidiaryId", subsString),
             new Claim("companyId", companyId ?? string.Empty)
-    };
-        Console.WriteLine(claims);
+        };
+
+        
 
         var tokenDescriptor = new SecurityTokenDescriptor
         {
