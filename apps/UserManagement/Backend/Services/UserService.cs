@@ -4,6 +4,7 @@ using Backend.DTOs.WithoutID;
 using Backend.Entities;
 using Backend.Services.ServiceInterfaces;
 using DB;
+using Mysqlx.Datatypes;
 
 namespace Backend.Services;
 
@@ -53,6 +54,10 @@ public class UserService : IUserService
 
     public UserDTO? CreateUser(UserWithoutIdDTO user)
     {
+        if (_userDao.ReadAll().Any(u => user.Email == u.Email))
+        {
+            return null;
+        }
         Guid id = Guid.NewGuid();
         _userDao.Create(_mapper.Map<User>((user, id)));
         return _mapper.Map<UserDTO>(_userDao.Read(id));
