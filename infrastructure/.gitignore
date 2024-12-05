@@ -7,3 +7,6 @@ acme.json
 
 # Grafana configuration
 grafana.ini
+
+# Grafana datasource
+influx.yaml

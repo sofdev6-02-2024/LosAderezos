@@ -124,3 +124,5 @@ services:
     container_name: Grafana
     volumes:
       - ./environments/grafana/grafana.ini:/etc/grafana/grafana.ini
+      - ./environments/grafana/provisioning/:/etc/grafana/provisioning
+      - ./environments/grafana/dashboards/:/etc/dashboards/
