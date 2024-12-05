@@ -40,9 +40,9 @@ public class TokenService: ITokenservice
             {
                 BirthDate = new DateTime(2000, 8, 20),
                 Email = sessionPostDto.Email,
-                Name = string.Empty,
+                Name = "usuario nuevo",
                 PhoneNumber = string.Empty,
-                Rol = string.Empty,
+                Rol = "default",
                 UserId = Guid.NewGuid(),
             });
         }
