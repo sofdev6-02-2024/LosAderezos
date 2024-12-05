@@ -123,4 +123,4 @@ services:
     image: grafana/grafana:11.3.2
     container_name: Grafana
     volumes:
-      - ./grafana-config/grafana.ini:/etc/grafana/grafana.ini
+      - ./environments/grafana/grafana.ini:/etc/grafana/grafana.ini
