@@ -65,7 +65,7 @@ public sealed class CompanyDAO : SingleDAO<Company>, ICompanyDAO
             .Append(" Set Name = '").Append(companyNameC).Append("', ")
             .Append(" UserId = '").Append(companyUserIdC).Append("' ")
             .Append(" WHERE Id = '").Append(companyIdC).Append("';");
-        
+        _mySqlReader?.Close();
         return _sb;
     }
 }
