@@ -307,6 +307,95 @@
       "pluginVersion": "11.3.2",
       "targets": [
         {
+          "query": "from(bucket: \"REPORTS\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"ProductInput\")\n  |> filter(fn: (r) => r[\"_field\"] == \"Quantity\")\n  |> filter(fn: (r) => r[\"SubsidiaryId\"] == \"87c28dd0-c12b-482a-b0e2-548a7021668b\")\n  |> filter(fn: (r) => r[\"UserEmail\"] == \"mayerlisantander0@gmail.com\")\n  |> group(columns: [\"Code\"])\n  |> aggregateWindow(every: 24h, fn: sum, createEmpty: false)\n  |> yield(name: \"sum\")",
+          "refId": "A"
+        }
+      ],
+      "title": "Evolución de entradas en el tiempo",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "P3C6603E967DC8568"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": true,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 14,
+        "w": 24,
+        "x": 0,
+        "y": 41
+      },
+      "id": 8,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "11.3.2",
+      "targets": [
+        {
           "query": "from(bucket: \"REPORTS\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"ProductOutput\")\n  |> filter(fn: (r) => r[\"_field\"] == \"Quantity\")\n  |> filter(fn: (r) => r[\"SubsidiaryId\"] == \"87c28dd0-c12b-482a-b0e2-548a7021668b\")\n  |> filter(fn: (r) => r[\"UserEmail\"] == \"mayerlisantander0@gmail.com\")\n  |> group(columns: [\"Code\"])\n  |> aggregateWindow(every: 24h, fn: sum, createEmpty: false)\n  |> yield(name: \"sum\")",
           "refId": "A"
         }
@@ -362,7 +451,7 @@
         "h": 14,
         "w": 24,
         "x": 0,
-        "y": 41
+        "y": 55
       },
       "id": 4,
       "options": {
@@ -463,7 +552,7 @@
         "h": 12,
         "w": 24,
         "x": 0,
-        "y": 55
+        "y": 69
       },
       "id": 5,
       "options": {
@@ -525,8 +614,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "dark-red",
-                "value": null
+                "color": "dark-red"
               },
               {
                 "color": "green",
@@ -541,7 +629,7 @@
         "h": 12,
         "w": 24,
         "x": 0,
-        "y": 67
+        "y": 81
       },
       "id": 6,
       "options": {
@@ -635,8 +723,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "dark-red",
-                "value": null
+                "color": "dark-red"
               },
               {
                 "color": "green",
@@ -651,7 +738,7 @@
         "h": 12,
         "w": 24,
         "x": 0,
-        "y": 79
+        "y": 93
       },
       "id": 7,
       "options": {
@@ -700,6 +787,6 @@
   "timezone": "browser",
   "title": "reports",
   "uid": "ee60jn91cm7lsc",
-  "version": 24,
+  "version": 26,
   "weekStart": ""
 }
