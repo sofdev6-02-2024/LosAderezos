@@ -8,10 +8,6 @@ import { useNavigate } from "react-router-dom";
 import { useUser } from "../hooks/UserUser";
 
 function StoreMenu() {
-  const handleButtonClick = (label) => {
-    alert(`${label} clicked!`);
-  };
-
   const navigate = useNavigate();
   const { user } = useUser();
 
@@ -27,7 +23,7 @@ function StoreMenu() {
           <CardButton
             icon={CgLoadbarDoc}
             label="Reportes"
-            onClick={() => handleButtonClick("Reportes")}
+            onClick={() => navigate("/new-report")}
           />
         </div>
 

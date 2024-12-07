@@ -15,6 +15,8 @@ import EditUserPage from "./pages/EditUserPage";
 import SubsidiariesPage from "./pages/SubsidiariesPage";
 import EditSubsidiaryPage from "./pages/EditSubsidiaryPage";
 import AddSubsidiaryPage from "./pages/AddSubsidiaryPage";
+import ReportPage from "./pages/ReportPage";
+import NewReport from "./pages/NewReport";
 
 function App() {
   return (
@@ -36,6 +38,8 @@ function App() {
         <Route path="/in-products" element={<InProductPage />} />
         <Route path="/out-products" element={<OutProductPage />} />
         <Route path="/my-user" element={<EditUserPage />} />
+        <Route path="/new-report" element={<NewReport />} />
+        <Route path="/reports" element={<ReportPage />} />
       </Route>
     </Routes>
   );

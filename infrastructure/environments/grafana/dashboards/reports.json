@@ -116,7 +116,7 @@
       "pluginVersion": "11.3.2",
       "targets": [
         {
-          "query": "from(bucket: \"REPORTS\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"ProductInput\")\n  |> filter(fn: (r) => r[\"SubsidiaryId\"] == \"87c28dd0-c12b-482a-b0e2-548a7021668b\")\n  |> filter(fn: (r) => r[\"UserEmail\"] == \"mayerlisantander0@gmail.com\")\n  |> group(columns: [\"Code\",\"SubsidiaryId\"])\n  |> aggregateWindow(every: 1y, fn: sum, createEmpty: false)\n  |> yield(name: \"sum\")",
+          "query": "from(bucket: \"REPORTS\")\n  |> range(start: time(v: \"${startDate}\"), stop: time(v: \"${endDate}\"))\n  |> filter(fn: (r) => r[\"_measurement\"] == \"ProductInput\")\n  |> group(columns: [\"Code\",\"SubsidiaryId\"])\n  |> aggregateWindow(every: 1y, fn: sum, createEmpty: false)\n  |> yield(name: \"sum\")",
           "refId": "A"
         }
       ],
@@ -218,7 +218,7 @@
       "pluginVersion": "11.3.2",
       "targets": [
         {
-          "query": "from(bucket: \"REPORTS\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"ProductOutput\")\n  |> filter(fn: (r) => r[\"SubsidiaryId\"] == \"87c28dd0-c12b-482a-b0e2-548a7021668b\")\n  |> filter(fn: (r) => r[\"UserEmail\"] == \"mayerlisantander0@gmail.com\")\n  |> group(columns: [\"Code\",\"SubsidiaryId\"])\n  |> aggregateWindow(every: 1y, fn: sum, createEmpty: false)\n  |> yield(name: \"sum\")",
+          "query": "from(bucket: \"REPORTS\")\n  |> range(start: time(v: \"${startDate}\"), stop: time(v: \"${endDate}\"))\n  |> filter(fn: (r) => r[\"_measurement\"] == \"ProductOutput\")\n  |> group(columns: [\"Code\",\"SubsidiaryId\"])\n  |> aggregateWindow(every: 1y, fn: sum, createEmpty: false)\n  |> yield(name: \"sum\")",
           "refId": "A"
         }
       ],
@@ -307,7 +307,7 @@
       "pluginVersion": "11.3.2",
       "targets": [
         {
-          "query": "from(bucket: \"REPORTS\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"ProductInput\")\n  |> filter(fn: (r) => r[\"_field\"] == \"Quantity\")\n  |> filter(fn: (r) => r[\"SubsidiaryId\"] == \"87c28dd0-c12b-482a-b0e2-548a7021668b\")\n  |> filter(fn: (r) => r[\"UserEmail\"] == \"mayerlisantander0@gmail.com\")\n  |> group(columns: [\"Code\"])\n  |> aggregateWindow(every: 24h, fn: sum, createEmpty: false)\n  |> yield(name: \"sum\")",
+          "query": "from(bucket: \"REPORTS\")\n  |> range(start: time(v: \"${startDate}\"), stop: time(v: \"${endDate}\"))\n  |> filter(fn: (r) => r[\"_measurement\"] == \"ProductInput\")\n  |> filter(fn: (r) => r[\"_field\"] == \"Quantity\")\n  |> group(columns: [\"Code\"])\n  |> aggregateWindow(every: 24h, fn: sum, createEmpty: false)\n  |> yield(name: \"sum\")",
           "refId": "A"
         }
       ],
@@ -396,7 +396,7 @@
       "pluginVersion": "11.3.2",
       "targets": [
         {
-          "query": "from(bucket: \"REPORTS\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"ProductOutput\")\n  |> filter(fn: (r) => r[\"_field\"] == \"Quantity\")\n  |> filter(fn: (r) => r[\"SubsidiaryId\"] == \"87c28dd0-c12b-482a-b0e2-548a7021668b\")\n  |> filter(fn: (r) => r[\"UserEmail\"] == \"mayerlisantander0@gmail.com\")\n  |> group(columns: [\"Code\"])\n  |> aggregateWindow(every: 24h, fn: sum, createEmpty: false)\n  |> yield(name: \"sum\")",
+          "query": "from(bucket: \"REPORTS\")\n  |> range(start: time(v: \"${startDate}\"), stop: time(v: \"${endDate}\"))\n  |> filter(fn: (r) => r[\"_measurement\"] == \"ProductOutput\")\n  |> filter(fn: (r) => r[\"_field\"] == \"Quantity\")\n  |> group(columns: [\"Code\"])\n  |> aggregateWindow(every: 24h, fn: sum, createEmpty: false)\n  |> yield(name: \"sum\")",
           "refId": "A"
         }
       ],
@@ -481,7 +481,7 @@
       "pluginVersion": "11.3.2",
       "targets": [
         {
-          "query": "from(bucket: \"REPORTS\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"ProductOutput\" or r[\"_measurement\"] == \"ProductInput\")\n  |> filter(fn: (r) => r[\"_field\"] == \"Quantity\")\n  |> filter(fn: (r) => r[\"SubsidiaryId\"] == \"87c28dd0-c12b-482a-b0e2-548a7021668b\")\n  |> filter(fn: (r) => r[\"UserEmail\"] == \"mayerlisantander0@gmail.com\")\n  |> drop(columns: [\"SubsidiaryUbication\",\"UserName\",\"UserPhoneNumber\",\"UserRol\",\"CompanyId\"])\n  |> aggregateWindow(every: 24h, fn: sum, createEmpty: false)\n  |> yield(name: \"sum\")",
+          "query": "from(bucket: \"REPORTS\")\n  |> range(start: time(v: \"${startDate}\"), stop: time(v: \"${endDate}\"))\n  |> filter(fn: (r) => r[\"_measurement\"] == \"ProductOutput\" or r[\"_measurement\"] == \"ProductInput\")\n  |> filter(fn: (r) => r[\"_field\"] == \"Quantity\")\n  |> drop(columns: [\"SubsidiaryUbication\",\"UserName\",\"UserPhoneNumber\",\"UserRol\",\"CompanyId\"])\n  |> aggregateWindow(every: 24h, fn: sum, createEmpty: false)\n  |> yield(name: \"sum\")",
           "refId": "A"
         }
       ],
@@ -570,7 +570,7 @@
       "pluginVersion": "11.3.2",
       "targets": [
         {
-          "query": "from(bucket: \"REPORTS\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"ProductOutput\" or r[\"_measurement\"] == \"ProductInput\")\n  |> filter(fn: (r) => r[\"_field\"] == \"Quantity\")\n  |> filter(fn: (r) => r[\"SubsidiaryId\"] == \"87c28dd0-c12b-482a-b0e2-548a7021668b\")\n  |> filter(fn: (r) => r[\"UserEmail\"] == \"mayerlisantander0@gmail.com\")\n  |> drop(columns: [\"SubsidiaryUbication\",\"UserName\",\"UserPhoneNumber\",\"UserRol\",\"CompanyId\"])\n  |> aggregateWindow(every: 24h, fn: sum, createEmpty: false)\n  |> yield(name: \"sum\")",
+          "query": "from(bucket: \"REPORTS\")\n  |> range(start: time(v: \"${startDate}\"), stop: time(v: \"${endDate}\"))\n  |> filter(fn: (r) => r[\"_measurement\"] == \"ProductOutput\" or r[\"_measurement\"] == \"ProductInput\")\n  |> filter(fn: (r) => r[\"_field\"] == \"Quantity\")\n  |> drop(columns: [\"SubsidiaryUbication\",\"UserName\",\"UserPhoneNumber\",\"UserRol\",\"CompanyId\"])\n  |> aggregateWindow(every: 24h, fn: sum, createEmpty: false)\n  |> yield(name: \"sum\")",
           "refId": "A"
         }
       ],
@@ -614,7 +614,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "dark-red"
+                "color": "dark-red",
+                "value": null
               },
               {
                 "color": "green",
@@ -659,7 +660,7 @@
       "pluginVersion": "11.3.2",
       "targets": [
         {
-          "query": "from(bucket: \"REPORTS\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"ProductInput\")\n  |> filter(fn: (r) => r[\"_field\"] == \"IncomePrice\")\n  |> aggregateWindow(every: 24h, fn: sum, createEmpty: false)\n  |> yield(name: \"last\")\n  |> map(fn: (r) => ({ r with _value: r._value * -1.0}))\n \n",
+          "query": "from(bucket: \"REPORTS\")\n  |> range(start: time(v: \"${startDate}\"), stop: time(v: \"${endDate}\"))\n  |> filter(fn: (r) => r[\"_measurement\"] == \"ProductInput\")\n  |> filter(fn: (r) => r[\"_field\"] == \"IncomePrice\")\n  |> aggregateWindow(every: 24h, fn: sum, createEmpty: false)\n  |> yield(name: \"last\")\n  |> map(fn: (r) => ({ r with _value: r._value * -1.0}))\n \n",
           "refId": "A"
         },
         {
@@ -723,7 +724,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "dark-red"
+                "color": "dark-red",
+                "value": null
               },
               {
                 "color": "green",
@@ -756,7 +758,7 @@
       "pluginVersion": "11.3.2",
       "targets": [
         {
-          "query": "from(bucket: \"REPORTS\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"ProductInput\")\n  |> filter(fn: (r) => r[\"_field\"] == \"IncomePrice\")\n  |> aggregateWindow(every: 24h, fn: sum, createEmpty: false)\n  |> yield(name: \"last\")\n  |> map(fn: (r) => ({ r with _value: r._value * -1.0}))\n \n",
+          "query": "from(bucket: \"REPORTS\")\n  |> range(start: time(v: \"${startDate}\"), stop: time(v: \"${endDate}\"))\n  |> filter(fn: (r) => r[\"_measurement\"] == \"ProductInput\")\n  |> filter(fn: (r) => r[\"_field\"] == \"IncomePrice\")\n  |> aggregateWindow(every: 24h, fn: sum, createEmpty: false)\n  |> yield(name: \"last\")\n  |> map(fn: (r) => ({ r with _value: r._value * -1.0}))\n \n",
           "refId": "A"
         },
         {
@@ -777,7 +779,30 @@
   "schemaVersion": 40,
   "tags": [],
   "templating": {
-    "list": []
+    "list": [
+      {
+        "current": {
+          "text": "2024-11-07",
+          "value": "2024-11-07"
+        },
+        "label": "Start Date",
+        "name": "startDate",
+        "options": [],
+        "query": "",
+        "type": "custom"
+      },
+      {
+        "current": {
+          "text": "2024-12-07",
+          "value": "2024-12-07"
+        },
+        "label": "End Date",
+        "name": "endDate",
+        "options": [],
+        "query": "",
+        "type": "custom"
+      }
+    ]
   },
   "time": {
     "from": "now-30d",
@@ -787,6 +812,6 @@
   "timezone": "browser",
   "title": "reports",
   "uid": "ee60jn91cm7lsc",
-  "version": 26,
+  "version": 10,
   "weekStart": ""
 }
