@@ -10,4 +10,5 @@ public interface ITokenservice
     public UserFullInfoDTO RefreshToken(TokenWithoutIdDTO oldToken);
     public UserFullInfoDTO? GetTokenUser(Guid userId);
     public bool IsTokenValid(ValidateTokenDTO token);
+    public bool UserBelongsToCompany(Guid userId);
 }

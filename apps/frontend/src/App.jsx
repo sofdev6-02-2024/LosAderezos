@@ -15,6 +15,7 @@ import EditUserPage from "./pages/EditUserPage";
 import SubsidiariesPage from "./pages/SubsidiariesPage";
 import EditSubsidiaryPage from "./pages/EditSubsidiaryPage";
 import AddSubsidiaryPage from "./pages/AddSubsidiaryPage";
+import NoCompanyPage from "./pages/NoCompanyPage";
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
       <Route path='/' element={<Login />} />
       <Route element={<AppLayout />}>
         <Route path="/store-menu" element={<StoreMenu />} />
+        <Route path="/landing-page" element={<NoCompanyPage />} />
         <Route path="/products" element={<ProductsPage />} />
         <Route path="/products/:id" element={<SingleProductPage />} />
         <Route path="/add-product" element={<AddProductPage />} />

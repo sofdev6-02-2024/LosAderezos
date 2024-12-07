@@ -7,7 +7,7 @@ namespace Backend.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-public class TokenController : ControllerBase 
+public class TokenController : ControllerBase
 {
     private readonly ITokenservice _tokenService;
 
@@ -29,7 +29,17 @@ public class TokenController : ControllerBase
         var result = _tokenService.GetCookie(userId);
         if (!result)
             return Redirect("http://localhost:5173/");
-        return Redirect("http://localhost:5173/store-menu");
+
+        var isInCompany = _tokenService.UserBelongsToCompany(userId);
+
+        if (isInCompany)
+        {
+            return Redirect("http://localhost:5173/store-menu");
+        }
+        else
+        {
+            return Redirect("http://localhost:5173/landing-page");
+        }
     }
 
     [HttpPost("RefreshToken")]
