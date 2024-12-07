@@ -161,10 +161,4 @@ public class TokenService: ITokenservice
         }
         return DateTime.Now - userToken.Time  < ExpirationTime && userToken.Token == token.Token;
     }
-    
-    public bool UserBelongsToCompany(Guid userId)
-    {
-        string? companyId = _productApiService.GetCompanyIdByUserId(userId).Result?.ToString();
-        return !string.IsNullOrEmpty(companyId);
-    }
 }
