@@ -6,11 +6,18 @@ import InOutProduct from "../components/InOutProduct";
 import { IoMdAdd } from "react-icons/io";
 import { MdOutlineCancel } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
-import { getProductByCode, getProducts, updateStocks } from "../services/ProductService";
+import {
+  getProductByCode,
+  getProducts,
+  getSubsidiaryById,
+  updateStocks,
+} from "../services/ProductService";
 import { useUser } from "../hooks/UserUser";
+import { newOut } from "../services/ReportService";
 
 export default function OutProductPage() {
   const [products, setProducts] = useState([]);
+  const [subsidiary, setSubsidiary] = useState(null);
   const [productsSearchList, setProductsSearchList] = useState([]);
   const [total, setTotal] = useState(0);
   const navigate = useNavigate();
@@ -27,11 +34,13 @@ export default function OutProductPage() {
   useEffect(() => {
     async function fetchProducts() {
       try {
+        const fetchedSubsidiary = await getSubsidiaryById(user.subsidiaryId);
         const fetchedProducts = await getProducts(user.subsidiaryId);
         const formattedList = fetchedProducts.map(
           (p) => `${p.name} - (${p.productCode})`
         );
         setProductsSearchList(formattedList);
+        setSubsidiary(fetchedSubsidiary);
       } catch (error) {
         console.error("Error al obtener productos", error);
       }
@@ -104,8 +113,26 @@ export default function OutProductPage() {
         subsidiaryId: p.subsidiaryId,
       };
     });
+
+    const outputs = products.map((p) => {
+      return {
+        time: new Date(),
+        quantity: p.quantity,
+        sellingPrice: p.sellPrice,
+        productName: p.name,
+        code: p.productCode,
+        companyId: user.companyId,
+        subsidiaryId: user.subsidiaryId,
+        subsidiaryUbication: subsidiary.location,
+        userEmail: user.UserEmail,
+        userName: user.UserName,
+        userRol: user.UserRol,
+        userPhoneNumber: user.UserPhoneNumber,
+      };
+    });
     try {
       await updateStocks(stocks);
+      await newOut(outputs);
     } catch (error) {
       console.error("Eror al intentar actualizar stock", error);
     }
