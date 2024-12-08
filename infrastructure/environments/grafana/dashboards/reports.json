@@ -684,41 +684,17 @@
       "fieldConfig": {
         "defaults": {
           "color": {
-            "mode": "palette-classic"
+            "mode": "thresholds"
           },
           "custom": {
-            "axisBorderShow": false,
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "barWidthFactor": 0.6,
-            "drawStyle": "line",
-            "fillOpacity": 0,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto",
+              "wrapText": false
             },
-            "insertNulls": false,
-            "lineInterpolation": "linear",
-            "lineWidth": 1,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "auto",
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
+            "inspect": false
           },
+          "fieldMinMax": false,
           "mappings": [],
           "thresholds": {
             "mode": "absolute",
@@ -744,35 +720,229 @@
       },
       "id": 7,
       "options": {
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom",
-          "showLegend": true
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "enablePagination": false,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
         },
-        "tooltip": {
-          "mode": "single",
-          "sort": "none"
-        }
+        "frameIndex": 1,
+        "showHeader": true
       },
       "pluginVersion": "11.3.2",
       "targets": [
         {
-          "query": "from(bucket: \"REPORTS\")\n  |> range(start: time(v: \"${startDate}\"), stop: time(v: \"${endDate}\"))\n  |> filter(fn: (r) => r[\"_measurement\"] == \"ProductInput\")\n  |> filter(fn: (r) => r[\"_field\"] == \"IncomePrice\")\n  |> aggregateWindow(every: 24h, fn: sum, createEmpty: false)\n  |> yield(name: \"last\")\n  |> map(fn: (r) => ({ r with _value: r._value * -1.0}))\n \n",
+          "query": "from(bucket: \"REPORTS\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"ProductInput\")\n  |> filter(fn: (r) => r[\"_field\"] == \"Quantity\")\n  |> drop(columns: [\"CompanyId\", \"SubsidiaryUbication\"])\n  |> group(columns: [\"Code\",\"UserEmail\"], mode:\"by\")  \n  |> aggregateWindow(every: 24h, fn: sum, createEmpty: false)\n  |> yield(name: \"sum\")",
           "refId": "A"
-        },
-        {
-          "datasource": {
-            "type": "influxdb",
-            "uid": "P3C6603E967DC8568"
-          },
-          "hide": false,
-          "query": " from(bucket: \"REPORTS\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"ProductOutput\")\n  |> filter(fn: (r) => r[\"_field\"] == \"SellingPrice\")\n  |> aggregateWindow(every: 24h, fn: sum, createEmpty: false)\n  |> yield(name: \"last\")",
-          "refId": "B"
         }
       ],
-      "title": "Beneficio/Pérdida de productos",
-      "type": "timeseries"
+      "title": "Tabla entrada de productos",
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "P3C6603E967DC8568"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto",
+              "wrapText": false
+            },
+            "inspect": false
+          },
+          "fieldMinMax": false,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "dark-red",
+                "value": null
+              },
+              {
+                "color": "green",
+                "value": 0
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 12,
+        "w": 24,
+        "x": 0,
+        "y": 105
+      },
+      "id": 9,
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "enablePagination": false,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "frameIndex": 0,
+        "showHeader": true
+      },
+      "pluginVersion": "11.3.2",
+      "targets": [
+        {
+          "query": "from(bucket: \"REPORTS\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"ProductOutput\")\n  |> filter(fn: (r) => r[\"_field\"] == \"Quantity\")\n  |> drop(columns: [\"CompanyId\", \"SubsidiaryUbication\"])\n  |> group(columns: [\"Code\",\"UserEmail\"], mode:\"by\")  \n  |> aggregateWindow(every: 24h, fn: sum, createEmpty: false)\n  |> yield(name: \"sum\")",
+          "refId": "A"
+        }
+      ],
+      "title": "Tabla salida de productos",
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "P3C6603E967DC8568"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto",
+              "wrapText": false
+            },
+            "inspect": false
+          },
+          "fieldMinMax": false,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "dark-red",
+                "value": null
+              },
+              {
+                "color": "green",
+                "value": 0
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 12,
+        "w": 24,
+        "x": 0,
+        "y": 117
+      },
+      "id": 10,
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "enablePagination": false,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "frameIndex": 0,
+        "showHeader": true
+      },
+      "pluginVersion": "11.3.2",
+      "targets": [
+        {
+          "query": "from(bucket: \"REPORTS\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"ProductOutput\")\n  |> filter(fn: (r) => r[\"_field\"] == \"SellingPrice\")\n  |> drop(columns: [\"CompanyId\", \"SubsidiaryUbication\"])\n  |> group(columns: [\"Code\",\"UserEmail\"], mode:\"by\")  \n  |> aggregateWindow(every: 24h, fn: sum, createEmpty: false)\n  |> yield(name: \"sum\")",
+          "refId": "A"
+        }
+      ],
+      "title": "Tabla beneficio de productos",
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "P3C6603E967DC8568"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto",
+              "wrapText": false
+            },
+            "inspect": false
+          },
+          "fieldMinMax": false,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "dark-red",
+                "value": null
+              },
+              {
+                "color": "green",
+                "value": 0
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 12,
+        "w": 24,
+        "x": 0,
+        "y": 129
+      },
+      "id": 11,
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "enablePagination": false,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "frameIndex": 0,
+        "showHeader": true
+      },
+      "pluginVersion": "11.3.2",
+      "targets": [
+        {
+          "query": "from(bucket: \"REPORTS\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"ProductInput\")\n  |> filter(fn: (r) => r[\"_field\"] == \"IncomePrice\")\n  |> drop(columns: [\"CompanyId\", \"SubsidiaryUbication\"])\n  |> group(columns: [\"Code\",\"UserEmail\"], mode:\"by\")  \n  |> aggregateWindow(every: 24h, fn: sum, createEmpty: false)\n  |> yield(name: \"sum\")",
+          "refId": "A"
+        }
+      ],
+      "title": "Tabla pérdida de productos",
+      "type": "table"
     }
   ],
   "preload": false,
@@ -782,8 +952,8 @@
     "list": [
       {
         "current": {
-          "text": "2024-11-07",
-          "value": "2024-11-07"
+          "text": "",
+          "value": ""
         },
         "label": "Start Date",
         "name": "startDate",
@@ -793,8 +963,8 @@
       },
       {
         "current": {
-          "text": "2024-12-07",
-          "value": "2024-12-07"
+          "text": "",
+          "value": ""
         },
         "label": "End Date",
         "name": "endDate",
@@ -812,6 +982,6 @@
   "timezone": "browser",
   "title": "reports",
   "uid": "ee60jn91cm7lsc",
-  "version": 10,
+  "version": 7,
   "weekStart": ""
 }
