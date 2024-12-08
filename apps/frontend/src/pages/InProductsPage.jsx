@@ -6,12 +6,19 @@ import InOutProduct from "../components/InOutProduct";
 import { IoMdAdd } from "react-icons/io";
 import { MdOutlineCancel } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
-import { getProductByCode, getProducts, updateStocks } from "../services/ProductService";
+import {
+  getProductByCode,
+  getProducts,
+  getSubsidiaryById,
+  updateStocks,
+} from "../services/ProductService";
 import { useUser } from "../hooks/UserUser";
+import { newIn } from "../services/ReportService";
 
 export default function InProductPage() {
   const [products, setProducts] = useState([]);
   const [total, setTotal] = useState(0);
+  const [subsidiary, setSubsidiary] = useState(null);
   const [productsSearchList, setProductsSearchList] = useState([]);
   const navigate = useNavigate();
   const { user } = useUser();
@@ -27,11 +34,13 @@ export default function InProductPage() {
   useEffect(() => {
     async function fetchProducts() {
       try {
+        const fetchedSubsidiary = await getSubsidiaryById(user.subsidiaryId);
         const fetchedProducts = await getProducts(user.subsidiaryId);
         const formattedList = fetchedProducts.map(
           (p) => `${p.name} - (${p.productCode})`
         );
         setProductsSearchList(formattedList);
+        setSubsidiary(fetchedSubsidiary);
       } catch (error) {
         console.error("Error al obtener productos", error);
       }
@@ -42,9 +51,7 @@ export default function InProductPage() {
   const onSearch = (code) => {
     if (!code) return;
 
-    const product = productsSearchList.find((item) =>
-      item.includes(code)
-    );
+    const product = productsSearchList.find((item) => item.includes(code));
 
     if (product) {
       const productCode = product.match(/\(([^)]+)\)/)[1];
@@ -104,8 +111,27 @@ export default function InProductPage() {
         subsidiaryId: p.subsidiaryId,
       };
     });
+
+    const inputs = products.map((p) => {
+      return {
+        time: new Date(),
+        quantity: p.quantity,
+        sellingPrice: p.incomingPrice,
+        productName: p.name,
+        code: p.productCode,
+        companyId: user.companyId,
+        subsidiaryId: user.subsidiaryId,
+        subsidiaryUbication: subsidiary.location,
+        userEmail: user.UserEmail,
+        userName: user.UserName,
+        userRol: user.UserRol,
+        userPhoneNumber: user.UserPhoneNumber,
+      };
+    });
+
     try {
       await updateStocks(stocks);
+      await newIn(inputs);
     } catch (error) {
       console.error("Eror al intentar actualizar stock", error);
     }
