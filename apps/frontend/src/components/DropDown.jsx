@@ -25,7 +25,7 @@ export default function DropDown({
   return (
     <div
       className={`relative ${
-        isOpen ? "rounded-t-[8px]" : "rounded-[8px]"
+        isOpen ? "rounded-t-[8px] border-t-2 border-neutral-200 z-50" : "border-2 border-neutral-200 rounded-[8px]"
       } py-[10px] inline-block w-2/3 bg-white items-center`}
     >
       <span className="flex justify-between px-[10px]">
@@ -54,7 +54,7 @@ export default function DropDown({
       </span>
 
       {isOpen && data && (
-        <div className="w-full bg-white absolute items-center px-[10px] shadow-lg rounded-b-[8px] pb-[10px]">
+        <div className="w-full bg-white absolute items-center px-[10px] shadow-lg border-b-2 border-neutral-200 rounded-b-[8px] pb-[10px]">
           {data.map((option, index) => (
             <Button
               key={index}
