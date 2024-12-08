@@ -14,33 +14,45 @@ function ReportPage() {
     switch (type) {
       case "Entradas":
         return (
-          <>
-            <iframe
-              src={`${baseURL}${iframeParams}&panelId=1`}
+          <div className="flex flex-col w-full space-y-3">
+            <div className="flex flex-col w-full lg:flex-row space-x-0 space-y-3 lg:space-y-0 lg:space-x-3">
+              <iframe
+                src={`${baseURL}${iframeParams}&panelId=1`}
+                className="w-full h-[400px]"
+              />
+              <iframe
+                src={`${baseURL}${iframeParams}&panelId=3`}
+                className="w-full h-[400px]"
+              />
+            </div>
+            <iframe 
+              src={`${baseURL}${iframeParams}&panelId=7`}
               className="w-full h-[400px]"
             />
-            <iframe
-              src={`${baseURL}${iframeParams}&panelId=3`}
-              className="w-full h-[400px]"
-            />
-          </>
+          </div>
         );
       case "Salidas":
         return (
-          <>
-            <iframe
-              src={`${baseURL}${iframeParams}&panelId=2`}
+          <div className="flex flex-col w-full space-y-3">
+            <div className="flex flex-col w-full lg:flex-row space-x-0 space-y-3 lg:space-y-0 lg:space-x-3">
+              <iframe
+                src={`${baseURL}${iframeParams}&panelId=2`}
+                className="w-full h-[400px]"
+              />
+              <iframe
+                src={`${baseURL}${iframeParams}&panelId=8`}
+                className="w-full h-[400px]"
+              />
+            </div>
+            <iframe 
+              src={`${baseURL}${iframeParams}}&panelId=9`}
               className="w-full h-[400px]"
             />
-            <iframe
-              src={`${baseURL}${iframeParams}&panelId=8`}
-              className="w-full h-[400px]"
-            />
-          </>
+          </div>
         );
       case "Entradas/Salidas":
         return (
-          <>
+          <div className="flex flex-col w-full lg:flex-row space-x-0 space-y-3 lg:space-y-0 lg:space-x-3">
             <iframe
               src={`${baseURL}${iframeParams}&panelId=4`}
               className="w-full h-[400px]"
@@ -49,20 +61,30 @@ function ReportPage() {
               src={`${baseURL}${iframeParams}&panelId=5`}
               className="w-full h-[400px]"
             />
-          </>
+          </div>
         );
       case "Ganancias/Perdidas":
         return (
-          <>
-            <iframe
-              src={`${baseURL}${iframeParams}&panelId=6`}
-              className="w-full h-[400px]"
-            />
-            <iframe
-              src={`${baseURL}${iframeParams}&panelId=7`}
-              className="w-full h-[400px]"
-            />
-          </>
+          <div className="flex flex-col w-full space-y-3">
+            <div className="flex flex-col w-full lg:flex-row space-x-0 space-y-3 lg:space-y-0 lg:space-x-3">
+              <iframe
+                src={`${baseURL}${iframeParams}&panelId=6`}
+                className="w-full h-[400px]"
+              />
+              <iframe
+                src={`${baseURL}${iframeParams}&panelId=12`}
+                className="w-full h-[400px]"
+              />
+            </div>
+            <div className="flex flex-col w-full lg:flex-row space-x-0 space-y-3 lg:space-y-0 lg:space-x-3">
+              <iframe src={`${baseURL}${iframeParams}&panelId=10`}
+                className="w-full h-[400px]"
+              />
+              <iframe src={`${baseURL}${iframeParams}&panelId=11`}
+                className="w-full h-[400px]"
+              />
+            </div>
+          </div>
         );
       default:
         return <p className="text-red-500">Tipo de reporte no válido</p>;
@@ -70,12 +92,10 @@ function ReportPage() {
   };
 
   return (
-    <div className="flex flex-col space-y-5 py-10 w-full items-center font-roboto">
+    <div className="flex flex-col space-y-5 py-10 w-full justify-center items-center font-roboto">
       <p className="font-roboto font-bold text-[24px]">Reporte</p>
-      <div className="flex flex-col items-center justify-center w-full space-y-4">
-        <div className="flex flex-col lg:flex-row items-center justify-between w-4/5 space-y-4 lg:space-x-4">
-          {renderIframes()}
-        </div>
+      <div className="flex flex-col w-4/5 justify-center items-center">
+        {renderIframes()}
       </div>
     </div>
   );

@@ -42,7 +42,7 @@ function NewReport() {
         initialValues={{
           startDate: "",
           endDate: "",
-          type: "",
+          type: "Tipo",
         }}
         validationSchema={ReportSchema}
         onSubmit={handleSubmit}
@@ -51,7 +51,7 @@ function NewReport() {
           <Form className="flex flex-col gap-4 w-full max-w-lg mx-auto p-6">
             <InputField
               id="startDate"
-              label="Fecha de inicio (DD/MM/AAAA)"
+              label="Fecha de inicio"
               name="startDate"
               placeholder="Ingrese la fecha"
               type="date"
@@ -64,7 +64,7 @@ function NewReport() {
 
             <InputField
               id="endDate"
-              label="Fecha de final (DD/MM/AAAA)"
+              label="Fecha de final"
               name="endDate"
               placeholder="Ingrese la fecha"
               type="date"

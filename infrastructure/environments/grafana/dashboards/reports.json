@@ -684,6 +684,95 @@
       "fieldConfig": {
         "defaults": {
           "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 93
+      },
+      "id": 12,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "11.3.2",
+      "targets": [
+        {
+          "query": "from(bucket: \"REPORTS\")\n  |> range(start: time(v: \"${startDate}\"), stop: time(v: \"${endDate}\"))\n  |> filter(fn: (r) => r[\"_measurement\"] == \"ProductInput\")\n  |> filter(fn: (r) => r[\"_field\"] == \"IncomePrice\")\n  |> aggregateWindow(every: 24h, fn: sum, createEmpty: false)\n  |> yield(name: \"last\")\n  |> map(fn: (r) => ({ r with _value: r._value * -1.0}))",
+          "refId": "A"
+        }
+      ],
+      "title": "Beneficios/Perdidas de productos",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "P3C6603E967DC8568"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
             "mode": "thresholds"
           },
           "custom": {
@@ -716,7 +805,7 @@
         "h": 12,
         "w": 24,
         "x": 0,
-        "y": 93
+        "y": 101
       },
       "id": 7,
       "options": {
@@ -783,7 +872,7 @@
         "h": 12,
         "w": 24,
         "x": 0,
-        "y": 105
+        "y": 113
       },
       "id": 9,
       "options": {
@@ -834,8 +923,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "dark-red",
-                "value": null
+                "color": "dark-red"
               },
               {
                 "color": "green",
@@ -850,7 +938,7 @@
         "h": 12,
         "w": 24,
         "x": 0,
-        "y": 117
+        "y": 125
       },
       "id": 10,
       "options": {
@@ -901,8 +989,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "dark-red",
-                "value": null
+                "color": "dark-red"
               },
               {
                 "color": "green",
@@ -917,7 +1004,7 @@
         "h": 12,
         "w": 24,
         "x": 0,
-        "y": 129
+        "y": 137
       },
       "id": 11,
       "options": {
@@ -952,8 +1039,8 @@
     "list": [
       {
         "current": {
-          "text": "",
-          "value": ""
+          "text": "2024-11-07",
+          "value": "2024-11-07"
         },
         "label": "Start Date",
         "name": "startDate",
@@ -963,8 +1050,8 @@
       },
       {
         "current": {
-          "text": "",
-          "value": ""
+          "text": "2024-12-07",
+          "value": "2024-12-07"
         },
         "label": "End Date",
         "name": "endDate",
@@ -982,6 +1069,6 @@
   "timezone": "browser",
   "title": "reports",
   "uid": "ee60jn91cm7lsc",
-  "version": 7,
+  "version": 3,
   "weekStart": ""
 }
