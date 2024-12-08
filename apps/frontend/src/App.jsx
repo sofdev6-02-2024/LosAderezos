@@ -1,5 +1,4 @@
 import { Routes, Route } from "react-router-dom";
-import StoreMenu from "./pages/StoreMenu";
 import NotFound from "./pages/NotFound";
 import ProductsPage from "./pages/ProductsPage";
 import SingleProductPage from "./pages/SingleProductPage";
@@ -15,6 +14,7 @@ import EditUserPage from "./pages/EditUserPage";
 import SubsidiariesPage from "./pages/SubsidiariesPage";
 import EditSubsidiaryPage from "./pages/EditSubsidiaryPage";
 import AddSubsidiaryPage from "./pages/AddSubsidiaryPage";
+import LandingPage from "./pages/LandingPage";
 
 function App() {
   return (
@@ -22,7 +22,7 @@ function App() {
       <Route path="*" element={<NotFound />} />
       <Route path='/' element={<Login />} />
       <Route element={<AppLayout />}>
-        <Route path="/store-menu" element={<StoreMenu />} />
+        <Route path="/store-menu" element={<LandingPage />} />
         <Route path="/products" element={<ProductsPage />} />
         <Route path="/products/:id" element={<SingleProductPage />} />
         <Route path="/add-product" element={<AddProductPage />} />
