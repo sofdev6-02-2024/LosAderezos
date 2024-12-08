@@ -183,3 +183,16 @@ export async function deleteProduct(productId) {
     );
   }
 }
+
+export async function removeUserFromSubsidiary(user) {
+  try {
+    const response = await productAPI.delete('/SubsidiaryUsers', {
+      data: user
+    });
+    return response.data;
+  } catch (error) {
+    throw new Error(
+      error.response?.data?.message || "Error al eliminar el usuario"
+    );
+  }
+}
