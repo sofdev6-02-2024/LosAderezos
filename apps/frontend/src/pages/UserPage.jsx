@@ -5,7 +5,13 @@ import UserItem from "../components/UserItem";
 import { FaPlus } from "react-icons/fa6";
 import { useNavigate } from "react-router-dom";
 import { useUser } from "../hooks/UserUser";
-import { getUsersBySubsidiaryId, updateUserList } from "../services/UserService";
+import Modal from "../components/Modal";
+import { toast } from "sonner";
+import {
+  getUsersBySubsidiaryId,
+  updateUserList,
+} from "../services/UserService";
+import { removeUserFromSubsidiary } from "../services/ProductService";
 
 export default function UserPage() {
   const { user } = useUser();
@@ -13,15 +19,15 @@ export default function UserPage() {
   const [filteredUsers, setFilteredUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [usersSeachrList, setUsersSeachrList] = useState([]);
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [userToDelete, setUserToDelete] = useState(null);
   const data = ["Administrador de sucursal", "Operador"];
   const navigate = useNavigate();
 
   useEffect(() => {
     async function fetchProducts() {
       try {
-        const fetchedUsers = await getUsersBySubsidiaryId(
-          user.subsidiaryId
-        );
+        const fetchedUsers = await getUsersBySubsidiaryId(user.subsidiaryId);
         const filteredList = fetchedUsers.map(
           (u) => `${u.name} - (${u.email})`
         );
@@ -87,6 +93,31 @@ export default function UserPage() {
     }
   };
 
+  const handleDeleteClick = (userId) => {
+    setIsModalVisible(true);
+    setUserToDelete(userId);
+  };
+
+  const handleConfirmDelete = async () => {
+    const userToRemove = {
+      userId: userToDelete,
+      subsidiaryId: user.subsidiaryId,
+    };
+    try {
+      await removeUserFromSubsidiary(userToRemove);
+      const updatedUsers = users.filter((u) => u.userId !== userToDelete);
+      setUsers(updatedUsers);
+      setFilteredUsers(updatedUsers);
+      const filteredList = updatedUsers.map((u) => `${u.name} - (${u.email})`);
+      setUsersSeachrList(filteredList);
+      setIsModalVisible(false);
+      toast.success("Usuario removido correctamente");
+    } catch (error) {
+      console.error("Error removing user", error);
+      toast.error("Hubo un error al remover el usuario");
+    }
+  };
+
   return (
     <div
       className="flex flex-col space-y-5 py-10 w-full items-center font-roboto"
@@ -139,13 +170,35 @@ export default function UserPage() {
               onChange={(rol) => {
                 updateRol(rol, index);
               }}
-              canDelete = {user.UserRol === "Propietario"}
+              canDelete={user.UserRol === "Propietario"}
               data={data}
               canChange={user.UserRol === "Propietario"}
+              onDelete={() => handleDeleteClick(u.userId)}
             />
           </div>
         ))}
       </div>
+      <Modal
+        isVisible={isModalVisible}
+        onClose={() => setIsModalVisible(false)}
+        width="max-w-sm"
+        height="h-auto"
+      >
+        <div className="p-6">
+          <p className="font-roboto font-medium text-lg">
+            ¿Estás seguro de que quieres eliminar este usuario?
+          </p>
+          <div className="flex justify-center mt-5">
+            <Button
+              type="common"
+              className="bg-blue-800 text-white hover:bg-blue-950 px-4 py-2"
+              onClick={handleConfirmDelete}
+            >
+              Confirmar
+            </Button>
+          </div>
+        </div>
+      </Modal>
     </div>
   );
 }
