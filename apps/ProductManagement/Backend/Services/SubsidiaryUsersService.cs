@@ -40,6 +40,6 @@ public class SubsidiaryUsersService : ISubsidiaryUsersService
 
     public bool DeleteSubsidiaryUsers(SubsidiaryUsersDTO subsidiaryUsers)
     {
-        return _subsidiaryUsersDao.Delete(subsidiaryUsers.SubsidiaryId, subsidiaryUsers.UserId);
+        return _subsidiaryUsersDao.Delete(subsidiaryUsers.UserId, subsidiaryUsers.SubsidiaryId);
     }
 }
